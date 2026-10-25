@@ -69,7 +69,15 @@ public class LoggedError: BaseEntity
         self.date = date
         self._operation = operation?.rawValue
         
-        let nsError = error as NSError
+        let nsError: NSError
+        if let error = error as? ALTServerError, error.code == .underlyingError, let underlyingError = error.underlyingError
+        {
+            nsError = underlyingError as NSError
+        }
+        else
+        {
+            nsError = error as NSError
+        }
         
         self.domain = nsError.domain
         self.code = Int32(nsError.code)
@@ -120,16 +128,16 @@ public extension LoggedError
         guard let operation = self.operation else { return nil }
         switch operation
         {
-        case .install: return String(format: NSLocalizedString("Install %@ Failed", comment: ""), self.appName)
-        case .resign: return String(format: NSLocalizedString("Resign %@ Failed", comment: ""), self.appName)
-        case .update: return String(format: NSLocalizedString("Update %@ Failed", comment: ""), self.appName)
-        case .refresh: return String(format: NSLocalizedString("Refresh %@ Failed", comment: ""), self.appName)
-        case .activate: return String(format: NSLocalizedString("Activate %@ Failed", comment: ""), self.appName)
-        case .deactivate: return String(format: NSLocalizedString("Deactivate %@ Failed", comment: ""), self.appName)
-        case .backup: return String(format: NSLocalizedString("Backup %@ Failed", comment: ""), self.appName)
-        case .restore: return String(format: NSLocalizedString("Restore %@ Failed", comment: ""), self.appName)
-        case .remove: return String(format: NSLocalizedString("Remove %@ Failed", comment: ""), self.appName)
-        case .enableJIT: return String(format: NSLocalizedString("Enable JIT for %@ Failed", comment: ""), self.appName)
+        case .install: return String(format: NSLocalizedString("安装 %@ 失败", comment: ""), self.appName)
+        case .resign: return String(format: NSLocalizedString("为 %@ 重新签名失败", comment: ""), self.appName)
+        case .update: return String(format: NSLocalizedString("更新 %@ 失败", comment: ""), self.appName)
+        case .refresh: return String(format: NSLocalizedString("刷新 %@ 失败", comment: ""), self.appName)
+        case .activate: return String(format: NSLocalizedString("激活 %@ 失败", comment: ""), self.appName)
+        case .deactivate: return String(format: NSLocalizedString("停用 %@ 失败", comment: ""), self.appName)
+        case .backup: return String(format: NSLocalizedString("备份 %@ 失败", comment: ""), self.appName)
+        case .restore: return String(format: NSLocalizedString("恢复 %@ 失败", comment: ""), self.appName)
+        case .remove: return String(format: NSLocalizedString("移除 %@ 失败", comment: ""), self.appName)
+        case .enableJIT: return String(format: NSLocalizedString("为 %@ 启用 JIT 失败", comment: ""), self.appName)
         }
     }
 }

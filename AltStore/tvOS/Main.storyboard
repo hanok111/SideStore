@@ -66,7 +66,7 @@
                             <outlet property="delegate" destination="e3L-BF-iXp" id="Mdp-x4-hZe"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Browse" id="pUx-6k-rtr"/>
+                    <navigationItem key="navigationItem" title="浏览" id="pUx-6k-rtr"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cMN-i4-Bxk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -191,7 +191,7 @@
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="72" id="Xtq-UG-h3b"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                <state key="normal" title="FREE"/>
+                                <state key="normal" title="免费"/>
                                 <connections>
                                     <action selector="performAppAction:" destination="0V6-N4-hTO" eventType="primaryActionTriggered" id="b2l-CA-mbO"/>
                                 </connections>
@@ -318,7 +318,7 @@
                                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="PFD-gZ-77F">
                                                                     <rect key="frame" x="0.0" y="0.0" width="335" height="26.5"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="What's New" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="obM-TM-y2E">
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="更新内容" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="obM-TM-y2E">
                                                                             <rect key="frame" x="0.0" y="0.0" width="124" height="26.5"/>
                                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                                             <nil key="textColor"/>
@@ -381,7 +381,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" axis="vertical" distribution="equalSpacing" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Jvb-r8-XrY">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Permissions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dj7-G8-GFv">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="权限" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dj7-G8-GFv">
                                                             <rect key="frame" x="20" y="0.0" width="335" height="26.5"/>
                                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                                             <nil key="textColor"/>
@@ -422,7 +422,7 @@
                             <outlet property="delegate" destination="kBq-V8-3XC" id="cZS-nq-F1v"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="App" largeTitleDisplayMode="never" id="sWo-Y8-aF6"/>
+                    <navigationItem key="navigationItem" title="应用" largeTitleDisplayMode="never" id="sWo-Y8-aF6"/>
                     <size key="freeformSize" width="375" height="667"/>
                     <connections>
                         <outlet property="appDetailCollectionViewHeightConstraint" destination="HFx-PP-dAt" id="ti3-q6-ku1"/>
@@ -488,7 +488,7 @@
         <scene sceneID="KlD-j0-ROn">
             <objects>
                 <viewControllerPlaceholder storyboardName="Settings" id="p3d-dP-Swg" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Settings" image="Settings" id="OZm-Le-7oJ"/>
+                    <tabBarItem key="tabBarItem" title="设置" image="Settings" id="OZm-Le-7oJ"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HgE-PD-dC2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -514,7 +514,7 @@
                             <outlet property="delegate" destination="3sa-FZ-PTg" id="9fB-sR-8Xt"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="News" id="ZxL-Ws-lJO"/>
+                    <navigationItem key="navigationItem" title="新闻" id="ZxL-Ws-lJO"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YS7-2X-joz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -524,7 +524,7 @@
         <scene sceneID="VHa-uP-bFU">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="faz-B4-Sub" customClass="ForwardingNavigationController" customModule="SideStore" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Browse" image="Browse" id="Uwh-Bg-Ymq"/>
+                    <tabBarItem key="tabBarItem" title="浏览" image="Browse" id="Uwh-Bg-Ymq"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="dIv-qd-9L5" customClass="NavigationBar" customModule="SideStore" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="20" width="375" height="96"/>
@@ -545,7 +545,7 @@
         <scene sceneID="nhh-BJ-XiT">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3Ew-ox-i4n" customClass="ForwardingNavigationController" customModule="SideStore" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="My Apps" image="MyApps" id="4gT-9u-k7y">
+                    <tabBarItem key="tabBarItem" title="我的应用" image="MyApps" id="4gT-9u-k7y">
                         <color key="badgeColor" name="Primary"/>
                     </tabBarItem>
                     <toolbarItems/>
@@ -623,7 +623,7 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="359" height="60"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Updates Available" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z04-yg-x1t">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="没有可用更新" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z04-yg-x1t">
                                                                     <rect key="frame" x="96.5" y="20" width="166" height="20.5"/>
                                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                                     <color key="textColor" name="Primary"/>
@@ -690,7 +690,7 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NHb-0F-cHZ">
                                             <rect key="frame" x="0.0" y="20.5" width="97" height="32"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <state key="normal" title="View App IDs"/>
+                                            <state key="normal" title="查看 App ID"/>
                                             <connections>
                                                 <segue destination="IXk-qg-mFJ" kind="presentation" identifier="showAppIDs" id="yZB-Fh-cTL"/>
                                             </connections>
@@ -713,7 +713,7 @@
                             <outlet property="delegate" destination="hv7-Ar-voT" id="1PN-pf-cZK"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="My Apps" id="zLJ-Cg-ijh">
+                    <navigationItem key="navigationItem" title="我的应用" id="zLJ-Cg-ijh">
                         <barButtonItem key="leftBarButtonItem" systemItem="add" id="4MN-JN-Knh">
                             <connections>
                                 <action selector="sideloadApp:" destination="hv7-Ar-voT" id="Tjv-oi-2H0"/>
@@ -780,7 +780,7 @@
         <!--App IDs-->
         <scene sceneID="kvf-US-rRe">
             <objects>
-                <collectionViewController title="App IDs" id="y1A-Nm-mw7" customClass="AppIDsViewController" customModule="SideStore" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController title="App ID" id="y1A-Nm-mw7" customClass="AppIDsViewController" customModule="SideStore" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" dataMode="prototypes" id="v1r-C8-h6h">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -814,7 +814,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="App IDs Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="83Z-Ih-nOW">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="App ID 说明" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="83Z-Ih-nOW">
                                     <rect key="frame" x="8" y="14" width="359" height="31"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                     <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -855,7 +855,7 @@
                             <outlet property="delegate" destination="y1A-Nm-mw7" id="a8i-FA-aUq"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="App IDs" id="3Co-uv-Fhb">
+                    <navigationItem key="navigationItem" title="App ID" id="3Co-uv-Fhb">
                         <barButtonItem key="leftBarButtonItem" id="Aqs-QK-Ups">
                             <view key="customView" contentMode="scaleToFill" id="p0q-Fg-3Ba">
                                 <rect key="frame" x="16" y="7" width="83" height="42"/>
@@ -881,7 +881,7 @@
         <scene sceneID="BV8-6J-nIv">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="kjR-gi-fgT" customClass="ForwardingNavigationController" customModule="SideStore" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="News" image="News" id="fVN-ed-uO1"/>
+                    <tabBarItem key="tabBarItem" title="新闻" image="News" id="fVN-ed-uO1"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="525-jF-uDK" customClass="NavigationBar" customModule="SideStore" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="20" width="375" height="96"/>

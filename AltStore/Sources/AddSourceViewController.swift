@@ -783,7 +783,7 @@ private extension AddSourceViewController
         Task {
             for result in self.viewModel.sourcePreviewResults {
                 if case .failure(let error) = result.result {
-                    let errorTitle = NSLocalizedString("Unable to Add Source", comment: "")
+                    let errorTitle = NSLocalizedString("无法添加来源", comment: "")
                     await self.presentAlert(title: errorTitle, message: error.localizedDescription)
                     return
                 }
@@ -819,7 +819,7 @@ private extension AddSourceViewController
                 }
                 catch
                 {
-                    let errorTitle = NSLocalizedString("Unable to Add Source", comment: "")
+                    let errorTitle = NSLocalizedString("无法添加来源", comment: "")
                     await self.presentAlert(title: errorTitle, message: error.localizedDescription)
                 }
             }
@@ -878,7 +878,7 @@ extension AddSourceViewController: UICollectionViewDelegateFlowLayout
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: kind, for: indexPath) as! UICollectionViewListCell
             
             var configuation = UIListContentConfiguration.cell()
-            configuation.text = NSLocalizedString("Enter a source's URL below, or add one of the recommended sources.", comment: "")
+            configuation.text = NSLocalizedString("在下方输入来源的 URL，或添加一个推荐来源。", comment: "")
             configuation.textProperties.color = .secondaryLabel
             
             headerView.contentConfiguration = configuation
@@ -896,7 +896,7 @@ extension AddSourceViewController: UICollectionViewDelegateFlowLayout
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: kind, for: indexPath) as! UICollectionViewListCell
             
             var configuation = UIListContentConfiguration.groupedHeader()
-            configuation.text = NSLocalizedString("Recommended Sources", comment: "")
+            configuation.text = NSLocalizedString("推荐来源", comment: "")
             configuation.textProperties.color = .secondaryLabel
             
             headerView.contentConfiguration = configuation
@@ -914,7 +914,7 @@ extension AddSourceViewController: UICollectionViewDelegateFlowLayout
             {
                 footerView.placeholderView.textLabel.isHidden = false
                 footerView.placeholderView.textLabel.font = UIFont.preferredFont(forTextStyle: .headline)
-                footerView.placeholderView.textLabel.text = NSLocalizedString("Unable to Load Recommended Sources", comment: "")
+                footerView.placeholderView.textLabel.text = NSLocalizedString("无法加载推荐来源", comment: "")
                 
                 footerView.placeholderView.detailTextLabel.isHidden = false
                 footerView.placeholderView.detailTextLabel.text = error.localizedDescription

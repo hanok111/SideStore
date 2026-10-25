@@ -15,9 +15,9 @@ extension ALTAppPermissionType
     public var localizedName: String? {
         switch self
         {
-        case .unknown: return NSLocalizedString("Permission", comment: "")
-        case .entitlement: return NSLocalizedString("Entitlement", comment: "")
-        case .privacy: return NSLocalizedString("Privacy Permission", comment: "")
+        case .unknown: return NSLocalizedString("权限", comment: "")
+        case .entitlement: return NSLocalizedString("授权", comment: "")
+        case .privacy: return NSLocalizedString("隐私权限", comment: "")
         default: return nil
         }
     }

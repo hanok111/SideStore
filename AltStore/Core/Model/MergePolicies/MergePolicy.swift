@@ -42,38 +42,38 @@ public struct MergeError: ALTLocalizedError
         switch self.code
         {
         case .noVersions:
-            var appName = NSLocalizedString("At least one app", comment: "")
+            var appName = NSLocalizedString("至少一个应用", comment: "")
             if let name = self.appName, let bundleID = self.appBundleID
             {
                 appName = name + " (\(bundleID))"
             }
             
-            return String(format: NSLocalizedString("%@ does not have any app versions.", comment: ""), appName)
+            return String(format: NSLocalizedString("%@ 没有任何应用版本。", comment: ""), appName)
             
         case .incorrectVersionOrder:
-            var appName = NSLocalizedString("one or more apps", comment: "")
+            var appName = NSLocalizedString("一个或多个应用", comment: "")
             if let name = self.appName, let bundleID = self.appBundleID
             {
                 appName = name + " (\(bundleID))"
             }
             
-            return String(format: NSLocalizedString("The cached versions for %@ do not match the source.", comment: ""), appName)
+            return String(format: NSLocalizedString("%@ 的缓存版本与来源不符。", comment: ""), appName)
             
         case .incorrectPermissions:
-            var appName = NSLocalizedString("one or more apps", comment: "")
+            var appName = NSLocalizedString("一个或多个应用", comment: "")
             if let name = self.appName, let bundleID = self.appBundleID
             {
                 appName = name + " (\(bundleID))"
             }
             
-            return String(format: NSLocalizedString("The cached permissions for %@ do not match the source.", comment: ""), appName)
+            return String(format: NSLocalizedString("%@ 的缓存权限与来源不符。", comment: ""), appName)
         }
     }
     
     public var recoverySuggestion: String? {
         switch self.code
         {
-        case .incorrectVersionOrder: return NSLocalizedString("Please try again later.", comment: "")
+        case .incorrectVersionOrder: return NSLocalizedString("请稍后再试。", comment: "")
         default: return nil
         }
     }
@@ -395,7 +395,7 @@ extension MergePolicy{
                 }
                 catch
                 {
-                    let nsError = error.serialized(withFailure: NSLocalizedString("SideStore's database could not be saved.", comment: ""))
+                    let nsError = error.serialized(withFailure: NSLocalizedString("SideStore 的数据库无法保存。", comment: ""))
                     throw nsError
                 }
                 

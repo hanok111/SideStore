@@ -83,7 +83,7 @@ Following us on social media allows us to give quick updates and spread the word
                                         <constraint firstAttribute="height" constant="51" id="l4o-vb-cMy"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
-                                    <state key="normal" title="Become a patron!">
+                                    <state key="normal" title="成为赞助者！">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
                                 </button>
@@ -94,7 +94,7 @@ Following us on social media allows us to give quick updates and spread the word
                                         <constraint firstAttribute="height" constant="51" id="m0M-GX-KKG"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
-                                    <state key="normal" title="Follow us on Twitter!">
+                                    <state key="normal" title="在 Twitter 上关注我们！">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
                                 </button>
@@ -105,7 +105,7 @@ Following us on social media allows us to give quick updates and spread the word
                                         <constraint firstAttribute="height" constant="51" id="kDo-b8-6tZ"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
-                                    <state key="normal" title="Follow us on Instagram!">
+                                    <state key="normal" title="在 Instagram 上关注我们！">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
                                 </button>

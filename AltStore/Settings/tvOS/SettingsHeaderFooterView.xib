@@ -18,7 +18,7 @@
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="kEr-mf-Jw4">
                             <rect key="frame" x="0.0" y="0.0" width="137.5" height="29"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="ACCOUNT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rLj-Ff-ZTt">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="账号" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rLj-Ff-ZTt">
                                     <rect key="frame" x="0.0" y="0.0" width="68.5" height="29"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <color key="textColor" white="1" alpha="0.75" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -27,7 +27,7 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="meg-d6-dbz">
                                     <rect key="frame" x="68.5" y="0.0" width="69" height="29"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                    <state key="normal" title="SIGN OUT">
+                                    <state key="normal" title="退出登录">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
                                 </button>
@@ -43,10 +43,10 @@
                 </stackView>
             </subviews>
             <constraints>
-                <constraint firstItem="lwu-4e-pWM" firstAttribute="trailing" secondItem="fMJ-OF-djb" secondAttribute="trailingMargin" placeholder="YES" id="1Im-8l-aLX"/>
-                <constraint firstItem="lwu-4e-pWM" firstAttribute="bottom" secondItem="fMJ-OF-djb" secondAttribute="bottomMargin" placeholder="YES" id="QbJ-4L-kbL"/>
-                <constraint firstItem="lwu-4e-pWM" firstAttribute="top" secondItem="fMJ-OF-djb" secondAttribute="topMargin" placeholder="YES" id="U4a-l9-6gw"/>
-                <constraint firstItem="lwu-4e-pWM" firstAttribute="leading" secondItem="fMJ-OF-djb" secondAttribute="leadingMargin" placeholder="YES" id="vSr-R6-hXw"/>
+                <constraint firstItem="lwu-4e-pWM" firstAttribute="trailing" secondItem="fMJ-OF-djb" secondAttribute="trailingMargin" placeholder="是" id="1Im-8l-aLX"/>
+                <constraint firstItem="lwu-4e-pWM" firstAttribute="bottom" secondItem="fMJ-OF-djb" secondAttribute="bottomMargin" placeholder="是" id="QbJ-4L-kbL"/>
+                <constraint firstItem="lwu-4e-pWM" firstAttribute="top" secondItem="fMJ-OF-djb" secondAttribute="topMargin" placeholder="是" id="U4a-l9-6gw"/>
+                <constraint firstItem="lwu-4e-pWM" firstAttribute="leading" secondItem="fMJ-OF-djb" secondAttribute="leadingMargin" placeholder="是" id="vSr-R6-hXw"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <edgeInsets key="layoutMargins" top="8" left="30" bottom="8" right="30"/>

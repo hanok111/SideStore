@@ -308,25 +308,25 @@ extension SourceDetailContentViewController
         {
         case (.news, _):
             let buttonView = supplementaryView as! ButtonCollectionReusableView
-            buttonView.button.setTitle(NSLocalizedString("View All", comment: ""), for: .normal)
+            buttonView.button.setTitle(NSLocalizedString("查看全部", comment: ""), for: .normal)
             
             buttonView.button.removeTarget(self, action: nil, for: .primaryActionTriggered)
             buttonView.button.addTarget(self, action: #selector(SourceDetailContentViewController.viewAllNews), for: .primaryActionTriggered)
             
         case (.featuredApps, .title):
             let titleView = supplementaryView as! TitleCollectionReusableView
-            titleView.label.text = NSLocalizedString("Featured Apps", comment: "")
+            titleView.label.text = NSLocalizedString("精选应用", comment: "")
             
         case (.featuredApps, .button):
             let buttonView = supplementaryView as! ButtonCollectionReusableView
-            buttonView.button.setTitle(NSLocalizedString("View All Apps", comment: ""), for: .normal)
+            buttonView.button.setTitle(NSLocalizedString("查看全部应用", comment: ""), for: .normal)
             
             buttonView.button.removeTarget(self, action: nil, for: .primaryActionTriggered)
             buttonView.button.addTarget(self, action: #selector(SourceDetailContentViewController.viewAllApps), for: .primaryActionTriggered)
             
         case (.about, _):
             let titleView = supplementaryView as! TitleCollectionReusableView
-            titleView.label.text = NSLocalizedString("About", comment: "")
+            titleView.label.text = NSLocalizedString("关于", comment: "")
         }
         
         return supplementaryView
@@ -387,15 +387,6 @@ private extension SourceDetailContentViewController
     @MainActor
     func downloadApp(_ storeApp: StoreApp, sender: PillButton) async
     {
-        let confirmed = await withCheckedContinuation { continuation in
-            InstallAppDialog.present(storeApp: storeApp, from: self) {
-                continuation.resume(returning: true)
-            } onCancel: {
-                continuation.resume(returning: false)
-            }
-        }
-        guard confirmed else { return }
-        
         do
         {
             try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in

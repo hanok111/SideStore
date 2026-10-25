@@ -126,7 +126,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Register default settings before doing anything else.
         UserDefaults.registerDefaults()
-        BackgroundServiceManager.ensureBackgroundServicesStarted()
         syncMinimuxerBackendFromUserDefaults()
 
         SideStoreLogging.setLogging(UserDefaults.standard.isSideStoreVerboseLoggingEnabled)
@@ -173,8 +172,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         Task.detached(priority: .userInitiated) {
             do
             {
-                await MaintenanceManager.shared.performDatabaseMigrationIfNeeded()
-                
                 debugLog("Starting DatabaseManager...")
                 try await DatabaseManager.shared.start()
                 debugLog("Started DatabaseManager.")
@@ -187,11 +184,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 if isFirstLaunch
                 {
-                    await AuthManager.shared.signOut()
+                    AuthManager.shared.signOut()
                 }
 
                 // Perform one-time maintenance tasks after database is started
-                await MaintenanceManager.shared.performMaintenanceIfNeeded()
+                MaintenanceManager.shared.performMaintenanceIfNeeded()
             }
             catch
             {
@@ -204,6 +201,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
         SecureValueTransformer.register()        
         
+        UserDefaults.standard.preferredServerID = Bundle.main.object(forInfoDictionaryKey: Bundle.Info.serverID) as? String
+        
         #if DEBUG && targetEnvironment(simulator)
         UserDefaults.standard.isDebugModeEnabled = true
         #endif
@@ -215,7 +214,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidEnterBackground(_ application: UIApplication)
     {
-        BackgroundServiceManager.ensureBackgroundServicesStarted()
         // Make sure to update SceneDelegate.sceneDidEnterBackground() as well.
         guard let oneMonthAgo = Calendar.current.date(byAdding: .month, value: -1, to: Date()) else { return }
         
@@ -235,7 +233,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication)
     {
-        BackgroundServiceManager.ensureBackgroundServicesStarted()
         Task.detached {
             await AppManager.shared.reconcileInstalledApps()
         }
@@ -407,7 +404,6 @@ extension AppDelegate
     
     func application(_ application: UIApplication, performFetchWithCompletionHandler backgroundFetchCompletionHandler: @escaping (UIBackgroundFetchResult) -> Void)
     {
-        BackgroundServiceManager.ensureBackgroundServicesStarted()
         #if !os(tvOS)
         if UserDefaults.standard.isBackgroundRefreshEnabled && !UserDefaults.standard.presentedLaunchReminderNotification
         {
@@ -415,8 +411,8 @@ extension AppDelegate
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: threeHours, repeats: false)
             
             let content = UNMutableNotificationContent()
-            content.title = NSLocalizedString("App Refresh Tip", comment: "")
-            content.body = NSLocalizedString("The more you open SideStore, the more chances it's given to refresh apps in the background.", comment: "")
+            content.title = NSLocalizedString("应用刷新小贴士", comment: "")
+            content.body = NSLocalizedString("你打开 SideStore 的次数越多，系统给它在后台刷新应用的机会就越多。", comment: "")
             
             let request = UNNotificationRequest(identifier: "background-refresh-reminder5", content: content, trigger: trigger)
             UNUserNotificationCenter.current().add(request)
@@ -529,8 +525,8 @@ private extension AppDelegate
                     }
                     
                     let content = UNMutableNotificationContent()
-                    content.title = NSLocalizedString("New Update Available", comment: "")
-                    content.body = String(format: NSLocalizedString("%@ %@ is now available for download.", comment: ""), update.name, latestSupportedVersion.localizedVersion)
+                    content.title = NSLocalizedString("有新更新可用", comment: "")
+                    content.body = String(format: NSLocalizedString("%@ %@ 现已可供下载。", comment: ""), update.name, latestSupportedVersion.localizedVersion)
                     content.sound = .default
                     
                     let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
@@ -546,11 +542,11 @@ private extension AppDelegate
                     
                     if let app = newsItem.storeApp
                     {
-                        content.title = String(format: NSLocalizedString("%@ News", comment: ""), app.name)
+                        content.title = String(format: NSLocalizedString("%@ 新闻", comment: ""), app.name)
                     }
                     else
                     {
-                        content.title = NSLocalizedString("SideStore News", comment: "")
+                        content.title = NSLocalizedString("SideStore 新闻", comment: "")
                     }
                     
                     content.body = newsItem.title
@@ -563,7 +559,7 @@ private extension AppDelegate
                 DispatchQueue.main.async {
                     if UIApplication.shared.applicationState == .active {
                         if !updates.isEmpty, let window = UIApplication.shared.connectedScenes.compactMap({ ($0 as? UIWindowScene)?.windows.first(where: { $0.isKeyWindow }) }).first {
-                            let toastView = ToastView(text: "New Update Available", detailText: "\(updates.count) update(s) available")
+                            let toastView = ToastView(text: "有新更新可用", detailText: "\(updates.count) 个更新可用")
                             toastView.show(in: window)
                         }
                     } else {

@@ -93,7 +93,7 @@ struct AppPermissionsCard<Permission: AppPermissionProtocol>: View
                         }
                     }
                     
-                    Text("Tap a permission to learn more.")
+                    Text("点击权限可了解详情。")
                         .font(.subheadline)
                         .fixedSize(horizontal: false, vertical: true)
                 }
@@ -255,15 +255,15 @@ struct AppPermissionsCard_Previews: PreviewProvider
         let tintColor = Color(uiColor: .deltaPrimary!)
         
         return ForEach(1...8, id: \.self) { index in
-                AppPermissionsCard(title: "Privacy",
-                                   description: "Delta may request access to the following:",
+                AppPermissionsCard(title: "隐私",
+                                   description: "Delta 可能会请求以下访问权限：",
                                    tintColor: tintColor,
                                    permissions: Array(appPermissions.prefix(index)))
                     .frame(width: 350)
                     .previewLayout(.sizeThatFits)
 
-                AppPermissionsCard(title: "Privacy",
-                                   description: "Delta may request access to the following:",
+                AppPermissionsCard(title: "隐私",
+                                   description: "Delta 可能会请求以下访问权限：",
                                    tintColor: tintColor,
                                    permissions: Array(appPermissions.prefix(index)),
                                    selectedPermission: appPermissions.first)

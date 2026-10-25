@@ -22,13 +22,13 @@ public extension OSLogEntryLog.Level
     var localizedName: String {
         switch self
         {
-        case .undefined: return NSLocalizedString("Undefined", comment: "")
-        case .debug: return NSLocalizedString("Debug", comment: "")
-        case .info: return NSLocalizedString("Info", comment: "")
-        case .notice: return NSLocalizedString("Notice", comment: "")
-        case .error: return NSLocalizedString("Error", comment: "")
-        case .fault: return NSLocalizedString("Fault", comment: "")
-        @unknown default: return NSLocalizedString("Unknown", comment: "")
+        case .undefined: return NSLocalizedString("未定义", comment: "")
+        case .debug: return NSLocalizedString("调试", comment: "")
+        case .info: return NSLocalizedString("信息", comment: "")
+        case .notice: return NSLocalizedString("通知", comment: "")
+        case .error: return NSLocalizedString("错误", comment: "")
+        case .fault: return NSLocalizedString("故障", comment: "")
+        @unknown default: return NSLocalizedString("未知", comment: "")
         }
     }
 }

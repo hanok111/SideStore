@@ -77,26 +77,22 @@ extension SettingsViewController
         case sendFeedback           // row 0 - Send Feedback
         case refreshAttempts        // row 1 - View Refresh Attempts
         case refreshSideJITServer   // row 2 - SideJITServer
-        case pairingFileManagement  // row 3 - Pairing File Management
+        case resetPairingFile       // row 3 - Reset Pairing File
         case anisetteServers        // row 4 - Anisette Servers
         case connectionConfig       // row 5 - Connection Configuration
-        case networkDiscovery       // row 6 - Network Discovery
-        case developerServices      // row 7 - Developer Portal Services
-        case profileManagement      // row 8 - Profile Management
-        case certificateManagement  // row 9 - Certificate Management
-        case backupAndRestore       // row 10 - Backup & Restore
-        case userCustomizations     // row 11 - User Customizations
+        case developerServices      // row 6 - Developer Portal Services
+        case certificateManagement  // row 7 - Certificate Management
+        case backupAndRestore       // row 8 - Backup & Restore
+        case userCustomizations     // row 9 - User Customizations
 
         static var allCases: [AdvancedSettingsRow] {
-            var rows: [AdvancedSettingsRow] = [.sendFeedback, .refreshAttempts, .refreshSideJITServer, .pairingFileManagement]
+            var rows: [AdvancedSettingsRow] = [.sendFeedback, .refreshAttempts, .refreshSideJITServer, .resetPairingFile]
             if !UserDefaults.standard.useOnDeviceAnisette {
                 rows.append(.anisetteServers)
             }
             rows.append(contentsOf: [
                 .connectionConfig,
-                .networkDiscovery,
                 .developerServices,
-                .profileManagement,
                 .certificateManagement,
                 .backupAndRestore,
                 .userCustomizations
@@ -119,9 +115,7 @@ extension SettingsViewController
 
 final class SettingsViewController: UITableViewController
 {
-    private var activeTeam: ALTTeam?
-    private var accountStatus: AccountVerificationRow.Status = .completed
-    private var accountVerificationTask: Task<Void, Never>?
+    private var activeTeam: Team?
     
     private var prototypeHeaderFooterView: SettingsHeaderFooterView!
     
@@ -296,20 +290,13 @@ final class SettingsViewController: UITableViewController
         self.update()
     }
     
-    override func viewWillDisappear(_ animated: Bool)
-    {
-        super.viewWillDisappear(animated)
-        self.accountVerificationTask?.cancel()
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "anisetteServers" || segue.identifier == "developerServices" || segue.identifier == "profileManagement" || segue.identifier == "certificateManagement" || segue.identifier == "diagnostics" {
+        if segue.identifier == "anisetteServers" || segue.identifier == "developerServices" || segue.identifier == "certificateManagement" || segue.identifier == "diagnostics" {
             let controller = segue.destination
             
         #if !os(tvOS)
             if segue.identifier == "anisetteServers"        || 
                 segue.identifier == "developerServices"      ||
-                segue.identifier == "profileManagement"      ||
                 segue.identifier == "certificateManagement" || 
                 segue.identifier == "diagnostics"
             {
@@ -382,7 +369,7 @@ private extension SettingsViewController
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
         let attributed = NSMutableAttributedString(
-            string: "Copied! ",
+            string: "已复制！ ",
             attributes: [
                 .font: UIFont.systemFont(ofSize: 14),
                 .foregroundColor: UIColor.white.withAlphaComponent(0.7),
@@ -402,30 +389,20 @@ private extension SettingsViewController
     
     func update()
     {
-        Task { @MainActor [weak self] in
-            guard let self = self else { return }
-            let currentActiveTeam = try? await AuthManager.shared.getAuthenticatedTeam()
-            let appleID = AuthManager.shared.currentAppleID
-            verboseLog("[SettingsVC] update() called. activeTeam: \(currentActiveTeam?.identifier ?? "nil"), account: \(appleID ?? "nil")")
+        let currentActiveTeam = DatabaseManager.shared.activeTeam()
+        verboseLog("[SettingsVC] update() called. activeTeam: \(currentActiveTeam?.identifier ?? "nil"), account: \(currentActiveTeam?.account.appleID ?? "nil")")
+        
+        if let team = currentActiveTeam, AuthManager.shared.isAuthenticated
+        {
+            self.accountNameLabel.text = team.name
+            self.accountEmailLabel.text = team.account.appleID
+            self.accountTypeLabel.text = team.type.localizedDescription
             
-            if let team = currentActiveTeam, AuthManager.shared.isAuthenticated
-            {
-                self.accountNameLabel.text = team.name
-                self.accountEmailLabel.text = appleID
-                self.accountTypeLabel.text = team.type.localizedDescription
-                
-                self.activeTeam = team
-                self.startAccountVerification(for: team)
-            }
-            else
-            {
-                self.activeTeam = nil
-                self.accountVerificationTask?.cancel()
-                self.accountVerificationTask = nil
-                self.accountStatus = .completed
-                self.updateAccountCardRowStyles()
-            }
-            self.tableView.reloadData()
+            self.activeTeam = team
+        }
+        else
+        {
+            self.activeTeam = nil
         }
         
         // AppRefreshRow
@@ -452,44 +429,6 @@ private extension SettingsViewController
         }
     }
     
-    private func startAccountVerification(for team: ALTTeam)
-    {
-        self.accountVerificationTask?.cancel()
-        self.accountVerificationTask = Task { @MainActor [weak self] in
-            guard let self = self else { return }
-            if !UserDefaults.standard.isDeviceRegistered {
-                self.accountStatus = .checking
-                self.tableView.reloadData()
-                self.updateAccountCardRowStyles()
-            }
-            let status = await AccountVerificationRow.verifyStatus(for: team)
-            if !Task.isCancelled {
-                self.accountStatus = status
-                self.tableView.reloadData()
-                self.updateAccountCardRowStyles()
-            }
-        }
-    }
-    
-    private func updateAccountCardRowStyles()
-    {
-        guard self.isViewLoaded else { return }
-        let typeIndexPath = IndexPath(row: 2, section: Section.account.rawValue)
-        if let typeCell = self.tableView.cellForRow(at: typeIndexPath) as? InsetGroupTableViewCell {
-            typeCell.style = (self.accountStatus == .completed) ? .bottom : .middle
-        }
-    }
-    
-    private func resolvePendingAccountActions()
-    {
-        guard let team = self.activeTeam else { return }
-        Task { @MainActor [weak self] in
-            guard let self = self else { return }
-            await AccountVerificationRow.resolvePendingActions(for: self.accountStatus, team: team, presentingViewController: self)
-            self.startAccountVerification(for: team)
-        }
-    }
-    
     private func prepare(_ settingsHeaderFooterView: SettingsHeaderFooterView, for section: Section, isHeader: Bool)
     {
         settingsHeaderFooterView.primaryLabel.isHidden = !isHeader
@@ -503,48 +442,48 @@ private extension SettingsViewController
         case .signIn:
             if isHeader
             {
-                settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("ACCOUNT", comment: "")
+                settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("账号", comment: "")
             }
             else
             {
-                settingsHeaderFooterView.secondaryLabel.text = NSLocalizedString("Sign in with your Apple ID to download apps from SideStore.", comment: "")
+                settingsHeaderFooterView.secondaryLabel.text = NSLocalizedString("使用你的 Apple ID 登录，即可从 SideStore 下载应用。", comment: "")
             }
             
         case .patreon:
             if isHeader
             {
-                settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("SUPPORT US", comment: "")
+                settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("支持我们", comment: "")
             }
             else
             {
-                settingsHeaderFooterView.secondaryLabel.text = NSLocalizedString("Support the SideStore Team by following our socials or becoming a patron!", comment: "")
+                settingsHeaderFooterView.secondaryLabel.text = NSLocalizedString("关注我们的社交账号或成为赞助者，来支持 SideStore 团队！", comment: "")
             }
 
         case .account:
-            settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("ACCOUNT", comment: "")
+            settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("账号", comment: "")
             
-            settingsHeaderFooterView.button.setTitle(NSLocalizedString("SIGN OUT", comment: ""), for: .normal)
+            settingsHeaderFooterView.button.setTitle(NSLocalizedString("退出登录", comment: ""), for: .normal)
             settingsHeaderFooterView.button.addTarget(self, action: #selector(SettingsViewController.signOut(_:)), for: .primaryActionTriggered)
             settingsHeaderFooterView.button.isHidden = false
             
         case .appRefresh:
             if isHeader
             {
-                settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("REFRESHING APPS", comment: "")
+                settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("刷新应用", comment: "")
             }
             else
             {
-                settingsHeaderFooterView.secondaryLabel.text = NSLocalizedString("Enable Background Refresh to automatically refresh apps in the background when connected to Wi-Fi. \n\nEnable Disable Idle Timeout to allow SideStore to keep your device awake during a refresh or install of any apps.", comment: "")
+                settingsHeaderFooterView.secondaryLabel.text = NSLocalizedString("开启后台刷新后，连接 Wi-Fi 时会在后台自动刷新应用。\n\n开启“禁用闲置超时”后，SideStore 可在刷新或安装应用期间保持设备唤醒。", comment: "")
             }
             
         case .display:
             if isHeader
             {
-                settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("DISPLAY", comment: "")
+                settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("显示", comment: "")
             }
             else
             {
-                settingsHeaderFooterView.secondaryLabel.text = NSLocalizedString("Personalize your SideStore experience by choosing an alternate app icon.", comment: "")
+                settingsHeaderFooterView.secondaryLabel.text = NSLocalizedString("选择一个备用应用图标，个性化你的 SideStore。", comment: "")
             }
             
             
@@ -554,30 +493,30 @@ private extension SettingsViewController
         case .techyThings:
             if isHeader
             {
-                settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("TECHY THINGS", comment: "")
+                settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("技术相关", comment: "")
             }
             else
             {
-                settingsHeaderFooterView.secondaryLabel.text = NSLocalizedString("Free up disk space by removing non-essential data, such as temporary files and backups for uninstalled apps.", comment: "")
+                settingsHeaderFooterView.secondaryLabel.text = NSLocalizedString("删除临时文件、已卸载应用的备份等非必要数据，以释放磁盘空间。", comment: "")
             }
             
         case .credits:
-            settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("CREDITS", comment: "")
+            settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("鸣谢", comment: "")
             
         case .advancedSettings:
-            settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("ADVANCED SETTINGS", comment: "")
+            settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("高级设置", comment: "")
 
         case .betaTesting:
             if isHeader
             {
-                settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("BETA TESTING", comment: "")
+                settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("测试版", comment: "")
             }
             else
             {
                 settingsHeaderFooterView.secondaryLabel.text = NSLocalizedString(
                     """
-                    Opt in for beta testing to receive regular updates and early previews of upcoming releases.\n
-                    Please note that these builds are experimental and may be unstable or break unexpectedly.
+                    加入测试计划，即可定期收到更新，并提前体验即将发布的版本。
+                    请注意，这些构建是实验性的，可能会不稳定或意外损坏。
                     """,
                     comment: ""
                 )
@@ -586,7 +525,7 @@ private extension SettingsViewController
 
             
         case .diagnostics:
-            settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("DIAGNOSTICS", comment: "")
+            settingsHeaderFooterView.primaryLabel.text = NSLocalizedString("诊断", comment: "")
             
         // case .macDirtyCow:
         //     if isHeader
@@ -595,7 +534,7 @@ private extension SettingsViewController
         //     }
         //     else
         //     {
-        //         settingsHeaderFooterView.secondaryLabel.text = NSLocalizedString("If you've removed the 3-sideloaded app limit via the MacDirtyCow exploit, disable this setting to sideload more than 3 apps at a time.", comment: "")
+        //         settingsHeaderFooterView.secondaryLabel.text = NSLocalizedString("如果你已通过 MacDirtyCow 漏洞解除了 3 个侧载应用的限制，请关闭此设置以一次侧载超过 3 个应用。", comment: "")
         //     }
             
         }
@@ -631,21 +570,27 @@ private extension SettingsViewController
     func signIn()
     {
         debugLog("[SettingsVC] signIn() invoked by user action")
-        Task { @MainActor [weak self] in
-            guard let self = self else { return }
-            do {
-                let result = try await AuthManager.shared.signIn(presentingViewController: self)
-                debugLog("[SettingsVC] signIn() authentication succeeded for team: \(result.team.name) (\(result.team.identifier))")
-            } catch is CancellationError {
-                debugLog("[SettingsVC] signIn() authentication cancelled by user")
-            } catch {
-                debugLog("[SettingsVC] signIn() authentication failed with error: \(error)")
-                let toastView = ToastView(error: error)
-                toastView.show(in: self.view)
+        AppManager.shared.signIn(presentingViewController: self) { [weak self] (result) in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                switch result
+                {
+                case .failure(let error) where error is CancellationError:
+                    debugLog("[SettingsVC] signIn() authentication cancelled by user")
+                    break
+                    
+                case .failure(let error):
+                    debugLog("[SettingsVC] signIn() authentication failed with error: \(error)")
+                    let toastView = ToastView(error: error)
+                    toastView.show(in: self.view)
+                    
+                case .success(let (team, _, _)):
+                    debugLog("[SettingsVC] signIn() authentication succeeded for team: \(team.name) (\(team.identifier))")
+                }
+                
+                debugLog("[SettingsVC] signIn() calling update()...")
+                self.update()
             }
-            
-            debugLog("[SettingsVC] signIn() calling update()...")
-            self.update()
         }
     }
     
@@ -655,31 +600,27 @@ private extension SettingsViewController
         let contentVC = SignOutAlertViewController()
         
         let alertController = UIAlertController(
-            title: NSLocalizedString("Sign Out", comment: ""),
-            message: NSLocalizedString("Are you sure you want to sign out? You will no longer be able to install or refresh apps once you sign out.", comment: ""),
+            title: NSLocalizedString("退出登录", comment: ""),
+            message: NSLocalizedString("确定要退出登录吗？退出后将无法安装或刷新应用。", comment: ""),
             preferredStyle: .alert
         )
         
         alertController.setValue(contentVC, forKey: "contentViewController")
         
-        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: NSLocalizedString("取消", comment: ""), style: .cancel, handler: nil)
         
-        let signOutAction = UIAlertAction(title: NSLocalizedString("Sign Out", comment: ""), style: .destructive) { [weak self] _ in
+        let signOutAction = UIAlertAction(title: NSLocalizedString("退出登录", comment: ""), style: .destructive) { _ in
             let keepCert = contentVC.isChecked
             let keepAnisette = contentVC.isKeepAnisetteChecked
             let keepAnisetteHeaders = contentVC.isKeepAnisetteHeadersChecked
             let keepSideSignHeaders = contentVC.isKeepSideSignHeadersChecked
-            Task.detached { [weak self] in
-                await AuthManager.shared.signOut(
-                    keepCertificate: keepCert,
-                    keepAnisetteData: keepAnisette,
-                    keepAnisetteHeaders: keepAnisetteHeaders,
-                    keepSideSignHeaders: keepSideSignHeaders
-                )
-                await MainActor.run {
-                    self?.update()
-                }
-            }
+            AuthManager.shared.signOut(
+                keepCertificate: keepCert,
+                keepAnisetteData: keepAnisette,
+                keepAnisetteHeaders: keepAnisetteHeaders,
+                keepSideSignHeaders: keepSideSignHeaders
+            )
+            self.update()
         }
         
         alertController.addAction(cancelAction)
@@ -738,7 +679,7 @@ private extension SettingsViewController
                     guard UserDefaults.standard.recreateDatabaseOnNextStart else {
                         return
                     }
-                    let toast = ToastView(text: "Database Delete Scheduled on Next Launch", detailText: "App is closing in \(time) seconds...")
+                    let toast = ToastView(text: "数据库将于下次启动时删除", detailText: "应用将在 \(time) 秒后关闭…")
                     toast.tintColor = .altPrimary
                     toast.preferredDuration = 1
                     toast.show(in: self)
@@ -793,15 +734,15 @@ private extension SettingsViewController
     func clearCache()
     {
         let makeCacheTitle: (String) -> String = { sizeString in
-            String(format: NSLocalizedString("Are you sure you want to clear SideStore's cache?\n\nCache Size: %@", comment: ""), sizeString)
+            String(format: NSLocalizedString("确定要清除 SideStore 的缓存吗？\n\n缓存大小：%@", comment: ""), sizeString)
         }
-        let alertController = UIAlertController(title: makeCacheTitle(NSLocalizedString("Calculating…", comment: "")),
-                                                message: NSLocalizedString("This will remove all temporary files as well as backups for uninstalled apps.", comment: ""),
+        let alertController = UIAlertController(title: makeCacheTitle(NSLocalizedString("正在计算…", comment: "")),
+                                                message: NSLocalizedString("这将删除所有临时文件以及已卸载应用的备份。", comment: ""),
                                                 preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: UIAlertAction.cancel.title, style: UIAlertAction.cancel.style) { [weak self] _ in
             self?.tableView.indexPathForSelectedRow.map { self?.tableView.deselectRow(at: $0, animated: true) }
         })
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Clear Cache", comment: ""), style: .destructive) { [weak self] _ in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("清除缓存", comment: ""), style: .destructive) { [weak self] _ in
             AppManager.shared.clearAppCache { result in
                 DispatchQueue.main.async {
                     self?.tableView.indexPathForSelectedRow.map { self?.tableView.deselectRow(at: $0, animated: true) }
@@ -810,7 +751,7 @@ private extension SettingsViewController
                     {
                     case .success: break
                     case .failure(let error):
-                        let alertController = UIAlertController(title: NSLocalizedString("Unable to Clear Cache", comment: ""), message: error.localizedDescription, preferredStyle: .alert)
+                        let alertController = UIAlertController(title: NSLocalizedString("无法清除缓存", comment: ""), message: error.localizedDescription, preferredStyle: .alert)
                         alertController.addAction(.ok)
                         self?.present(alertController, animated: true)
                     }
@@ -955,9 +896,6 @@ extension SettingsViewController
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
-        if Section.allCases[indexPath.section] == .account && indexPath.row == 3 {
-            return AccountVerificationRow.preferredHeight
-        }
         let effectiveIndexPath: IndexPath
         if Section.allCases[indexPath.section] == .advancedSettings {
             let row = AdvancedSettingsRow.allCases[indexPath.row]
@@ -967,35 +905,6 @@ extension SettingsViewController
         }
         return super.tableView(tableView, heightForRowAt: effectiveIndexPath)
     }
-
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
-    {
-        if Section.allCases[indexPath.section] == .account {
-            if indexPath.row == 2, let insetCell = cell as? InsetGroupTableViewCell {
-                insetCell.style = (self.accountStatus == .completed) ? .bottom : .middle
-            } else if indexPath.row == 3, let actionCell = cell as? AccountVerificationRow {
-                actionCell.style = .bottom
-                actionCell.backgroundColor = .clear
-                actionCell.contentView.backgroundColor = .clear
-                actionCell.backgroundConfiguration = .clear()
-            }
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int
-    {
-        if Section.allCases[indexPath.section] == .account && indexPath.row == 3 {
-            return 0
-        }
-        let effectiveIndexPath: IndexPath
-        if Section.allCases[indexPath.section] == .advancedSettings {
-            let row = AdvancedSettingsRow.allCases[indexPath.row]
-            effectiveIndexPath = IndexPath(row: row.rawValue, section: indexPath.section)
-        } else {
-            effectiveIndexPath = indexPath
-        }
-        return super.tableView(tableView, indentationLevelForRowAt: effectiveIndexPath)
-    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
@@ -1004,7 +913,7 @@ extension SettingsViewController
         {
         case _ where isSectionHidden(section): return 0
         case .signIn: return (self.activeTeam == nil) ? 1 : 0
-        case .account: return (self.activeTeam == nil) ? 0 : (self.accountStatus == .completed ? 3 : 4)
+        case .account: return (self.activeTeam == nil) ? 0 : 3
         case .appRefresh: return AppRefreshRow.allCases.count
         case .advancedSettings: return AdvancedSettingsRow.allCases.count
         default: return super.tableView(tableView, numberOfRowsInSection: section.rawValue)
@@ -1013,14 +922,6 @@ extension SettingsViewController
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        if Section.allCases[indexPath.section] == .account && indexPath.row == 3 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: AccountVerificationRow.reuseIdentifier) as? AccountVerificationRow
-                ?? AccountVerificationRow()
-            cell.configure(with: self.accountStatus)
-            cell.style = .bottom
-            return cell
-        }
-        
         let effectiveIndexPath: IndexPath
         if Section.allCases[indexPath.section] == .advancedSettings {
             let row = AdvancedSettingsRow.allCases[indexPath.row]
@@ -1029,14 +930,6 @@ extension SettingsViewController
             effectiveIndexPath = indexPath
         }
         let cell = super.tableView(tableView, cellForRowAt: effectiveIndexPath)
-        
-        if Section.allCases[indexPath.section] == .account {
-            if indexPath.row == 2 {
-                if let insetCell = cell as? InsetGroupTableViewCell {
-                    insetCell.style = (self.accountStatus == .completed) ? .bottom : .middle
-                }
-            }
-        }
         
 
         if AppRefreshRow.AllCases().count == 1
@@ -1137,11 +1030,6 @@ extension SettingsViewController
         switch section
         {
         case .signIn: self.signIn()
-        case .account:
-            if indexPath.row == 3 {
-                tableView.deselectRow(at: indexPath, animated: true)
-                self.resolvePendingAccountActions()
-            }
         case .appRefresh:
             let row = AppRefreshRow.allCases[indexPath.row]
             switch row
@@ -1221,7 +1109,7 @@ extension SettingsViewController
             switch row
             {
             case .sendFeedback:
-                let alertController = UIAlertController(title: "Send Feedback", message: "Choose a method to send feedback:", preferredStyle: .actionSheet)
+                let alertController = UIAlertController(title: "发送反馈", message: "请选择发送反馈的方式：", preferredStyle: .actionSheet)
                 
                 // Option 1: GitHub
                 alertController.addAction(UIAlertAction(title: "GitHub", style: .default) { _ in
@@ -1235,7 +1123,7 @@ extension SettingsViewController
                 
                 #if !os(tvOS)
                 // Option 3: Mail
-                alertController.addAction(UIAlertAction(title: "Send Email", style: .default) { _ in
+                alertController.addAction(UIAlertAction(title: "发送邮件", style: .default) { _ in
                     if MFMailComposeViewController.canSendMail() {
                         let mailViewController = MFMailComposeViewController()
                         mailViewController.mailComposeDelegate = self
@@ -1250,14 +1138,14 @@ extension SettingsViewController
 
                        self.present(mailViewController, animated: true, completion: nil)
                     } else {
-                      let toastView = ToastView(text: NSLocalizedString("Cannot Send Mail", comment: ""), detailText: nil)
+                      let toastView = ToastView(text: NSLocalizedString("无法发送邮件", comment: ""), detailText: nil)
                       toastView.show(in: self)
                     }
                 })
                 #endif
                 
                 // Cancel action
-                alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                alertController.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
                 
                 // For iPad: Set the source view if presenting on iPad to avoid crashes
                 if let popoverController = alertController.popoverPresentationController {
@@ -1280,16 +1168,33 @@ extension SettingsViewController
                 self.navigationController?.pushViewController(vc, animated: true)
                 self.tableView.deselectRow(at: indexPath, animated: true)
                 
-            case .pairingFileManagement:
-                let pairingView = PairingFileManagementView()
-                let vc = UIHostingController(rootView: pairingView)
-                #if !os(tvOS)
-                let appearance = UINavigationBarAppearance()
-                appearance.configureWithDefaultBackground()
-                vc.navigationItem.scrollEdgeAppearance = appearance
-                vc.navigationItem.standardAppearance = appearance
-                #endif
-                self.navigationController?.pushViewController(vc, animated: true)
+            case .resetPairingFile:
+                
+                let filename = "ALTPairingFile.mobiledevicepairing"
+                
+                let fm = FileManager.default
+                
+                let documentsPath = fm.documentsDirectory.appendingPathComponent("/\(filename)")
+                let alertController = UIAlertController(
+                    title: NSLocalizedString("确定要重置配对文件吗？", comment: ""),
+                    message: NSLocalizedString("无法侧载应用或启用 JIT 时可以重置配对文件。需要重新启动 SideStore。", comment: ""),
+                    preferredStyle: UIAlertController.Style.actionSheet)
+                
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("删除并重置", comment: ""), style: .destructive){ _ in
+                    if fm.fileExists(atPath: documentsPath.path), let contents = try? String(contentsOf: documentsPath), !contents.isEmpty {
+                        UserDefaults.standard.isPairingReset = true
+                        try? fm.removeItem(atPath: documentsPath.path)
+                        NSLog("Pairing File Reseted")
+                    }
+                    self.tableView.deselectRow(at: indexPath, animated: true)
+                    let dialogMessage = UIAlertController(title: NSLocalizedString("配对文件已重置", comment: ""), message: NSLocalizedString("请重新启动 SideStore", comment: ""), preferredStyle: .alert)
+                    self.present(dialogMessage, animated: true, completion: nil)
+                })
+                alertController.addAction(.cancel)
+                //Fix crash on iPad
+                alertController.popoverPresentationController?.sourceView = self.tableView
+                alertController.popoverPresentationController?.sourceRect = self.tableView.rectForRow(at: indexPath)
+                self.present(alertController, animated: true)
                 self.tableView.deselectRow(at: indexPath, animated: true)
                 
             case .anisetteServers:
@@ -1297,7 +1202,7 @@ extension SettingsViewController
                     selected: UserDefaults.standard.menuAnisetteURL,
                     onResetAdiPb: { [weak self] in
                         guard let self = self else { return }
-                        ToastView(text: "Cleared adi.pb!", detailText: "You will need to log back into Apple ID in SideStore.")
+                        ToastView(text: "已清除 adi.pb！", detailText: "你需要在 SideStore 中重新登录 Apple ID。")
                             .show(in: self)
                     }
                 )
@@ -1318,22 +1223,10 @@ extension SettingsViewController
 
                 navigationController?.pushViewController(vc, animated: true)
 
-            case .networkDiscovery:
-                let discoveryView = BonjourDiscoveryView()
-                let vc = UIHostingController(rootView: discoveryView)
-                vc.view.backgroundColor = .settingsBackground
-                vc.title = NSLocalizedString("Network Discovery", comment: "")
-                self.prepare(for: UIStoryboardSegue(identifier: "diagnostics", source: self, destination: vc), sender: nil)
-
             case .developerServices:
                 let developerServicesView = DeveloperServicesView(presentingViewController: self)
                 let vc = UIHostingController(rootView: developerServicesView)
                 self.prepare(for: UIStoryboardSegue(identifier: "developerServices", source: self, destination: vc), sender: nil)
-
-            case .profileManagement:
-                let profileManagementView = ProfileManagementView(presentingViewController: self)
-                let vc = UIHostingController(rootView: profileManagementView)
-                self.prepare(for: UIStoryboardSegue(identifier: "profileManagement", source: self, destination: vc), sender: nil)
 
             case .certificateManagement:
                 let certificateManagementView = CertificatesView(presentingViewController: self)
@@ -1344,14 +1237,14 @@ extension SettingsViewController
                 let backupView = BackupAndRestoreView()
                 let vc = UIHostingController(rootView: backupView)
                 vc.view.backgroundColor = .settingsBackground
-                vc.title = NSLocalizedString("Backup & Restore", comment: "")
+                vc.title = NSLocalizedString("备份与恢复", comment: "")
                 self.prepare(for: UIStoryboardSegue(identifier: "diagnostics", source: self, destination: vc), sender: nil)
                 
             case .userCustomizations:
                 let userCustomizationsView = UserCustomizationsView()
                 let vc = UIHostingController(rootView: userCustomizationsView)
                 vc.view.backgroundColor = .settingsBackground
-                vc.title = NSLocalizedString("User Customizations", comment: "")
+                vc.title = NSLocalizedString("用户自定义", comment: "")
                 self.prepare(for: UIStoryboardSegue(identifier: "diagnostics", source: self, destination: vc), sender: nil)
                 
             case .refreshAttempts: break
@@ -1364,19 +1257,19 @@ extension SettingsViewController
                 let developerOptionsView = DeveloperOptionsView()
                 let hostingController = UIHostingController(rootView: developerOptionsView)
                 hostingController.view.backgroundColor = .settingsBackground
-                hostingController.title = NSLocalizedString("Developer Options", comment: "")
+                hostingController.title = NSLocalizedString("开发者选项", comment: "")
                 self.prepare(for: UIStoryboardSegue(identifier: "diagnostics", source: self, destination: hostingController), sender: nil)
             case .experimentalFeatures:
                 let experimentalFeaturesView = ExperimentalFeaturesView()
                 let hostingController = UIHostingController(rootView: experimentalFeaturesView)
                 hostingController.view.backgroundColor = .settingsBackground
-                hostingController.title = NSLocalizedString("Experimental Features", comment: "")
+                hostingController.title = NSLocalizedString("实验性功能", comment: "")
                 self.prepare(for: UIStoryboardSegue(identifier: "diagnostics", source: self, destination: hostingController), sender: nil)
             }
             
             
         // case .account, .patreon, .display, .instructions, .macDirtyCow: break
-        case .patreon, .display, .instructions, .betaTesting: break
+        case .account, .patreon, .display, .instructions, .betaTesting: break
         }
         
         

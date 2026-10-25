@@ -83,7 +83,7 @@ final class CollapsingTextView: UITextView
         self.textContainer.heightTracksTextView = true
         self.textContainer.widthTracksTextView = true
         
-        self.moreButton.setTitle(NSLocalizedString("More", comment: ""), for: .normal)
+        self.moreButton.setTitle(NSLocalizedString("更多", comment: ""), for: .normal)
         self.moreButton.addTarget(self, action: #selector(CollapsingTextView.toggleCollapsed(_:)), for: .primaryActionTriggered)
         self.addSubview(self.moreButton)
         

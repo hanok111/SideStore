@@ -171,7 +171,7 @@ class SourceDetailViewController: HeaderContentViewController<SourceHeaderView, 
             switch self.viewModel.isSourceAdded
             {
             case true?:
-                title = NSLocalizedString("REMOVE", comment: "")
+                title = NSLocalizedString("移除", comment: "")
                 self.navigationBarButton.tintColor = self.source.effectiveTintColor?.adjustedForDisplay ?? .altPrimary
                 self.navigationBarButton.isHidden = false
                 
@@ -183,7 +183,7 @@ class SourceDetailViewController: HeaderContentViewController<SourceHeaderView, 
                 #endif
                 
             case false?:
-                title = NSLocalizedString("ADD", comment: "")
+                title = NSLocalizedString("添加", comment: "")
                 self.navigationBarButton.tintColor = self.source.effectiveTintColor?.adjustedForDisplay ?? .altPrimary
                 self.navigationBarButton.isHidden = false
                 
@@ -236,14 +236,14 @@ class SourceDetailViewController: HeaderContentViewController<SourceHeaderView, 
         self.viewModel.isAddingSource = true
         
         Task {
-            var errorTitle = NSLocalizedString("Unable to Add Source", comment: "")
+            var errorTitle = NSLocalizedString("无法添加来源", comment: "")
             
             do
             {
                 let isAdded = try await self.source.isAdded()
                 if isAdded
                 {
-                    errorTitle = NSLocalizedString("Unable to Remove Source", comment: "")
+                    errorTitle = NSLocalizedString("无法移除来源", comment: "")
                     try await AppManager.shared.remove(self.source, presentingViewController: self)
                 }
                 else

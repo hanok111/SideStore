@@ -17,8 +17,6 @@ extension AppIDsViewController {
 
 final class AppIDsViewController: UICollectionViewController
 {
-    var activeTeam: ALTTeam?
-    
     private lazy var dataSource = self.makeDataSource()
     
     private var didInitialFetch = false
@@ -57,8 +55,6 @@ final class AppIDsViewController: UICollectionViewController
     {
         super.viewWillAppear(animated)
         
-        self.updateActiveTeam()
-        
         if !self.didInitialFetch
         {
             self.fetchAppIDs()
@@ -76,9 +72,9 @@ private extension AppIDsViewController
                                         NSSortDescriptor(keyPath: \AppID.expirationDate, ascending: true)]
         fetchRequest.returnsObjectsAsFaults = false
         
-        if let team = self.activeTeam
+        if let team = DatabaseManager.shared.activeTeam()
         {
-            fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(AppID.team.identifier), team.identifier)
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(AppID.team), team)
         }
         else
         {
@@ -100,7 +96,7 @@ private extension AppIDsViewController
             cell.bannerView.iconImageView.isHidden = true
             cell.bannerView.button.isIndicatingActivity = false
             
-            cell.bannerView.buttonLabel.text = NSLocalizedString("Expires in", comment: "")
+            cell.bannerView.buttonLabel.text = NSLocalizedString("将于", comment: "")
             
             let attributedAccessibilityLabel = NSMutableAttributedString(string: appID.name + ". ")
             
@@ -121,7 +117,7 @@ private extension AppIDsViewController
                 formatter.maximumUnitCount = 1
 
                 let timeInterval = formatter.string(from: currentDate, to: expirationDate)
-                let timeIntervalText = timeInterval ?? NSLocalizedString("Unknown", comment: "")
+                let timeIntervalText = timeInterval ?? NSLocalizedString("未知", comment: "")
                 cell.bannerView.button.setTitle(timeIntervalText.uppercased(), for: .normal)
                 
                 attributedAccessibilityLabel.mutableString.append(timeIntervalText)
@@ -221,36 +217,13 @@ private extension AppIDsViewController
     func footerText() -> String {
         let count = self.dataSource.itemCount
         return count == 1
-            ? NSLocalizedString("1 App ID", comment: "")
-            : String(format: NSLocalizedString("%@ App IDs", comment: ""), NSNumber(value: count))
+            ? NSLocalizedString("1 个 App ID", comment: "")
+            : String(format: NSLocalizedString("%@ 个 App ID", comment: ""), NSNumber(value: count))
     }
     
     func refreshFooter()
     {
         self.footerView?.textLabel.text = self.footerText()
-    }
-    
-    func updateActiveTeam()
-    {
-        Task { @MainActor [weak self] in
-            guard let self = self else { return }
-            let team = try? await AuthManager.shared.getAuthenticatedTeam()
-            if self.activeTeam != team
-            {
-                self.activeTeam = team
-                if let team = self.activeTeam
-                {
-                    self.dataSource.fetchedResultsController.fetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(AppID.team.identifier), team.identifier)
-                }
-                else
-                {
-                    self.dataSource.fetchedResultsController.fetchRequest.predicate = NSPredicate(value: false)
-                }
-                try? self.dataSource.fetchedResultsController.performFetch()
-                self.collectionView.reloadData()
-                self.refreshFooter()
-            }
-        }
     }
 }
 
@@ -274,7 +247,7 @@ extension AppIDsViewController: UICollectionViewDelegateFlowLayout
         
         // NOTE: double dequeue of cell has been discontinued
         // TODO: Using harcoded value until this is fixed
-        if let activeTeam = self.activeTeam, activeTeam.type == .free
+        if let activeTeam = DatabaseManager.shared.activeTeam(), activeTeam.type == .free
         {
             return CGSize(width: collectionView.bounds.width, height: 220)
         }
@@ -298,12 +271,12 @@ extension AppIDsViewController: UICollectionViewDelegateFlowLayout
             headerView.layoutMargins.left = self.view.layoutMargins.left
             headerView.layoutMargins.right = self.view.layoutMargins.right
             
-            if let activeTeam = self.activeTeam, activeTeam.type == .free
+            if let activeTeam = DatabaseManager.shared.activeTeam(), activeTeam.type == .free
             {
                 let text = NSLocalizedString("""
-                Each app and app extension installed with SideStore must register an App ID with Apple. Apple limits non-developer Apple IDs to 10 App IDs at a time.
+                使用 SideStore 安装的每个应用及应用扩展都必须向 Apple 注册一个 App ID。非开发者 Apple ID 一次最多只能有 10 个 App ID。
 
-                **App IDs can't be deleted**, but they do expire after one week. SideStore will automatically renew App IDs for all active apps once they've expired.
+                **App ID 无法删除**，但会在一周后过期。过期后，SideStore 会自动为所有已激活应用续期 App ID。
                 """, comment: "")
                 
                 let attributedText = NSAttributedString(markdownRepresentation: text, attributes: [.font: headerView.textLabel.font as Any])
@@ -312,9 +285,9 @@ extension AppIDsViewController: UICollectionViewDelegateFlowLayout
             else
             {
                 headerView.textLabel.text = NSLocalizedString("""
-                Each app and app extension installed with SideStore must register an App ID with Apple.
-                
-                App IDs for paid developer accounts never expire, and there is no limit to how many you can create.
+                使用 SideStore 安装的每个应用及应用扩展都必须向 Apple 注册一个 App ID。
+
+                付费开发者账号的 App ID 永不过期，数量也不受限制。
                 """, comment: "")
             }
             

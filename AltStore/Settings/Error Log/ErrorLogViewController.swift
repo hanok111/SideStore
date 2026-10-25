@@ -129,7 +129,7 @@ private extension ErrorLogViewController
             
             let cell = cell as! ErrorLogTableViewCell
             cell.dateLabel.text = self.timeFormatter.string(from: loggedError.date)
-            cell.errorFailureLabel.text = loggedError.localizedFailure ?? NSLocalizedString("Operation Failed", comment: "")
+            cell.errorFailureLabel.text = loggedError.localizedFailure ?? NSLocalizedString("操作失败", comment: "")
             cell.errorCodeLabel.text = loggedError.error.localizedErrorCode
             
             let nsError = loggedError.error as NSError
@@ -178,8 +178,8 @@ private extension ErrorLogViewController
         }
         
         let placeholderView = PlaceholderView()
-        placeholderView.textLabel.text = NSLocalizedString("No Errors", comment: "")
-        placeholderView.detailTextLabel.text = NSLocalizedString("Errors that occur when sideloading or refreshing apps will appear here.", comment: "")
+        placeholderView.textLabel.text = NSLocalizedString("没有错误", comment: "")
+        placeholderView.detailTextLabel.text = NSLocalizedString("侧载或刷新应用时发生的错误会在此显示。", comment: "")
         dataSource.placeholderView = placeholderView
         
         return dataSource
@@ -242,10 +242,10 @@ private extension ErrorLogViewController
         
     @IBAction func clearLoggedErrors(_ sender: UIBarButtonItem)
     {
-        let alertController = UIAlertController(title: NSLocalizedString("Are you sure you want to clear the error log?", comment: ""), message: nil, preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: NSLocalizedString("确定要清除错误日志吗？", comment: ""), message: nil, preferredStyle: .actionSheet)
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.addAction(.cancel)
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Clear Error Log", comment: ""), style: .destructive) { _ in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("清除错误日志", comment: ""), style: .destructive) { _ in
             Task {
                 await self.clearLoggedErrors()
             }
@@ -262,7 +262,7 @@ private extension ErrorLogViewController
         catch
         {
             let alertController = UIAlertController(
-                title: NSLocalizedString("Failed to Clear Error Log", comment: ""),
+                title: NSLocalizedString("清除错误日志失败", comment: ""),
                 message: error.localizedDescription,
                 preferredStyle: .alert
             )
@@ -308,16 +308,16 @@ extension ErrorLogViewController
         let loggedError = self.dataSource.item(at: indexPath)
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
             return UIMenu(title: "", children: [
-                UIAction(title: NSLocalizedString("Copy Error Message", comment: ""), image: UIImage(systemName: "doc.on.doc")) { [weak self] _ in
+                UIAction(title: NSLocalizedString("复制错误信息", comment: ""), image: UIImage(systemName: "doc.on.doc")) { [weak self] _ in
                     self?.copyErrorMessage(for: loggedError)
                 },
-                UIAction(title: NSLocalizedString("Copy Error Code", comment: ""), image: UIImage(systemName: "doc.on.doc")) { [weak self] _ in
+                UIAction(title: NSLocalizedString("复制错误代码", comment: ""), image: UIImage(systemName: "doc.on.doc")) { [weak self] _ in
                     self?.copyErrorCode(for: loggedError)
                 },
-                UIAction(title: NSLocalizedString("Search FAQ", comment: ""), image: UIImage(systemName: "magnifyingglass")) { [weak self] _ in
+                UIAction(title: NSLocalizedString("搜索常见问题", comment: ""), image: UIImage(systemName: "magnifyingglass")) { [weak self] _ in
                     self?.searchFAQ(for: loggedError)
                 },
-                UIAction(title: NSLocalizedString("View More Details", comment: ""), image: UIImage(systemName: "ellipsis.circle")) { [weak self] _ in
+                UIAction(title: NSLocalizedString("查看更多详情", comment: ""), image: UIImage(systemName: "ellipsis.circle")) { [weak self] _ in
                     self?.viewMoreDetails(for: loggedError)
                 },
             ])
@@ -338,7 +338,7 @@ extension ErrorLogViewController
     #if !os(tvOS)
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?
     {
-        let deleteAction = UIContextualAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { _, _, completion in
+        let deleteAction = UIContextualAction(style: .destructive, title: NSLocalizedString("删除", comment: "")) { _, _, completion in
             let loggedError = self.dataSource.item(at: indexPath)
             DatabaseManager.shared.persistentContainer.performBackgroundTask { context in
                 do
@@ -374,7 +374,7 @@ extension ErrorLogViewController
         
         if Calendar.current.isDateInToday(loggedError.date)
         {
-            return NSLocalizedString("Today", comment: "")
+            return NSLocalizedString("今天", comment: "")
         }
         else
         {

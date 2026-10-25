@@ -156,7 +156,7 @@ extension AppBannerView
 
                 if let track, ReleaseTrackType.betaTracks.contains(track)
                 {
-                    self.name = String(format: NSLocalizedString("%@ beta", comment: ""), app.name)
+                    self.name = String(format: NSLocalizedString("%@ 测试版", comment: ""), app.name)
                     self.isBeta = true
                 }
             }
@@ -171,11 +171,11 @@ extension AppBannerView
         if let developerName = values.developerName
         {
             self.subtitleLabel.text = developerName
-            self.accessibilityLabel = String(format: NSLocalizedString("%@ by %@", comment: ""), values.name, developerName)
+            self.accessibilityLabel = String(format: NSLocalizedString("%@（作者：%@）", comment: ""), values.name, developerName)
         }
         else
         {
-            self.subtitleLabel.text = NSLocalizedString("Sideloaded", comment: "")
+            self.subtitleLabel.text = NSLocalizedString("已侧载", comment: "")
             self.accessibilityLabel = values.name
         }
         self.buttonLabel.isHidden = true
@@ -259,17 +259,17 @@ extension AppBannerView
             switch buttonAction
             {
             case .open:
-                let buttonTitle = NSLocalizedString("Open", comment: "")
+                let buttonTitle = NSLocalizedString("打开", comment: "")
                 self.button.setTitle(buttonTitle.uppercased(), for: .normal)
-                self.button.accessibilityLabel = String(format: NSLocalizedString("Open %@", comment: ""), values.name)
+                self.button.accessibilityLabel = String(format: NSLocalizedString("打开 %@", comment: ""), values.name)
                 self.button.accessibilityValue = buttonTitle
                 
                 self.button.countdownDate = nil
                 
             case .update:
-                let buttonTitle = NSLocalizedString("Update", comment: "")
+                let buttonTitle = NSLocalizedString("更新", comment: "")
                 self.button.setTitle(buttonTitle.uppercased(), for: .normal)
-                self.button.accessibilityLabel = String(format: NSLocalizedString("Update %@", comment: ""), values.name)
+                self.button.accessibilityLabel = String(format: NSLocalizedString("更新 %@", comment: ""), values.name)
                 self.button.accessibilityValue = buttonTitle
                 
                 self.button.countdownDate = nil
@@ -288,14 +288,14 @@ extension AppBannerView
                     
                     if storeApp.isPledged
                     {
-                        let buttonTitle = NSLocalizedString("Install", comment: "")
+                        let buttonTitle = NSLocalizedString("安装", comment: "")
                         self.button.setTitle(buttonTitle.uppercased(), for: .normal)
-                        self.button.accessibilityLabel = String(format: NSLocalizedString("Install %@", comment: ""), app.name)
+                        self.button.accessibilityLabel = String(format: NSLocalizedString("安装 %@", comment: ""), app.name)
                         self.button.accessibilityValue = buttonTitle
                     }
                     else
                     {
-                        let buttonTitle = NSLocalizedString("Pledge", comment: "")
+                        let buttonTitle = NSLocalizedString("赞助", comment: "")
                         self.button.setTitle(buttonTitle.uppercased(), for: .normal)
                         self.button.accessibilityLabel = buttonTitle
                         self.button.accessibilityValue = buttonTitle
@@ -305,9 +305,9 @@ extension AppBannerView
                 {
                     // Free app
                     
-                    let buttonTitle = NSLocalizedString("Free", comment: "")
+                    let buttonTitle = NSLocalizedString("免费", comment: "")
                     self.button.setTitle(buttonTitle.uppercased(), for: .normal)
-                    self.button.accessibilityLabel = String(format: NSLocalizedString("Download %@", comment: ""), app.name)
+                    self.button.accessibilityLabel = String(format: NSLocalizedString("下载 %@", comment: ""), app.name)
                     self.button.accessibilityValue = buttonTitle
                 }
                 

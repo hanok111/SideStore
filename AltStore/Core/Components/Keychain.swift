@@ -82,9 +82,6 @@ public class Keychain
     @KeychainItem(key: "adiPb")
     public var adiPb: String?
 
-    @KeychainItem(key: "deviceUDID")
-    public var deviceUDID: String?
-
     // MARK: - Dynamic Imported Certificates Storage
 
     public subscript(certificateSerial serial: String) -> Data? {

@@ -123,10 +123,10 @@ class AppDetailCollectionViewController: UICollectionViewController
                 
                 configuration.secondaryTextProperties.font = UIFont.preferredFont(forTextStyle: .callout)
                 configuration.textToSecondaryTextVerticalPadding = 8
-                configuration.secondaryText = NSLocalizedString("Entitlements are additional permissions that grant access to certain system services, including potentially sensitive information.", comment: "")
+                configuration.secondaryText = NSLocalizedString("授权是授予访问某些系统服务的额外权限，可能涉及敏感信息。", comment: "")
                 
             case .unknownEntitlements:
-                configuration.text = NSLocalizedString("Other Entitlements", comment: "")
+                configuration.text = NSLocalizedString("其他授权", comment: "")
                 
                 let action = UIAction(image: UIImage(systemName: "questionmark.circle")) { _ in
                     self?.showUnknownEntitlementsAlert()
@@ -207,8 +207,8 @@ private extension AppDetailCollectionViewController
             guard let self, #available(iOS 16, tvOS 16, *) else { return }
             
             cell.contentConfiguration = UIHostingConfiguration {
-                AppPermissionsCard(title: "Privacy",
-                                   description: "\(self.app.name) may request access to the following:",
+                AppPermissionsCard(title: "隐私",
+                                   description: "\(self.app.name) 可能会请求以下访问权限：",
                                    tintColor: Color(uiColor: self.app.tintColor ?? .altPrimary),
                                    permissions: self.privacyPermissions)
             }
@@ -275,7 +275,7 @@ private extension AppDetailCollectionViewController
     
     func showUnknownEntitlementsAlert()
     {
-        let alertController = UIAlertController(title: NSLocalizedString("Other Entitlements", comment: ""), message: NSLocalizedString("SideStore does not have detailed information for these entitlements.", comment: ""), preferredStyle: .alert)
+        let alertController = UIAlertController(title: NSLocalizedString("其他授权", comment: ""), message: NSLocalizedString("SideStore 没有这些授权的详细信息。", comment: ""), preferredStyle: .alert)
         alertController.addAction(.ok)
         self.present(alertController, animated: true)
     }

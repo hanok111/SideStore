@@ -50,7 +50,7 @@ final class SourcesViewController: UICollectionViewController
         #endif
 
         // Set title
-        navigationItem.title = "Sources"
+        navigationItem.title = "来源"
         navigationController?.navigationBar.layoutMargins.left = 20
         
         let layout = self.makeLayout()
@@ -71,8 +71,8 @@ final class SourcesViewController: UICollectionViewController
         
         self.placeholderView = PlaceholderView(frame: .zero)
         self.placeholderView.translatesAutoresizingMaskIntoConstraints = false
-        self.placeholderView.textLabel.text = NSLocalizedString("Add More Sources!", comment: "")
-        self.placeholderView.detailTextLabel.text = NSLocalizedString("Sources determine what apps are available in SideStore. The more sources you add, the better your SideStore experience will be.\n\nDon’t know where to start? Try adding one of our Recommended Sources!", comment: "")
+        self.placeholderView.textLabel.text = NSLocalizedString("添加更多来源！", comment: "")
+        self.placeholderView.detailTextLabel.text = NSLocalizedString("来源决定了 SideStore 中有哪些应用可用。添加的来源越多，SideStore 的体验就越好。\n\n不知道从哪里开始？试试添加一个推荐来源！", comment: "")
         self.placeholderView.detailTextLabel.textAlignment = .natural
         backgroundView.addSubview(self.placeholderView)
         
@@ -81,7 +81,7 @@ final class SourcesViewController: UICollectionViewController
         self.placeholderView.detailTextLabel.font = UIFont.preferredFont(forTextStyle: .body)
         self.placeholderView.detailTextLabel.textAlignment = .natural
         
-        self.placeholderViewButton = UIButton(type: .system, primaryAction: UIAction(title: NSLocalizedString("View Recommended Sources", comment: "")) { [weak self] _ in
+        self.placeholderViewButton = UIButton(type: .system, primaryAction: UIAction(title: NSLocalizedString("查看推荐来源", comment: "")) { [weak self] _ in
             self?.performSegue(withIdentifier: "addSource", sender: nil)
         })
         self.placeholderViewButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
@@ -157,7 +157,7 @@ private extension SourcesViewController
                 // Prevent users from removing AltStore source.
                 
                 let removeAction = UIContextualAction(style: .destructive,
-                                                      title: NSLocalizedString("Remove", comment: "")) { _, _, completion in
+                                                      title: NSLocalizedString("移除", comment: "")) { _, _, completion in
                     self.remove(source, completionHandler: completion)
                 }
                 removeAction.image = UIImage(systemName: "trash.fill")
@@ -168,7 +168,7 @@ private extension SourcesViewController
             if let error = source.error
             {
                 let viewErrorAction = UIContextualAction(style: .normal,
-                                                         title: NSLocalizedString("View Error", comment: "")) { _, _, completion in
+                                                         title: NSLocalizedString("查看错误", comment: "")) { _, _, completion in
                     self.present(error)
                     completion(true)
                 }
@@ -271,14 +271,14 @@ private extension SourcesViewController
             }
             else
             {
-                dateText = NSLocalizedString("Never", comment: "")
+                dateText = NSLocalizedString("从不", comment: "")
             }
                             
-            let text = String(format: NSLocalizedString("Last Updated: %@", comment: ""), dateText)
+            let text = String(format: NSLocalizedString("最近更新：%@", comment: ""), dateText)
             cell.bannerView.subtitleLabel.text = text
             cell.bannerView.subtitleLabel.numberOfLines = 1
             
-            let attributedOutput = AttributedString(localized: "^[\(numberOfApps) app](inflect: true)")
+            let attributedOutput = AttributedString(localized: "^[\(numberOfApps) 个应用](inflect: true)")
             let numberOfAppsText = String(attributedOutput.characters)
             
             let accessibilityLabel = source.name + "\n" + text + ".\n" + numberOfAppsText
@@ -352,12 +352,12 @@ private extension SourcesViewController
                     case .failure(let error) where error is CancellationError: break
                         
                     case .failure(var error as SourceError):
-                        let title = String(format: NSLocalizedString("“%@” could not be added to SideStore.", comment: ""), error.$source.name)
+                        let title = String(format: NSLocalizedString("“%@”无法添加到 SideStore。", comment: ""), error.$source.name)
                         error.errorTitle = title
                         self.present(error)
                         
                     case .failure(let error as NSError):
-                        self.present(error.withLocalizedTitle(NSLocalizedString("Unable to Add Source", comment: "")))
+                        self.present(error.withLocalizedTitle(NSLocalizedString("无法添加来源", comment: "")))
                     }
                     
                     self.navigationItem.leftBarButtonItem?.isIndicatingActivity = false
@@ -445,8 +445,8 @@ private extension SourcesViewController
         guard let app = notification.object as? StoreApp else { return }
         self._installingApp = app
         
-        let text = String(format: NSLocalizedString("Downloading %@…", comment: ""), app.name)        
-        let toastView = ToastView(text: text, detailText: NSLocalizedString("Tap to view progress.", comment: ""))
+        let text = String(format: NSLocalizedString("正在下载 %@…", comment: ""), app.name)        
+        let toastView = ToastView(text: text, detailText: NSLocalizedString("点击查看进度。", comment: ""))
         toastView.addTarget(self, action: #selector(SourcesViewController.showAppDetail), for: .touchUpInside)
         toastView.show(in: self)
     }

@@ -66,7 +66,7 @@ class FeaturedViewController: UICollectionViewController
     {
         super.viewDidLoad()
         
-        self.title = NSLocalizedString("Browse", comment: "")
+        self.title = NSLocalizedString("浏览", comment: "")
         
         let layout = Self.makeLayout()
         self.collectionView.collectionViewLayout = layout
@@ -471,51 +471,48 @@ private extension FeaturedViewController
     
     func install(_ storeApp: StoreApp, at indexPath: IndexPath, progressUpdateHandler: @escaping (Progress) -> Void)
     {
-        InstallAppDialog.present(storeApp: storeApp, from: self) { [weak self] in
-            guard let self else { return }
-            let previousProgress = AppManager.shared.installationProgress(for: storeApp)
-            guard previousProgress == nil else {
-                previousProgress?.cancel()
-                return
-            }
-            
-            // if let installedApp = storeApp.installedApp, installedApp.isUpdateAvailable
-            if let installedApp = storeApp.installedApp, installedApp.hasUpdate
-            {
-                let progress = AppManager.shared.update(installedApp, presentingViewController: self, completionHandler: finish(_:))
-                progressUpdateHandler(progress)
-            }
-            else
-            {
-                let group = AppManager.shared.install(.app(storeApp), presentingViewController: self, completionHandler: finish(_:))
-                progressUpdateHandler(group.progress)
-            }
-            
-            func finish(_ result: Result<InstalledApp, Error>)
-            {
-                DispatchQueue.main.async {
-                    switch result
-                    {
-                    case .failure(let error) where error is CancellationError: break // Ignore
-                    case .failure(let error):
-                        let toastView = ToastView(error: error)
-                        toastView.opensErrorLog = true
-                        toastView.show(in: self)
-                        
-                    case .success:
-                        debugLog("Installed app \(storeApp.bundleIdentifier) from FeaturedViewController.")
-                    }
+        let previousProgress = AppManager.shared.installationProgress(for: storeApp)
+        guard previousProgress == nil else {
+            previousProgress?.cancel()
+            return
+        }
+        
+        // if let installedApp = storeApp.installedApp, installedApp.isUpdateAvailable
+        if let installedApp = storeApp.installedApp, installedApp.hasUpdate
+        {
+            let progress = AppManager.shared.update(installedApp, presentingViewController: self, completionHandler: finish(_:))
+            progressUpdateHandler(progress)
+        }
+        else
+        {
+            let group = AppManager.shared.install(.app(storeApp), presentingViewController: self, completionHandler: finish(_:))
+            progressUpdateHandler(group.progress)
+        }
+        
+        func finish(_ result: Result<InstalledApp, Error>)
+        {
+            DispatchQueue.main.async {
+                switch result
+                {
+                case .failure(let error) where error is CancellationError: break // Ignore
+                case .failure(let error):
+                    let toastView = ToastView(error: error)
+                    toastView.opensErrorLog = true
+                    toastView.show(in: self)
                     
-                    for indexPath in self.collectionView.indexPathsForVisibleItems
-                    {
-                        // Only need to reload if it's still visible.
-                        
-                        let item = self.dataSource.item(at: indexPath)
-                        guard item == storeApp else { continue }
-                        
-                        UIView.performWithoutAnimation {
-                            self.collectionView.reloadItems(at: [indexPath])
-                        }
+                case .success:
+                    debugLog("Installed app \(storeApp.bundleIdentifier) from FeaturedViewController.")
+                }
+                
+                for indexPath in self.collectionView.indexPathsForVisibleItems
+                {
+                    // Only need to reload if it's still visible.
+                    
+                    let item = self.dataSource.item(at: indexPath)
+                    guard item == storeApp else { continue }
+                    
+                    UIView.performWithoutAnimation {
+                        self.collectionView.reloadItems(at: [indexPath])
                     }
                 }
             }
@@ -543,7 +540,7 @@ extension FeaturedViewController
             let storeApp = self.dataSource.item(at: indexPath)
             
             var content = UIListContentConfiguration.plainHeader()
-            content.text = storeApp.source?.name ?? NSLocalizedString("Unknown Source", comment: "")
+            content.text = storeApp.source?.name ?? NSLocalizedString("未知来源", comment: "")
             content.textProperties.numberOfLines = 1
             
             content.directionalLayoutMargins.leading = 0
@@ -598,9 +595,9 @@ extension FeaturedViewController
             
             switch section
             {
-            case .recentlyUpdated: content.text = NSLocalizedString("New & Updated", comment: "")
-            case .categories: content.text = NSLocalizedString("Categories", comment: "")
-            case .featuredHeader: content.text = NSLocalizedString("Featured", comment: "")
+            case .recentlyUpdated: content.text = NSLocalizedString("新增与更新", comment: "")
+            case .categories: content.text = NSLocalizedString("分类", comment: "")
+            case .featuredHeader: content.text = NSLocalizedString("精选", comment: "")
             default: break
             }
             
@@ -618,7 +615,7 @@ extension FeaturedViewController
             
             buttonView.tintColor = storeApp.source?.effectiveTintColor?.adjustedForDisplay ?? .altPrimary
             
-            buttonView.button.setTitle(NSLocalizedString("See All", comment: ""), for: .normal)
+            buttonView.button.setTitle(NSLocalizedString("查看全部", comment: ""), for: .normal)
             let font = UIFont.preferredFont(forTextStyle: .body)
             var config = UIButton.Configuration.plain()
             config.cornerStyle = .fixed

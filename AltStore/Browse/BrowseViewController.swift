@@ -322,10 +322,10 @@ private extension BrowseViewController
     {
         if self.searchPredicate != nil
         {
-            self.placeholderView.textLabel.text = NSLocalizedString("No Apps", comment: "")
+            self.placeholderView.textLabel.text = NSLocalizedString("没有应用", comment: "")
             self.placeholderView.textLabel.isHidden = false
             
-            self.placeholderView.detailTextLabel.text = NSLocalizedString("Please make sure your spelling is correct, or try searching for another app.", comment: "")
+            self.placeholderView.detailTextLabel.text = NSLocalizedString("请确认拼写无误，或尝试搜索其他应用。", comment: "")
             self.placeholderView.detailTextLabel.isHidden = false
             
             self.placeholderView.activityIndicatorView.stopAnimating()
@@ -338,7 +338,7 @@ private extension BrowseViewController
                 self.placeholderView.textLabel.isHidden = true
                 self.placeholderView.detailTextLabel.isHidden = false
                 
-                self.placeholderView.detailTextLabel.text = NSLocalizedString("Loading...", comment: "")
+                self.placeholderView.detailTextLabel.text = NSLocalizedString("正在加载…", comment: "")
                 
                 self.placeholderView.activityIndicatorView.startAnimating()
                 
@@ -346,13 +346,13 @@ private extension BrowseViewController
                 self.placeholderView.textLabel.isHidden = false
                 self.placeholderView.detailTextLabel.isHidden = false
                 
-                self.placeholderView.textLabel.text = NSLocalizedString("Unable to Fetch Apps", comment: "")
+                self.placeholderView.textLabel.text = NSLocalizedString("无法获取应用", comment: "")
                 self.placeholderView.detailTextLabel.text = error.localizedDescription
                 
                 self.placeholderView.activityIndicatorView.stopAnimating()
                 
             case .success:
-                self.placeholderView.textLabel.text = NSLocalizedString("No Apps", comment: "")
+                self.placeholderView.textLabel.text = NSLocalizedString("没有应用", comment: "")
                 self.placeholderView.textLabel.isHidden = false
                 self.placeholderView.detailTextLabel.isHidden = true
                 
@@ -406,7 +406,7 @@ private extension BrowseViewController
         {
             tintColor = .altPrimary
             
-            self.title = NSLocalizedString("Browse", comment: "")
+            self.title = NSLocalizedString("浏览", comment: "")
             
             self.titleSourceIconView.isHidden = true
             self.titleCategoryIconView.isHidden = true
@@ -523,10 +523,10 @@ private extension BrowseViewController
             completion(actions)
         }
         
-        let sortMenu = UIMenu(title: NSLocalizedString("Sort by…", comment: ""), options: [.singleSelection], children: [children])
+        let sortMenu = UIMenu(title: NSLocalizedString("排序方式…", comment: ""), options: [.singleSelection], children: [children])
         let sortIcon = UIImage(systemName: "arrow.up.arrow.down")
         
-        let sortButton = UIBarButtonItem(title: NSLocalizedString("Sort by…", comment: ""), image: sortIcon, primaryAction: nil, menu: sortMenu)
+        let sortButton = UIBarButtonItem(title: NSLocalizedString("排序方式…", comment: ""), image: sortIcon, primaryAction: nil, menu: sortMenu)
         self.sortButton = sortButton
         
         self.navigationItem.rightBarButtonItems = [sortButton]
@@ -557,51 +557,48 @@ private extension BrowseViewController
     
     func install(_ app: StoreApp, at indexPath: IndexPath, progressUpdateHandler: @escaping (Progress) -> Void)
     {
-        InstallAppDialog.present(storeApp: app, from: self) { [weak self] in
-            guard let self else { return }
-            let previousProgress = AppManager.shared.installationProgress(for: app)
-            guard previousProgress == nil else {
-                previousProgress?.cancel()
-                return
-            }
-            
-            // if let installedApp = app.installedApp, installedApp.isUpdateAvailable
-            if let installedApp = app.installedApp, installedApp.hasUpdate
-            {
-                let progress = AppManager.shared.update(installedApp, presentingViewController: self, completionHandler: finish(_:))
-                progressUpdateHandler(progress)
-            }
-            else
-            {
-                let group = AppManager.shared.install(.app(app), presentingViewController: self, completionHandler: finish(_:))
-                progressUpdateHandler(group.progress)
-            }
-            
-            func finish(_ result: Result<InstalledApp, Error>)
-            {
-                debugLog("BrowseViewController.finish invoked with result: \(result) for \(app.bundleIdentifier)")
-                DispatchQueue.main.async {
-                    switch result
-                    {
-                    case .failure(let error) where error is CancellationError: break // Ignore
-                    case .failure(let error):
-                        let toastView = ToastView(error: error, opensLog: true)
-                        toastView.show(in: self)
-                        
-                    case .success: debugLog("Installed app: \(app.bundleIdentifier)")
-                    }
+        let previousProgress = AppManager.shared.installationProgress(for: app)
+        guard previousProgress == nil else {
+            previousProgress?.cancel()
+            return
+        }
+        
+        // if let installedApp = app.installedApp, installedApp.isUpdateAvailable
+        if let installedApp = app.installedApp, installedApp.hasUpdate
+        {
+            let progress = AppManager.shared.update(installedApp, presentingViewController: self, completionHandler: finish(_:))
+            progressUpdateHandler(progress)
+        }
+        else
+        {
+            let group = AppManager.shared.install(.app(app), presentingViewController: self, completionHandler: finish(_:))
+            progressUpdateHandler(group.progress)
+        }
+        
+        func finish(_ result: Result<InstalledApp, Error>)
+        {
+            debugLog("BrowseViewController.finish invoked with result: \(result) for \(app.bundleIdentifier)")
+            DispatchQueue.main.async {
+                switch result
+                {
+                case .failure(let error) where error is CancellationError: break // Ignore
+                case .failure(let error):
+                    let toastView = ToastView(error: error, opensLog: true)
+                    toastView.show(in: self)
                     
-                    UIView.performWithoutAnimation {
-                        if let indexPath = self.dataSource.fetchedResultsController.indexPath(forObject: app)
-                        {
-                            debugLog("BrowseViewController.finish: reloading item at \(indexPath)")
-                            self.collectionView.reloadItems(at: [indexPath])
-                        }
-                        else
-                        {
-                            debugLog("BrowseViewController.finish: reloading section")
-                            self.collectionView.reloadData()
-                        }
+                case .success: debugLog("Installed app: \(app.bundleIdentifier)")
+                }
+                
+                UIView.performWithoutAnimation {
+                    if let indexPath = self.dataSource.fetchedResultsController.indexPath(forObject: app)
+                    {
+                        debugLog("BrowseViewController.finish: reloading item at \(indexPath)")
+                        self.collectionView.reloadItems(at: [indexPath])
+                    }
+                    else
+                    {
+                        debugLog("BrowseViewController.finish: reloading section")
+                        self.collectionView.reloadSections(IndexSet(integer: indexPath.section))
                     }
                 }
             }

@@ -111,7 +111,7 @@ class NewsViewController: UICollectionViewController
         
         self.retryButton = UIButton(type: .system)
         self.retryButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
-        self.retryButton.setTitle(NSLocalizedString("Try Again", comment: ""), for: .normal)
+        self.retryButton.setTitle(NSLocalizedString("再试一次", comment: ""), for: .normal)
         self.retryButton.addTarget(self, action: #selector(NewsViewController.updateSources), for: .primaryActionTriggered)
         self.placeholderView.stackView.addArrangedSubview(self.retryButton)
         
@@ -254,7 +254,7 @@ private extension NewsViewController
             self.placeholderView.textLabel.isHidden = true
             self.placeholderView.detailTextLabel.isHidden = false
             
-            self.placeholderView.detailTextLabel.text = NSLocalizedString("Loading...", comment: "")
+            self.placeholderView.detailTextLabel.text = NSLocalizedString("正在加载…", comment: "")
             
             self.retryButton.isHidden = true
             self.placeholderView.activityIndicatorView.startAnimating()
@@ -263,7 +263,7 @@ private extension NewsViewController
             self.placeholderView.textLabel.isHidden = false
             self.placeholderView.detailTextLabel.isHidden = false
             
-            self.placeholderView.textLabel.text = NSLocalizedString("Unable to Fetch News", comment: "")
+            self.placeholderView.textLabel.text = NSLocalizedString("无法获取新闻", comment: "")
             self.placeholderView.detailTextLabel.text = error.localizedDescription
             
             self.retryButton.isHidden = false
@@ -327,46 +327,43 @@ private extension NewsViewController
     
     func install(_ storeApp: StoreApp, at indexPath: IndexPath, progressUpdateHandler: @escaping (Progress) -> Void)
     {
-        InstallAppDialog.present(storeApp: storeApp, from: self) { [weak self] in
-            guard let self else { return }
-            let previousProgress = AppManager.shared.installationProgress(for: storeApp)
-            guard previousProgress == nil else {
-                previousProgress?.cancel()
-                return
-            }
-            
-            if let installedApp = storeApp.installedApp, installedApp.hasUpdate
-            {
-                let progress = AppManager.shared.update(installedApp, presentingViewController: self, completionHandler: finish(_:))
-                progressUpdateHandler(progress)
-            }
-            else
-            {
-                let group = AppManager.shared.install(
-                    .app(storeApp),
-                    presentingViewController: self,
-                    completionHandler: finish(_:)
-                )
-                progressUpdateHandler(group.progress)
-            }
-            
-            func finish(_ result: Result<InstalledApp, Error>) -> Void
-            {
-                DispatchQueue.main.async {
-                    switch result
-                    {
-                    case .failure(let error) where error is CancellationError: break // Ignore
-                    case .failure(let error):
-                        let toastView = ToastView(error: error)
-                        toastView.opensErrorLog = true
-                        toastView.show(in: self)
+        let previousProgress = AppManager.shared.installationProgress(for: storeApp)
+        guard previousProgress == nil else {
+            previousProgress?.cancel()
+            return
+        }
+        
+        if let installedApp = storeApp.installedApp, installedApp.hasUpdate
+        {
+            let progress = AppManager.shared.update(installedApp, presentingViewController: self, completionHandler: finish(_:))
+            progressUpdateHandler(progress)
+        }
+        else
+        {
+            let group = AppManager.shared.install(
+                .app(storeApp),
+                presentingViewController: self,
+                completionHandler: finish(_:)
+            )
+            progressUpdateHandler(group.progress)
+        }
+        
+        func finish(_ result: Result<InstalledApp, Error>) -> Void
+        {
+            DispatchQueue.main.async {
+                switch result
+                {
+                case .failure(let error) where error is CancellationError: break // Ignore
+                case .failure(let error):
+                    let toastView = ToastView(error: error)
+                    toastView.opensErrorLog = true
+                    toastView.show(in: self)
 
-                    case .success: debugLog("Installed app: \(storeApp.bundleIdentifier)")
-                    }
-                    
-                    UIView.performWithoutAnimation {
-                        self.collectionView.reloadSections(IndexSet(integer: indexPath.section))
-                    }
+                case .success: debugLog("Installed app: \(storeApp.bundleIdentifier)")
+                }
+                
+                UIView.performWithoutAnimation {
+                    self.collectionView.reloadSections(IndexSet(integer: indexPath.section))
                 }
             }
         }

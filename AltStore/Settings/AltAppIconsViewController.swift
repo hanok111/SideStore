@@ -52,10 +52,10 @@ extension AltAppIconsViewController
         var localizedName: String {
             switch self
             {
-            case .classic: return NSLocalizedString("Classic", comment: "")
-            case .modern: return NSLocalizedString("Modern", comment: "")
-//            case .gradient: return NSLocalizedString("Gradient", comment: "")
-//            case .recessed: return NSLocalizedString("Recessed", comment: "")
+            case .classic: return NSLocalizedString("经典", comment: "")
+            case .modern: return NSLocalizedString("现代", comment: "")
+//            case .gradient: return NSLocalizedString("渐变", comment: "")
+//            case .recessed: return NSLocalizedString("内嵌", comment: "")
             }
         }
     }
@@ -75,7 +75,7 @@ class AltAppIconsViewController: UICollectionViewController
     {
         super.viewDidLoad()
         
-        self.title = NSLocalizedString("Change App Icon", comment: "")
+        self.title = NSLocalizedString("更换应用图标", comment: "")
         
         let collectionViewLayout = self.makeLayout()
         self.collectionView.collectionViewLayout = collectionViewLayout
@@ -223,7 +223,7 @@ extension AltAppIconsViewController
                     self.currentAlternateIconName = UIApplication.shared.alternateIconName
                     self.collectionView.reloadData()
                     
-                    let alertController = UIAlertController(title: NSLocalizedString("Unable to Change App Icon", comment: ""),
+                    let alertController = UIAlertController(title: NSLocalizedString("无法更换应用图标", comment: ""),
                                                             message: error.localizedDescription,
                                                             preferredStyle: .alert)
                     alertController.addAction(.ok)

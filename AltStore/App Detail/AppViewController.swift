@@ -638,40 +638,37 @@ extension AppViewController
     {
         guard self.app.installedApp == nil else { return }
         
-        InstallAppDialog.present(storeApp: self.app, from: self) { [weak self] in
-            guard let self else { return }
-            let group = AppManager.shared.install(.app(self.app), presentingViewController: self) { (result) in
-                debugLog("AppViewController: install completion handler invoked with result: \(result)")
-                do
-                {
-                    _ = try result.get()
-                }
-                catch is CancellationError
-                {
-                    // Ignore
-                }
-                catch
-                {
-                    DispatchQueue.main.async {
-                        let toastView = ToastView(error: error)
-                        toastView.opensErrorLog = true
-                        toastView.show(in: self)
-                    }
-                }
-                
+        let group = AppManager.shared.install(.app(self.app), presentingViewController: self) { (result) in
+            debugLog("AppViewController: install completion handler invoked with result: \(result)")
+            do
+            {
+                _ = try result.get()
+            }
+            catch is CancellationError
+            {
+                // Ignore
+            }
+            catch
+            {
                 DispatchQueue.main.async {
-                    debugLog("AppViewController: clearing progress and updating UI...")
-                    self.bannerView.button.progress = nil
-                    self.navigationBarDownloadButton.progress = nil
-                    self.update()
+                    let toastView = ToastView(error: error)
+                    toastView.opensErrorLog = true
+                    toastView.show(in: self)
                 }
             }
             
-            if !group.progress.isCancelled
-            {
-                self.bannerView.button.progress = group.progress
-                self.navigationBarDownloadButton.progress = group.progress
+            DispatchQueue.main.async {
+                debugLog("AppViewController: clearing progress and updating UI...")
+                self.bannerView.button.progress = nil
+                self.navigationBarDownloadButton.progress = nil
+                self.update()
             }
+        }
+        
+        if !group.progress.isCancelled
+        {
+            self.bannerView.button.progress = group.progress
+            self.navigationBarDownloadButton.progress = group.progress
         }
     }
     

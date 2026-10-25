@@ -13,7 +13,6 @@ final class ResignAltStoreViewController: UIViewController
 {
     var context: StandaloneOperationContext!
     var mismatchReason: CodeSignValidationReason?
-    var isFreeTeam: Bool = false
     
     var completionHandler: ((Result<Void, Error>) -> Void)?
     
@@ -29,42 +28,41 @@ final class ResignAltStoreViewController: UIViewController
         self.placeholderView.detailTextLabel.textAlignment = .left
         self.placeholderView.detailTextLabel.textColor = UIColor.white.withAlphaComponent(0.6)
         
-        let isFreeTeam = self.isFreeTeam
-        let reason = self.mismatchReason ?? (isFreeTeam ? .freeAccountLimitRevoked : .revoked)
+        let reason = self.mismatchReason ?? (AuthManager.shared.team?.type == .free ? .freeAccountLimitRevoked : .revoked)
         debugLog("[ResignAltStoreViewController] Displaying Resign SideStore Now screen (mismatchReason: \(reason)).")
         let reasonText: String
         
         switch reason {
             case .expired:
-                reasonText = NSLocalizedString("The signing certificate used to install SideStore has expired.", comment: "")
+                reasonText = NSLocalizedString("用于安装 SideStore 的签名证书已过期。", comment: "")
             case .revoked:
-                reasonText = NSLocalizedString("The signing certificate used to install SideStore was revoked on the Apple Developer portal.", comment: "")
+                reasonText = NSLocalizedString("用于安装 SideStore 的签名证书已在 Apple 开发者门户被吊销。", comment: "")
             case .freeAccountLimitRevoked:
-                reasonText = NSLocalizedString("Free developer accounts are limited to 1 active signing certificate. Since the private key for the active certificate was not found on this device, SideStore will create a new certificate. This will automatically revoke the active certificate, which may disable installations on other devices or made by Xcode.", comment: "")
+                reasonText = NSLocalizedString("免费开发者账号只能有 1 张有效的签名证书。由于在本设备上未找到该证书的私钥，SideStore 将创建一张新证书。这会自动吊销现有证书，可能会导致其他设备或 Xcode 安装的应用无法使用。", comment: "")
             case .differentAccount:
-                reasonText = NSLocalizedString("The logged-in Apple ID account has changed.", comment: "")
+                reasonText = NSLocalizedString("登录的 Apple ID 账号已变更。", comment: "")
             case .differentTeam:
-                reasonText = NSLocalizedString("The active developer team has changed.", comment: "")
+                reasonText = NSLocalizedString("当前开发者团队已变更。", comment: "")
             case .privateKeyLost:
-                reasonText = NSLocalizedString("The private key for the active signing certificate is missing from this device's keychain.", comment: "")
+                reasonText = NSLocalizedString("当前签名证书的私钥在本设备的钥匙串中缺失。", comment: "")
             case .externalSigner:
-                reasonText = NSLocalizedString("SideStore was installed by a different signing tool (like Xcode or AltStore).", comment: "")
+                reasonText = NSLocalizedString("SideStore 是由其他签名工具（如 Xcode 或 AltStore）安装的。", comment: "")
             case .missingProfile:
-                reasonText = NSLocalizedString("The provisioning profile for SideStore is missing or invalid.", comment: "")
+                reasonText = NSLocalizedString("SideStore 的描述文件缺失或无效。", comment: "")
             case .missingCertificate:
-                reasonText = NSLocalizedString("The signing certificate could not be extracted from SideStore's binary.", comment: "")
+                reasonText = NSLocalizedString("无法从 SideStore 的二进制文件中提取签名证书。", comment: "")
         }
         
         let isRevocationExpected = (reason == .privateKeyLost || reason == .freeAccountLimitRevoked)
         let buttonTitle = isRevocationExpected ?
-            NSLocalizedString("Revoke and Resign Now", comment: "") :
-            NSLocalizedString("Resign Now", comment: "")
+            NSLocalizedString("立即吊销并重新签名", comment: "") :
+            NSLocalizedString("立即重新签名", comment: "")
         self.reinstallButton.setTitle(buttonTitle, for: .normal)
         self.reinstallButton.fontSize = 15
         
-        let header = NSLocalizedString("Signing certificate mismatch detected.", comment: "")
-        let paragraph1 = NSLocalizedString("To ensure you can continue using SideStore, \nthe app must be reinstalled now using the new certificate. Otherwise, you will be unable to refresh or open SideStore once the old certificate expires.", comment: "")
-        let paragraph2 = NSLocalizedString("This reinstallation registers the new signature with the OS and will terminate SideStore. You can reopen SideStore immediately once reinstallation is completed.", comment: "")
+        let header = NSLocalizedString("检测到签名证书不匹配。", comment: "")
+        let paragraph1 = NSLocalizedString("为确保你能继续使用 SideStore，必须立即使用新证书重装应用。否则旧证书过期后，你将无法刷新或打开 SideStore。", comment: "")
+        let paragraph2 = NSLocalizedString("这次重装会向系统注册新签名，并会退出 SideStore。重装完成后可以立即重新打开 SideStore。", comment: "")
         
         let fullText = "\(header)\n\n\(paragraph1)\n\n\(paragraph2)"
         let attributedString = NSMutableAttributedString(string: fullText)
@@ -84,7 +82,7 @@ final class ResignAltStoreViewController: UIViewController
         
         // Reason Bold Prefix
         let reasonLabel = UILabel()
-        reasonLabel.text = NSLocalizedString("Reason:", comment: "")
+        reasonLabel.text = NSLocalizedString("原因：", comment: "")
         reasonLabel.textColor = .white
         reasonLabel.font = UIFont.boldSystemFont(ofSize: 14)
         reasonLabel.setContentHuggingPriority(.required, for: .horizontal)
@@ -152,11 +150,11 @@ private extension ResignAltStoreViewController
                             return
                         }
                         
-                        let alertController = UIAlertController(title: NSLocalizedString("Failed to Resign SideStore", comment: ""), message: error.localizedFailureReason ?? error.localizedDescription, preferredStyle: .alert)
-                        alertController.addAction(UIAlertAction(title: NSLocalizedString("Try Again", comment: ""), style: .default, handler: { (action) in
+                        let alertController = UIAlertController(title: NSLocalizedString("重新签名 SideStore 失败", comment: ""), message: error.localizedFailureReason ?? error.localizedDescription, preferredStyle: .alert)
+                        alertController.addAction(UIAlertAction(title: NSLocalizedString("再试一次", comment: ""), style: .default, handler: { (action) in
                             refresh()
                         }))
-                        alertController.addAction(UIAlertAction(title: NSLocalizedString("Resign Later", comment: ""), style: .cancel, handler: { (action) in
+                        alertController.addAction(UIAlertAction(title: NSLocalizedString("稍后重新签名", comment: ""), style: .cancel, handler: { (action) in
                             self.completionHandler?(.failure(error))
                         }))
                         

@@ -10,10 +10,10 @@ import Foundation
 
 public extension FileManager {
     func backupDirectoryURL(for app: InstalledApp) -> URL? {
-        return self.backupDirectoryURL(forBundleIdentifier: app.resignedBundleIdentifier)
+        return self.backupDirectoryURL(forBundleIdentifier: app.bundleIdentifier)
     }
 
     func deleteBackup(for app: InstalledApp) throws {
-        try self.deleteBackup(forBundleIdentifier: app.resignedBundleIdentifier)
+        try self.deleteBackup(forBundleIdentifier: app.bundleIdentifier)
     }
 }

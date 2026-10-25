@@ -24,14 +24,14 @@ extension AppManager
             var localizedTitle: String?
             self.managedObjectContext?.performAndWait {
                 if self.sources?.count == 1 {
-                    localizedTitle = NSLocalizedString("Failed to refresh Store", comment: "")
+                    localizedTitle = NSLocalizedString("刷新商店失败", comment: "")
                 } else if self.errors.count == 1 {
                     guard let source = self.errors.keys.first else { return }
-                    localizedTitle = String(format: NSLocalizedString("Failed to refresh Source '%@'", comment: ""), source.name)
+                    localizedTitle = String(format: NSLocalizedString("刷新来源“%@”失败", comment: ""), source.name)
                 }
                 else
                 {
-                    localizedTitle = String(format: NSLocalizedString("Failed to refresh %@ Sources", comment: ""), NSNumber(value: self.errors.count))
+                    localizedTitle = String(format: NSLocalizedString("刷新 %@ 个来源失败", comment: ""), NSNumber(value: self.errors.count))
                 }
             }
             return localizedTitle
@@ -50,16 +50,16 @@ extension AppManager
                 self.managedObjectContext?.performAndWait {
                     if self.sources?.count == 1
                     {
-                        localizedDescription = NSLocalizedString("Could not refresh store.", comment: "")
+                        localizedDescription = NSLocalizedString("无法刷新商店。", comment: "")
                     }
                     else if self.errors.count == 1
                     {
                         guard let source = self.errors.keys.first else { return }
-                        localizedDescription = String(format: NSLocalizedString("Could not refresh source “%@”.", comment: ""), source.name)
+                        localizedDescription = String(format: NSLocalizedString("无法刷新来源“%@”。", comment: ""), source.name)
                     }
                     else
                     {
-                        localizedDescription = String(format: NSLocalizedString("Could not refresh %@ sources.", comment: ""), NSNumber(value: self.errors.count))
+                        localizedDescription = String(format: NSLocalizedString("无法刷新 %@ 个来源。", comment: ""), NSNumber(value: self.errors.count))
                     }
                 }
                 
@@ -78,7 +78,7 @@ extension AppManager
             }
             else
             {
-                return NSLocalizedString("Tap to view source errors.", comment: "")
+                return NSLocalizedString("点击查看来源错误。", comment: "")
             }
         }
         
