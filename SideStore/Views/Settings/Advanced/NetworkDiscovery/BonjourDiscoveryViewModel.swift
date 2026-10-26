@@ -148,7 +148,7 @@ final class BonjourDiscoveryViewModel: ObservableObject {
             }
             return keys.map { DomainSection(id: "group_\($0)", title: "\($0) (\(grouped[$0]?.count ?? 0))", items: grouped[$0] ?? []) }
         } else {
-            return [DomainSection(id: "all_domains", title: "Browsable Domains", items: sorted)]
+            return [DomainSection(id: "all_domains", title: "可浏览域名", items: sorted)]
         }
     }
     
@@ -177,13 +177,13 @@ final class BonjourDiscoveryViewModel: ObservableObject {
             
             var sections: [ServiceTypeSection] = []
             if !tcpItems.isEmpty {
-                sections.append(ServiceTypeSection(id: "tcp_types", title: "TCP Services (\(tcpItems.count))", items: tcpItems))
+                sections.append(ServiceTypeSection(id: "tcp_types", title: "TCP 服务（\\(tcpItems.count)）", items: tcpItems))
             }
             if !udpItems.isEmpty {
                 sections.append(ServiceTypeSection(id: "udp_types", title: "UDP Services (\(udpItems.count))", items: udpItems))
             }
             if !otherItems.isEmpty {
-                sections.append(ServiceTypeSection(id: "other_types", title: "Other Services (\(otherItems.count))", items: otherItems))
+                sections.append(ServiceTypeSection(id: "other_types", title: "其他服务（\\(otherItems.count)）", items: otherItems))
             }
             return sections
             
@@ -193,10 +193,10 @@ final class BonjourDiscoveryViewModel: ObservableObject {
             
             var sections: [ServiceTypeSection] = []
             if !recognized.isEmpty {
-                sections.append(ServiceTypeSection(id: "recognized_types", title: "Recognized Services (\(recognized.count))", items: recognized))
+                sections.append(ServiceTypeSection(id: "recognized_types", title: "已识别服务（\\(recognized.count)）", items: recognized))
             }
             if !unknown.isEmpty {
-                sections.append(ServiceTypeSection(id: "unknown_types", title: "Other / Raw Services (\(unknown.count))", items: unknown))
+                sections.append(ServiceTypeSection(id: "unknown_types", title: "其他 / 原始服务（\\(unknown.count)）", items: unknown))
             }
             return sections
             

@@ -64,7 +64,7 @@ class SignOutAlertViewController: UIViewController {
         certCheckboxButton.addTarget(self, action: #selector(toggleCertCheckbox), for: .touchUpInside)
         
         let certLabel = UILabel()
-        certLabel.text = NSLocalizedString("Keep signing certificate", comment: "")
+        certLabel.text = NSLocalizedString("保留签名证书", comment: "")
         certLabel.font = .systemFont(ofSize: 14)
         certLabel.isUserInteractionEnabled = true
         let certTap = UITapGestureRecognizer(target: self, action: #selector(toggleCertCheckbox))
@@ -86,7 +86,7 @@ class SignOutAlertViewController: UIViewController {
         anisetteCheckboxButton.addTarget(self, action: #selector(toggleAnisetteCheckbox), for: .touchUpInside)
         
         let anisetteLabel = UILabel()
-        anisetteLabel.text = NSLocalizedString("Keep Anisette data", comment: "")
+        anisetteLabel.text = NSLocalizedString("保留 Anisette 数据", comment: "")
         anisetteLabel.font = .systemFont(ofSize: 14)
         anisetteLabel.isUserInteractionEnabled = true
         let anisetteTap = UITapGestureRecognizer(target: self, action: #selector(toggleAnisetteCheckbox))
@@ -108,7 +108,7 @@ class SignOutAlertViewController: UIViewController {
         anisetteHeadersCheckboxButton.addTarget(self, action: #selector(toggleAnisetteHeadersCheckbox), for: .touchUpInside)
         
         let anisetteHeadersLabel = UILabel()
-        anisetteHeadersLabel.text = NSLocalizedString("Keep Anisette headers", comment: "")
+        anisetteHeadersLabel.text = NSLocalizedString("保留 Anisette 请求头", comment: "")
         anisetteHeadersLabel.font = .systemFont(ofSize: 14)
         anisetteHeadersLabel.isUserInteractionEnabled = true
         let anisetteHeadersTap = UITapGestureRecognizer(target: self, action: #selector(toggleAnisetteHeadersCheckbox))
@@ -130,7 +130,7 @@ class SignOutAlertViewController: UIViewController {
         sideSignHeadersCheckboxButton.addTarget(self, action: #selector(toggleSideSignHeadersCheckbox), for: .touchUpInside)
         
         let sideSignHeadersLabel = UILabel()
-        sideSignHeadersLabel.text = NSLocalizedString("Keep SideSign headers", comment: "")
+        sideSignHeadersLabel.text = NSLocalizedString("保留 SideSign 请求头", comment: "")
         sideSignHeadersLabel.font = .systemFont(ofSize: 14)
         sideSignHeadersLabel.isUserInteractionEnabled = true
         let sideSignHeadersTap = UITapGestureRecognizer(target: self, action: #selector(toggleSideSignHeadersCheckbox))

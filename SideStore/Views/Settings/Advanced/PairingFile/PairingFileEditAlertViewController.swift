@@ -42,7 +42,7 @@ class PairingFileEditAlertViewController: UIViewController {
         checkboxButton.addTarget(self, action: #selector(toggleCheckbox), for: .touchUpInside)
         
         let label = UILabel()
-        label.text = NSLocalizedString("Don't show this warning again", comment: "")
+        label.text = NSLocalizedString("不再显示此警告", comment: "")
         label.font = .systemFont(ofSize: 13)
         label.textColor = .secondaryLabel
         label.isUserInteractionEnabled = true

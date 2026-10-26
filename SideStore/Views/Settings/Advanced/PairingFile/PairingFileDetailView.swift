@@ -94,11 +94,11 @@ struct PairingFileDetailView: View {
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 if isEditing {
-                    SwiftUI.Button("Cancel") {
+                    SwiftUI.Button("取消") {
                         editedContent = rawContent
                         isEditing = false
                     }
-                    SwiftUI.Button("Save") {
+                    SwiftUI.Button("保存") {
                         saveEditedContent()
                     }
                     .font(.system(size: 17, weight: .bold))
@@ -115,7 +115,7 @@ struct PairingFileDetailView: View {
                         }
                         .accessibilityLabel("Copy XML")
 
-                        SwiftUI.Button("Edit") {
+                        SwiftUI.Button("编辑") {
                             requestEnterEditMode()
                         }
                     }
@@ -123,7 +123,7 @@ struct PairingFileDetailView: View {
             }
         }
         .alert("Invalid Property List", isPresented: $showingInvalidPlistAlert) {
-            SwiftUI.Button("OK", role: .cancel) { }
+            SwiftUI.Button("好", role: .cancel) { }
         } message: {
             Text(invalidPlistMessage)
         }
@@ -131,7 +131,7 @@ struct PairingFileDetailView: View {
 
     private var fileInfoSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("FILE INFORMATION")
+            Text("文件信息")
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundColor(Color.white.opacity(0.6))
                 .padding(.horizontal, 4)
@@ -169,7 +169,7 @@ struct PairingFileDetailView: View {
                 Spacer()
                 let displayed = isEditing ? editedContent : rawContent
                 if !displayed.isEmpty {
-                    Text("\(displayed.count) bytes")
+                    Text("\\(displayed.count) 字节")
                         .font(.system(size: 12))
                         .foregroundColor(Color.white.opacity(0.4))
                 }
@@ -195,7 +195,7 @@ struct PairingFileDetailView: View {
                 .cornerRadius(12)
                 .frame(minHeight: 300, maxHeight: 500)
             } else {
-                Text("No pairing file installed.")
+                Text("未安装配对文件。")
                     .font(.system(size: 14))
                     .foregroundColor(Color.white.opacity(0.5))
                     .padding(16)
@@ -250,15 +250,15 @@ struct PairingFileDetailView: View {
         }
 
         let alert = UIAlertController(
-            title: NSLocalizedString("Warning", comment: ""),
-            message: NSLocalizedString("Editing manually may corrupt the pairing file. Are you sure you know what you are doing and want to continue?", comment: ""),
+            title: NSLocalizedString("警告", comment: ""),
+            message: NSLocalizedString("手动编辑可能会损坏配对文件。你确定知道自己在做什么并要继续吗？", comment: ""),
             preferredStyle: .alert
         )
         let contentVC = PairingFileEditAlertViewController()
         alert.setValue(contentVC, forKey: "contentViewController")
 
-        let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)
-        let continueAction = UIAlertAction(title: NSLocalizedString("Continue", comment: ""), style: .destructive) { _ in
+        let cancelAction = UIAlertAction(title: NSLocalizedString("取消", comment: ""), style: .cancel, handler: nil)
+        let continueAction = UIAlertAction(title: NSLocalizedString("继续", comment: ""), style: .destructive) { _ in
             if contentVC.isChecked {
                 UserDefaults.standard.setPairingFileEditSuppressed(true, forHash: currentHash)
             }

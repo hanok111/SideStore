@@ -23,7 +23,7 @@ struct HealthCheckView: View {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.system(size: 44))
                                 .foregroundColor(.green)
-                            Text("SideStore Ready")
+                            Text("SideStore 已就绪")
                                 .font(.title2)
                                 .fontWeight(.bold)
                             Text(viewModel.connectionMode == .localVPN
@@ -37,7 +37,7 @@ struct HealthCheckView: View {
                             Image(systemName: "exclamationmark.triangle.fill")
                                 .font(.system(size: 44))
                                 .foregroundColor(.orange)
-                            Text("Action Required")
+                            Text("需要操作")
                                 .font(.title2)
                                 .fontWeight(.bold)
                             Text(err.localizedDescription)
@@ -54,7 +54,7 @@ struct HealthCheckView: View {
             }
             
             // Section 2: Core Dependencies
-            Section(header: Text("Core Requirements")) {
+            Section(header: Text("核心要求")) {
                 DependencyRow(
                     title: "Network Connectivity",
                     subtitle: viewModel.networkSatisfied == nil ? "Unknown" : (viewModel.isWifiSatisfied ? "Wi-Fi Active" : "No Connection"),
@@ -93,7 +93,7 @@ struct HealthCheckView: View {
             }
             
             // Section 3: JIT Dependencies
-            Section(header: Text("JIT Requirements")) {
+            Section(header: Text("JIT 要求")) {
                 DependencyRow(
                     title: "Developer Disk Image (DDI)",
                     subtitle: viewModel.isDDIMounted ? "Mounted" : "Not Mounted (JIT unavailable)",
@@ -103,9 +103,9 @@ struct HealthCheckView: View {
             }
             
             // Section 4: Connection Configuration
-            Section(header: Text("Connection Configuration")) {
+            Section(header: Text("连接配置")) {
                 HStack {
-                    Text("Connection Mode")
+                    Text("连接方式")
                     Spacer()
                     Text(viewModel.connectionMode == .localVPN ? "Local VPN" : "Remote Server")
                         .foregroundColor(.secondary)
@@ -116,13 +116,13 @@ struct HealthCheckView: View {
                     ConfigRow(label: "Tunnel Peer IP", value: viewModel.tunnelPeerIp)
                     ConfigRow(label: "Override Peer IP", value: viewModel.overrideTunnelPeerIp.isEmpty ? nil : viewModel.overrideTunnelPeerIp)
                     HStack {
-                        Text("Override Status")
+                        Text("覆盖状态")
                         Spacer()
                         Text(viewModel.overrideTunnelPeerEffective ? "Active" : "Inactive")
                             .foregroundColor(viewModel.overrideTunnelPeerEffective ? .green : .secondary)
                     }
                     HStack {
-                        Text("Active Protocol")
+                        Text("当前协议")
                         Spacer()
                         Text(viewModel.activeProtocol)
                             .foregroundColor(.secondary)
@@ -130,7 +130,7 @@ struct HealthCheckView: View {
                 } else {
                     ConfigRow(label: "Remote Endpoint IP", value: viewModel.remoteServerIp.isEmpty ? nil : viewModel.remoteServerIp)
                     HStack {
-                        Text("Active Protocol")
+                        Text("当前协议")
                         Spacer()
                         Text(viewModel.activeProtocol)
                             .foregroundColor(.secondary)
@@ -139,9 +139,9 @@ struct HealthCheckView: View {
             }
             
             // Section 4: All Active Interfaces
-            Section(header: Text("Active Network Interfaces")) {
+            Section(header: Text("活跃网络接口")) {
                 if viewModel.availableInterfaces.isEmpty {
-                    Text("No active interfaces scanned.")
+                    Text("未扫描到活跃接口。")
                         .foregroundColor(.secondary)
                         .italic()
                 } else {

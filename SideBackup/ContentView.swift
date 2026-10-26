@@ -23,7 +23,7 @@ struct ContentView: View {
                         .font(.system(size: 44))
                         .foregroundColor(.orange)
                     
-                    Text(NSLocalizedString("SideBackup could not start", comment: ""))
+                    Text(NSLocalizedString("SideBackup 无法启动", comment: ""))
                         .font(.title2.bold())
                         .foregroundColor(Color("Text"))
                         .multilineTextAlignment(.center)
@@ -55,8 +55,8 @@ struct ContentView: View {
                     }
                     .padding(.horizontal, 16)
                 } else {
-                    Text(String(format: NSLocalizedString("%@ is inactive.", comment: ""),
-                                Bundle.main.appName ?? NSLocalizedString("App", comment: "")))
+                    Text(String(format: NSLocalizedString("%@ 未激活。", comment: ""),
+                                Bundle.main.appName ?? NSLocalizedString("应用", comment: "")))
                         .font(.title2)
                         .foregroundColor(Color("Text"))
                         .multilineTextAlignment(.center)

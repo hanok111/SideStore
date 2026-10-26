@@ -33,7 +33,7 @@ struct ProfilesListView: View {
 
     var body: some View {
         List {
-            Section(header: Text("Provisioning Profiles (\(viewModel.profiles.count))"), footer: Text("Deleting profiles on the developer portal allows Apple to issue fresh profiles with updated certificates and unflagged UUIDs.")) {
+            Section(header: Text("描述文件（\\(viewModel.profiles.count)）"), footer: Text("删除开发者门户上的描述文件后，Apple 可签发带有更新证书和未标记 UUID 的新描述文件。")) {
                 if filteredProfiles.isEmpty {
                     if viewModel.isLoading {
                         HStack {
@@ -82,7 +82,7 @@ struct ProfilesListView: View {
                         HStack {
                             Spacer()
                             Image(systemName: "trash")
-                            Text("Delete All Profiles on Portal")
+                            Text("删除门户上的全部描述文件")
                                 .fontWeight(.semibold)
                             Spacer()
                         }
@@ -96,7 +96,7 @@ struct ProfilesListView: View {
         #else
         .listStyle(GroupedListStyle())
         #endif
-        .navigationTitle("Profiles")
+        .navigationTitle("描述文件")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 SwiftUI.Button {
@@ -114,9 +114,9 @@ struct ProfilesListView: View {
         }
         .alert(isPresented: $showDeleteConfirmation) {
             Alert(
-                title: Text("Delete Provisioning Profile?"),
+                title: Text("删除描述文件？"),
                 message: Text("Are you sure you want to delete '\(profileToDelete?.name ?? "this profile")' from the Apple Developer Portal?"),
-                primaryButton: .destructive(Text("Delete")) {
+                primaryButton: .destructive(Text("删除")) {
                     if let target = profileToDelete {
                         Task {
                             _ = await viewModel.deleteProfile(target, presentingViewController: presentingViewController)
@@ -127,12 +127,12 @@ struct ProfilesListView: View {
             )
         }
         .alert("Purge All Profiles?", isPresented: $showPurgeAllConfirmation) {
-            SwiftUI.Button("Delete All (\(viewModel.profiles.count))", role: .destructive) {
+            SwiftUI.Button("全部删除（\\(viewModel.profiles.count)）", role: .destructive) {
                 Task {
                     _ = await viewModel.deleteAllProfiles(presentingViewController: presentingViewController)
                 }
             }
-            SwiftUI.Button("Cancel", role: .cancel) {}
+            SwiftUI.Button("取消", role: .cancel) {}
         } message: {
             Text("This will permanently delete all \(viewModel.profiles.count) provisioning profile(s) for team '\(viewModel.team?.name ?? "")' on Apple's developer portal. SideStore will automatically generate fresh profiles on next app install or refresh.")
         }
@@ -162,7 +162,7 @@ private struct ProfileRow: View {
                     .font(.headline)
                 Spacer()
                 if isExpired {
-                    Text("Expired")
+                    Text("已过期")
                         .font(.caption2)
                         .fontWeight(.medium)
                         .padding(.horizontal, 6)
@@ -171,7 +171,7 @@ private struct ProfileRow: View {
                         .foregroundColor(.red)
                         .cornerRadius(6)
                 }
-                Text("Expires: \(formatDate(profile.dateExpire))")
+                Text("过期时间：\\(formatDate(profile.dateExpire))")
                     .font(.caption)
                     .foregroundColor(isExpired ? .red : .secondary)
             }

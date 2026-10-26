@@ -671,7 +671,7 @@ struct AnisetteServersView: View {
             SwiftUI.Button("Export Current") {
                 Task {
                     if let url = await viewModel.exportCatalog(unmodified: false), let topVC = UIApplication.shared.topViewController() {
-                        TVWebFileTransferManager.shared.startExport(fileURL: url, title: "Export Anisette Servers JSON", presentingVC: topVC)
+                        TVWebFileTransferManager.shared.startExport(fileURL: url, title: "导出 Anisette 服务器 JSON", presentingVC: topVC)
                     }
                 }
             }
@@ -679,7 +679,7 @@ struct AnisetteServersView: View {
                 SwiftUI.Button("Export Original") {
                     Task {
                         if let url = await viewModel.exportCatalog(unmodified: true), let topVC = UIApplication.shared.topViewController() {
-                            TVWebFileTransferManager.shared.startExport(fileURL: url, title: "Export Anisette Servers JSON", presentingVC: topVC)
+                            TVWebFileTransferManager.shared.startExport(fileURL: url, title: "导出 Anisette 服务器 JSON", presentingVC: topVC)
                         }
                     }
                 }
@@ -717,24 +717,24 @@ struct AnisetteServersView: View {
         }
         #endif
         .alert("Clear Imported File?", isPresented: $showingClearAlert) {
-            SwiftUI.Button("Clear", role: .destructive) {
+            SwiftUI.Button("清除", role: .destructive) {
                 Task {
                     await viewModel.clearImportedFile()
                 }
             }
-            SwiftUI.Button("Cancel", role: .cancel) {}
+            SwiftUI.Button("取消", role: .cancel) {}
         } message: {
             Text("确定要移除导入的目录“\(viewModel.importedFileName ?? "custom.json")”并恢复为默认服务器 URL 吗？")
         }
         .alert("Import Server Catalog?", isPresented: $showingImportAlert) {
-            SwiftUI.Button("Import") {
+            SwiftUI.Button("导入") {
                 if let data = pendingImportData, let name = pendingImportName {
                     Task {
                         await viewModel.importData(data, filename: name)
                     }
                 }
             }
-            SwiftUI.Button("Cancel", role: .cancel) {}
+            SwiftUI.Button("取消", role: .cancel) {}
         } message: {
             Text("这将用“\(pendingImportName ?? "selected file")”中的服务器替换你当前的服务器目录。是否继续？")
         }

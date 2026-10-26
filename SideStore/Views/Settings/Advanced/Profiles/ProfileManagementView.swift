@@ -53,42 +53,42 @@ struct ProfileManagementView: View {
     var body: some View {
         ZStack {
             List {
-                Section(header: Text("Overview")) {
+                Section(header: Text("概览")) {
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Total")
+                            Text("总计")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
-                            Text("\(viewModel.profiles.count)")
+                            Text("\\(viewModel.profiles.count)")
                                 .font(.title2)
                                 .fontWeight(.bold)
                         }
                         Spacer()
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Ready")
+                            Text("就绪")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
-                            Text("\(viewModel.readyCount)")
+                            Text("\\(viewModel.readyCount)")
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .foregroundColor(.green)
                         }
                         Spacer()
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Portal")
+                            Text("门户")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
-                            Text("\(viewModel.portalCount)")
+                            Text("\\(viewModel.portalCount)")
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .foregroundColor(.blue)
                         }
                         Spacer()
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Missing Cert")
+                            Text("缺少证书")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
-                            Text("\(viewModel.profiles.count - viewModel.readyCount)")
+                            Text("\\(viewModel.profiles.count - viewModel.readyCount)")
                                 .font(.title2)
                                 .fontWeight(.bold)
                                 .foregroundColor(viewModel.profiles.count - viewModel.readyCount > 0 ? .orange : .secondary)
@@ -98,8 +98,8 @@ struct ProfileManagementView: View {
                 }
 
                 Section(
-                    header: Text("Provisioning Profiles (\(filteredProfiles.count))"),
-                    footer: Text("Provisioning profiles dictate entitlements, device permissions, and expiration dates. Profiles sync automatically with your developer account.")
+                    header: Text("描述文件（\\(filteredProfiles.count)）"),
+                    footer: Text("描述文件决定权限、设备许可和过期日期。描述文件会与你的开发者账号自动同步。")
                 ) {
                     if filteredProfiles.isEmpty {
                         if viewModel.isLoading {
@@ -242,7 +242,7 @@ struct ProfileManagementView: View {
                 ProfilePortalDetailView(profile: listed, viewModel: devServicesViewModel, presentingViewController: presentingViewController)
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
-                            SwiftUI.Button("Done") {
+                            SwiftUI.Button("完成") {
                                 profileToEditOnPortal = nil
                                 viewModel.loadProfiles(isPullToRefresh: true)
                             }
@@ -254,27 +254,27 @@ struct ProfileManagementView: View {
             switch pending.analysis {
             case .signable(let certName, _):
                 return Alert(
-                    title: Text("Link Signing Certificate?"),
-                    message: Text("Found matching signing certificate '\(certName)' with private key in SideStore.\n\nWould you like to link and save this profile?"),
-                    primaryButton: .default(Text("Link & Save")) {
+                    title: Text("关联签名证书？"),
+                    message: Text("在 SideStore 中找到与私钥匹配的签名证书“\\(certName)”。\\n\\n是否关联并保存此描述文件？"),
+                    primaryButton: .default(Text("关联并保存")) {
                         commitImport(pending.profile)
                     },
                     secondaryButton: .cancel()
                 )
             case .publicOnly(let certName, _):
                 return Alert(
-                    title: Text("Missing Private Key"),
-                    message: Text("Found certificate '\(certName)' in this profile, but no matching private key (.p12) was found in SideStore.\n\nContinuing means this profile will not be usable for signing apps until a matching signing certificate with private key is imported."),
-                    primaryButton: .destructive(Text("Import Anyway")) {
+                    title: Text("缺少私钥"),
+                    message: Text("在此描述文件中找到证书“\\(certName)”，但 SideStore 中未找到匹配的私钥（.p12）。\\n\\n继续意味着在导入带私钥的匹配签名证书之前，此描述文件将无法用于签名应用。"),
+                    primaryButton: .destructive(Text("仍要导入")) {
                         commitImport(pending.profile)
                     },
                     secondaryButton: .cancel()
                 )
             case .noMatch(let count):
                 return Alert(
-                    title: Text("No Matching Signing Certificate"),
-                    message: Text("This provisioning profile contains \(count) developer certificate(s), but none match any signing certificates in SideStore.\n\nContinuing means this profile will not be usable for signing apps until a matching signing certificate with private key is imported."),
-                    primaryButton: .destructive(Text("Import Anyway")) {
+                    title: Text("没有匹配的签名证书"),
+                    message: Text("此描述文件包含 \\(count) 个开发者证书，但没有一个与 SideStore 中的签名证书匹配。\\n\\n继续意味着在导入带私钥的匹配签名证书之前，此描述文件将无法用于签名应用。"),
+                    primaryButton: .destructive(Text("仍要导入")) {
                         commitImport(pending.profile)
                     },
                     secondaryButton: .cancel()
@@ -283,9 +283,9 @@ struct ProfileManagementView: View {
         }
         .alert(isPresented: $showDeleteConfirmation) {
             Alert(
-                title: Text("Delete Local Profile?"),
+                title: Text("删除本地描述文件？"),
                 message: Text("Are you sure you want to delete '\(profileToDelete?.name ?? "this profile")' from local storage? Any apps assigned to this profile will revert to default."),
-                primaryButton: .destructive(Text("Delete")) {
+                primaryButton: .destructive(Text("删除")) {
                     if let target = profileToDelete {
                         Task {
                             await viewModel.deleteProfile(target, alsoDeleteFromPortal: false)
@@ -310,12 +310,12 @@ struct ProfileManagementView: View {
                     }
                 }
             }
-            SwiftUI.Button("Cancel", role: .cancel) {}
+            SwiftUI.Button("取消", role: .cancel) {}
         } message: {
             Text("'\((profileToDelete?.name ?? "This profile"))' exists on the Apple Developer Portal. Do you want to delete it from Apple's servers as well, or only delete the local cache?")
         }
         .alert("Error", isPresented: $viewModel.showErrorAlert) {
-            SwiftUI.Button("OK", role: .cancel) { viewModel.errorMessage = nil }
+            SwiftUI.Button("好", role: .cancel) { viewModel.errorMessage = nil }
         } message: {
             Text(viewModel.errorMessage ?? "An unknown error occurred.")
         }
@@ -329,7 +329,7 @@ struct ProfileManagementView: View {
                 }
                 navigateToPortalProfiles = true
             }
-            SwiftUI.Button("Cancel", role: .cancel) {}
+            SwiftUI.Button("取消", role: .cancel) {}
         }
         .onChange(of: navigateToPortalProfiles) { isActive in
             if !isActive {
@@ -444,7 +444,7 @@ private struct ProfileManagementRowView: View {
                     HStack(spacing: 3) {
                         Image(systemName: "cloud.fill")
                             .font(.system(size: 8))
-                        Text("Portal")
+                        Text("门户")
                             .fontWeight(.medium)
                     }
                     .font(.caption2)
@@ -457,7 +457,7 @@ private struct ProfileManagementRowView: View {
                     HStack(spacing: 3) {
                         Image(systemName: "internaldrive")
                             .font(.system(size: 8))
-                        Text("Local")
+                        Text("本地")
                             .fontWeight(.medium)
                     }
                     .font(.caption2)
@@ -469,7 +469,7 @@ private struct ProfileManagementRowView: View {
                 }
 
                 if isExpired {
-                    Text("Expired")
+                    Text("已过期")
                         .font(.caption2)
                         .fontWeight(.medium)
                         .padding(.horizontal, 6)
@@ -478,7 +478,7 @@ private struct ProfileManagementRowView: View {
                         .foregroundColor(.red)
                         .cornerRadius(6)
                 } else if matchingCert != nil {
-                    Text("Ready")
+                    Text("就绪")
                         .font(.caption2)
                         .fontWeight(.medium)
                         .padding(.horizontal, 6)
@@ -487,7 +487,7 @@ private struct ProfileManagementRowView: View {
                         .foregroundColor(.green)
                         .cornerRadius(6)
                 } else {
-                    Text("No Key")
+                    Text("无密钥")
                         .font(.caption2)
                         .fontWeight(.medium)
                         .padding(.horizontal, 6)
@@ -496,7 +496,7 @@ private struct ProfileManagementRowView: View {
                         .foregroundColor(.orange)
                         .cornerRadius(6)
                 }
-                Text("Expires: \(formatDate(profile.expirationDate))")
+                Text("过期时间：\\(formatDate(profile.expirationDate))")
                     .font(.caption)
                     .foregroundColor(isExpired ? .red : .secondary)
             }

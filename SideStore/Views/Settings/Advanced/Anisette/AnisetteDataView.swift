@@ -289,8 +289,8 @@ struct AnisetteDataView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 Picker("View Mode", selection: $viewModel.viewMode) {
-                    Text("Interactive").tag(0)
-                    Text("Raw JSON").tag(1)
+                    Text("交互式").tag(0)
+                    Text("原始 JSON").tag(1)
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal, 16)
@@ -303,7 +303,7 @@ struct AnisetteDataView: View {
                         
                         VStack(spacing: 0) {
                             headerFieldRow(
-                                title: "Client Info",
+                                title: "客户端信息",
                                 headerKey: "X-Mme-Client-Info",
                                 text: $viewModel.clientInfo,
                                 placeholder: AppConstants.Anisette.defaultClientInfo,
@@ -330,7 +330,7 @@ struct AnisetteDataView: View {
                         
                         VStack(spacing: 0) {
                             headerFieldRow(
-                                title: "Device Identifier",
+                                title: "设备标识符",
                                 headerKey: "X-Mme-Device-Id",
                                 text: $viewModel.customDeviceID,
                                 placeholder: "System Generated Device UUID"
@@ -339,7 +339,7 @@ struct AnisetteDataView: View {
                             divider
                             
                             headerFieldRow(
-                                title: "Local User ID",
+                                title: "本地用户 ID",
                                 headerKey: "X-Apple-I-MD-LU",
                                 text: $viewModel.customLocalUserID,
                                 placeholder: "0"
@@ -348,7 +348,7 @@ struct AnisetteDataView: View {
                             divider
                             
                             headerFieldRow(
-                                title: "Serial Number",
+                                title: "序列号",
                                 headerKey: "X-Apple-I-SRL-NO",
                                 text: $viewModel.customSerialNumber,
                                 placeholder: AppConstants.Anisette.defaultDeviceSerialNumber
@@ -357,7 +357,7 @@ struct AnisetteDataView: View {
                             divider
                             
                             headerFieldRow(
-                                title: "Routing Info",
+                                title: "路由信息",
                                 headerKey: "X-Apple-I-MD-RINFO",
                                 text: $viewModel.customRoutingInfo,
                                 placeholder: "17106176"
@@ -373,7 +373,7 @@ struct AnisetteDataView: View {
                         
                         VStack(spacing: 0) {
                             headerFieldRow(
-                                title: "Locale",
+                                title: "区域设置",
                                 headerKey: "X-Apple-Locale",
                                 text: $viewModel.customLocale,
                                 placeholder: "en_US"
@@ -382,7 +382,7 @@ struct AnisetteDataView: View {
                             divider
                             
                             headerFieldRow(
-                                title: "Time Zone",
+                                title: "时区",
                                 headerKey: "X-Apple-I-TimeZone",
                                 text: $viewModel.customTimeZone,
                                 placeholder: "e.g. UTC, EDT",
@@ -392,7 +392,7 @@ struct AnisetteDataView: View {
                             divider
                             
                             headerFieldRow(
-                                title: "Xcode Version",
+                                title: "Xcode 版本",
                                 headerKey: "X-Xcode-Version",
                                 text: $viewModel.customXcodeVersion,
                                 placeholder: "26.0 (26A242)"
@@ -408,25 +408,25 @@ struct AnisetteDataView: View {
                         
                         VStack(spacing: 0) {
                             infoTokenRow(
-                                title: "One-Time Password (OTP)",
+                                title: "一次性密码（OTP）",
                                 headerKey: "X-Apple-I-MD",
-                                subtitle: "Signed HMAC token dynamically calculated by ADI engine per request"
+                                subtitle: "由 ADI 引擎按每次请求动态计算的签名 HMAC 令牌"
                             )
                             
                             divider
                             
                             infoTokenRow(
-                                title: "Machine ID",
+                                title: "机器 ID",
                                 headerKey: "X-Apple-I-MD-M",
-                                subtitle: "Hardware identifier computed from adi.pb and device identity"
+                                subtitle: "由 adi.pb 和设备身份计算出的硬件标识符"
                             )
                             
                             divider
                             
                             infoTokenRow(
-                                title: "Client Time",
+                                title: "客户端时间",
                                 headerKey: "X-Apple-I-Client-Time",
-                                subtitle: "ISO8601 UTC timestamp locked to OTP generation time"
+                                subtitle: "与 OTP 生成时间锁定的 ISO8601 UTC 时间戳"
                             )
                         }
                         .background(Color.settingsRowBackground)
@@ -562,7 +562,7 @@ struct AnisetteDataView: View {
                                     } label: {
                                         HStack(spacing: 4) {
                                             Image(systemName: "arrow.clockwise")
-                                            Text("Fetch")
+                                            Text("获取")
                                         }
                                         .font(.footnote.weight(.semibold))
                                         .foregroundColor(.accentColor)
@@ -594,7 +594,7 @@ struct AnisetteDataView: View {
                             if let topVC = UIApplication.shared.topViewController() {
                                 TVWebFileTransferManager.shared.startImport(
                                     acceptedExtensions: ["json"],
-                                    title: "Import Anisette Client Config JSON",
+                                    title: "导入 Anisette 客户端配置 JSON",
                                     presentingVC: topVC
                                 ) { fileURL in
                                     guard let fileURL = fileURL else { return }
@@ -655,14 +655,14 @@ struct AnisetteDataView: View {
                             .frame(height: 50)
                         }
                         .alert("Reset to Defaults?", isPresented: $showingResetAlert) {
-                            SwiftUI.Button("Reset", role: .destructive) {
+                            SwiftUI.Button("重置", role: .destructive) {
                                 Task {
                                     await viewModel.reset()
                                 }
                             }
-                            SwiftUI.Button("Cancel", role: .cancel) {}
+                            SwiftUI.Button("取消", role: .cancel) {}
                         } message: {
-                            Text("This will restore the client headers to the default recommended values.")
+                            Text("这将把客户端请求头恢复为默认推荐值。")
                         }
                     }
                     .background(Color.settingsRowBackground)
@@ -674,7 +674,7 @@ struct AnisetteDataView: View {
             .padding(.bottom, 32)
         }
         .background(Color(uiColor: .settingsBackground).ignoresSafeArea())
-        .navigationTitle("Client Config")
+        .navigationTitle("客户端配置")
         #if !os(tvOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif

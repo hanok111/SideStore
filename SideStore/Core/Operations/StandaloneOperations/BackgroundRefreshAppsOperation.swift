@@ -175,21 +175,21 @@ final class BackgroundRefreshAppsOperation: BaseStandaloneOperation<OperationCon
                     throw error
                 }
                 
-                content.title = NSLocalizedString("Refreshed Apps", comment: "")
-                content.body = NSLocalizedString("All apps have been refreshed.", comment: "")
+                content.title = NSLocalizedString("已刷新的应用", comment: "")
+                content.body = NSLocalizedString("所有应用已刷新。", comment: "")
             } catch let opError as OperationError {
                 switch opError {
                 case .noConnection, .noVPN, .noInstalledApps:
                     shouldPresentAlert = false
                 default:
                     self.debugLog("Failed to refresh apps in background: \(opError)")
-                    content.title = NSLocalizedString("Failed to Refresh Apps", comment: "")
+                    content.title = NSLocalizedString("刷新应用失败", comment: "")
                     content.body = opError.localizedDescription
                     shouldPresentAlert = true
                 }
             } catch {
                 self.debugLog("Failed to refresh apps in background: \(error)")
-                content.title = NSLocalizedString("Failed to Refresh Apps", comment: "")
+                content.title = NSLocalizedString("刷新应用失败", comment: "")
                 content.body = error.localizedDescription
                 shouldPresentAlert = true
             }

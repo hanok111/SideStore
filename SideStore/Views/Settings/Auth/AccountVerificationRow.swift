@@ -122,9 +122,9 @@ final class AccountVerificationRow: InsetGroupTableViewCell {
             self.isSelectable = false
             
         case .checking:
-            self.titleLabel.text = NSLocalizedString("Account Verification", comment: "")
+            self.titleLabel.text = NSLocalizedString("账号验证", comment: "")
             self.titleLabel.textColor = .white
-            self.subtitleLabel.text = NSLocalizedString("Verifying account status...", comment: "")
+            self.subtitleLabel.text = NSLocalizedString("正在验证账号状态…", comment: "")
             self.subtitleLabel.textColor = UIColor.white.withAlphaComponent(0.7)
             self.iconImageView.image = nil
             self.iconImageView.isHidden = true
@@ -133,16 +133,16 @@ final class AccountVerificationRow: InsetGroupTableViewCell {
             self.isSelectable = false
             
         case .actionRequired(let certMissing, let deviceUnregistered):
-            self.titleLabel.text = NSLocalizedString("Action Required", comment: "")
+            self.titleLabel.text = NSLocalizedString("需要操作", comment: "")
             self.titleLabel.textColor = .systemOrange
             
             let subtitle: String
             if certMissing && deviceUnregistered {
-                subtitle = NSLocalizedString("Signing certificate & device registration pending", comment: "")
+                subtitle = NSLocalizedString("签名证书与设备注册待处理", comment: "")
             } else if certMissing {
-                subtitle = NSLocalizedString("Active signing certificate pending", comment: "")
+                subtitle = NSLocalizedString("当前签名证书待处理", comment: "")
             } else {
-                subtitle = NSLocalizedString("Device registration pending", comment: "")
+                subtitle = NSLocalizedString("设备注册待处理", comment: "")
             }
             self.subtitleLabel.text = subtitle
             self.subtitleLabel.textColor = UIColor.white.withAlphaComponent(0.8)
@@ -198,17 +198,17 @@ extension AccountVerificationRow {
         
         var pendingItems: [String] = []
         if deviceUnregistered {
-            pendingItems.append(NSLocalizedString("Register Device", comment: ""))
+            pendingItems.append(NSLocalizedString("注册设备", comment: ""))
         }
         if certMissing {
-            pendingItems.append(NSLocalizedString("Provision Signing Certificate", comment: ""))
+            pendingItems.append(NSLocalizedString("配置签名证书", comment: ""))
         }
         
         guard !pendingItems.isEmpty else { return }
         
         let count = pendingItems.count
         let title = count == 1
-            ? NSLocalizedString("1 Pending Action", comment: "")
+            ? NSLocalizedString("1 项待处理操作", comment: "")
             : String(format: NSLocalizedString("%d Pending Actions", comment: ""), count)
         
         let bulletList = pendingItems.map { "• \($0)" }.joined(separator: "\n")
@@ -216,10 +216,10 @@ extension AccountVerificationRow {
         
         let confirmed = await withCheckedContinuation { continuation in
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel) { _ in
+            alert.addAction(UIAlertAction(title: NSLocalizedString("取消", comment: ""), style: .cancel) { _ in
                 continuation.resume(returning: false)
             })
-            alert.addAction(UIAlertAction(title: NSLocalizedString("Continue", comment: ""), style: .default) { _ in
+            alert.addAction(UIAlertAction(title: NSLocalizedString("继续", comment: ""), style: .default) { _ in
                 continuation.resume(returning: true)
             })
             presentingViewController.present(alert, animated: true)
@@ -228,11 +228,11 @@ extension AccountVerificationRow {
         guard confirmed else { return }
         
         let initialDescription = deviceUnregistered
-            ? NSLocalizedString("Registering device…", comment: "")
-            : NSLocalizedString("Provisioning signing certificate…", comment: "")
+            ? NSLocalizedString("正在注册设备…", comment: "")
+            : NSLocalizedString("正在配置签名证书…", comment: "")
             
         let progressAlert = UIAlertController(
-            title: NSLocalizedString("Setting Up Account", comment: ""),
+            title: NSLocalizedString("正在设置账号", comment: ""),
             message: "\(initialDescription)\n\n\n",
             preferredStyle: .alert
         )
@@ -268,14 +268,14 @@ extension AccountVerificationRow {
         
         do {
             if deviceUnregistered {
-                try await executeStep(description: NSLocalizedString("Registering device…", comment: "")) {
+                try await executeStep(description: NSLocalizedString("正在注册设备…", comment: "")) {
                     let deviceFlow = DeviceRegistrationFlow(handler: handler)
                     _ = try await deviceFlow.registerCurrentDevice(for: team)
                 }
             }
             
             if certMissing {
-                try await executeStep(description: NSLocalizedString("Provisioning signing certificate…", comment: "")) {
+                try await executeStep(description: NSLocalizedString("正在配置签名证书…", comment: "")) {
                     let certFlow = CertificateProvisioningFlow(handler: handler)
                     _ = try await certFlow.resolveCertificate(for: team)
                 }

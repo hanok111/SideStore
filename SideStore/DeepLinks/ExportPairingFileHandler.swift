@@ -15,7 +15,7 @@ public enum ExportPairingFileHandler {
               let data = pairingContent.data(using: .utf8) else {
             debugLog("[ExportPairingFileHandler] Failed to find active pairing file")
             if let topVC = UIApplication.shared.topViewController() {
-                let toast = ToastView(text: NSLocalizedString("Failed to find Pairing File!", comment: ""), detailText: nil)
+                let toast = ToastView(text: NSLocalizedString("找不到配对文件！", comment: ""), detailText: nil)
                 toast.show(in: topVC)
             }
             return
@@ -27,7 +27,7 @@ public enum ExportPairingFileHandler {
         guard let encodedCert = base64encodedCert.addingPercentEncoding(withAllowedCharacters: allowedQueryParamAndKey) else {
             debugLog("[ExportPairingFileHandler] Failed to encode pairing file")
             if let topVC = UIApplication.shared.topViewController() {
-                let toast = ToastView(text: NSLocalizedString("Failed to encode pairingFile!", comment: ""), detailText: nil)
+                let toast = ToastView(text: NSLocalizedString("编码配对文件失败！", comment: ""), detailText: nil)
                 toast.show(in: topVC)
             }
             return
@@ -40,7 +40,7 @@ public enum ExportPairingFileHandler {
         guard let callbackUrl = URL(string: finished) else {
             debugLog("[ExportPairingFileHandler] Failed to initialize callback URL")
             if let topVC = UIApplication.shared.topViewController() {
-                let toast = ToastView(text: NSLocalizedString("Failed to initialize callback URL!", comment: ""), detailText: nil)
+                let toast = ToastView(text: NSLocalizedString("初始化回调 URL 失败！", comment: ""), detailText: nil)
                 toast.show(in: topVC)
             }
             return

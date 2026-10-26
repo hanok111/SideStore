@@ -27,28 +27,28 @@ struct BackupErrorLocalizer {
     static func description(for context: BackupError.Context) -> String {
         switch context {
         case .createBackup:
-            return NSLocalizedString("Unable to create backup directory.", comment: "")
+            return NSLocalizedString("无法创建备份目录。", comment: "")
         case .createGroupBackup:
-            return NSLocalizedString("Unable to create app group backup directory.", comment: "")
+            return NSLocalizedString("无法创建应用组备份目录。", comment: "")
         case .accessBackup:
-            return NSLocalizedString("Unable to access backup.", comment: "")
+            return NSLocalizedString("无法访问备份。", comment: "")
         case .readGroupBackup:
-            return NSLocalizedString("Unable to read app group backup.", comment: "")
+            return NSLocalizedString("无法读取应用组备份。", comment: "")
         }
     }
     
     static func failureReason(for code: BackupError.Code) -> String {
         switch code {
         case .invalidBundleID:
-            return NSLocalizedString("The bundle identifier is invalid.", comment: "")
+            return NSLocalizedString("Bundle ID 无效。", comment: "")
         case .appGroupNotFound(let appGroup):
             if let appGroup = appGroup {
-                return String(format: NSLocalizedString("The app group “%@” could not be found.", comment: ""), appGroup)
+                return String(format: NSLocalizedString("找不到应用组“%@”。", comment: ""), appGroup)
             } else {
                 return NSLocalizedString("The AltStore app group could not be found.", comment: "")
             }
         case .randomError:
-            return NSLocalizedString("A random error occurred.", comment: "")
+            return NSLocalizedString("发生了一个未知错误。", comment: "")
         }
     }
 }
@@ -122,7 +122,7 @@ struct BackupError: ALTLocalizedError {
         self.failure = BackupErrorLocalizer.description(for: context)
         self.sourceFile = file
         self.sourceFileLine = line
-        self.errorTitle = NSLocalizedString("Backup Error", comment: "")
+        self.errorTitle = NSLocalizedString("备份错误", comment: "")
         self.errorFailure = self.failure
     }
 }

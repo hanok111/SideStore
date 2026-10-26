@@ -33,7 +33,7 @@ struct UnsupportedWidgetView: View {
 
     var body: some View {
         VStack(spacing: 4) {
-            Text("Unsupported iOS")
+            Text("不支持的 iOS")
                 .font(.system(.subheadline, design: .rounded))
                 .fontWeight(.semibold)
                 .foregroundColor(.white)

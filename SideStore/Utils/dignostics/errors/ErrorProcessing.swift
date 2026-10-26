@@ -33,13 +33,13 @@ class ErrorProcessing {
         if domain == "kcerrordomain" || domain == NSOSStatusErrorDomain {
             switch error.code {
             case -25300: // errSecItemNotFound
-                return NSLocalizedString("Keychain item not found.", comment: "")
+                return NSLocalizedString("找不到钥匙串项目。", comment: "")
             case -25299: // errSecDuplicateItem
-                return NSLocalizedString("Keychain item already exists.", comment: "")
+                return NSLocalizedString("钥匙串项目已存在。", comment: "")
             case -25293: // errSecAuthFailed
-                return NSLocalizedString("Keychain authentication failed.", comment: "")
+                return NSLocalizedString("钥匙串认证失败。", comment: "")
             default:
-                return NSLocalizedString("Keychain security error.", comment: "")
+                return NSLocalizedString("钥匙串安全错误。", comment: "")
             }
         }
         return error.localizedDescription

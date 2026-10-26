@@ -102,7 +102,7 @@ struct AppInfoView: View {
                                 .foregroundColor(.secondary)
                             
                             if installedApp.resignedBundleIdentifier != installedApp.bundleIdentifier {
-                                Text("Resigned: \(installedApp.resignedBundleIdentifier)")
+                                Text("已重签：\\(installedApp.resignedBundleIdentifier)")
                                     .font(.caption)
                                     .foregroundColor(.orange)
                             }
@@ -112,7 +112,7 @@ struct AppInfoView: View {
                 }
                 
                 // Metadata Section
-                Section(header: Text("General Metadata")) {
+                Section(header: Text("通用元数据")) {
                     InfoRow(label: "Status", value: installedApp.isActive ? "Active" : "Inactive", valueColor: installedApp.isActive ? .green : .red)
                     InfoRow(label: "Version", value: installedApp.localizedVersion)
                     if let team = installedApp.team {
@@ -130,7 +130,7 @@ struct AppInfoView: View {
                         if FileManager.default.fileExists(atPath: execURL.path) && MachOParser.isMachOBinary(at: execURL) {
                             NavigationLink(destination: MachOResourceViewer(url: execURL)) {
                                 HStack {
-                                    Text("Executable")
+                                    Text("可执行文件")
                                         .font(.subheadline)
                                         .foregroundColor(.primary)
                                     Spacer()
@@ -165,7 +165,7 @@ struct AppInfoView: View {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(profile.name)
                                         .font(.subheadline)
-                                    Text("UUID: \(profile.uuid.uuidString)")
+                                    Text("UUID：\\(profile.uuid.uuidString)")
                                         .font(.caption)
                                         .foregroundColor(.secondary)
                                 }
@@ -198,7 +198,7 @@ struct AppInfoView: View {
                                         .foregroundColor(.secondary)
                                 }
                                 Spacer()
-                                SwiftUI.Button("Switch") {
+                                SwiftUI.Button("切换") {
                                     showResignedProfile.toggle()
                                 }
                                 .font(.caption)
@@ -223,7 +223,7 @@ struct AppInfoView: View {
                     }) {
                         if let plist = infoPlist {
                             NavigationLink(destination: InfoPlistContainerView(plist: plist, title: showResignedInfoPlist ? "Info.plist (Resigned)" : "Info.plist (Bundle)", plistURL: activeInfoPlistURL)) {
-                                Text("View Info.plist (\(plist.count) keys)")
+                                Text("查看 Info.plist（\\(plist.count) 个键）")
                                     .font(.subheadline)
                             }
                             #if !os(tvOS)
@@ -254,7 +254,7 @@ struct AppInfoView: View {
                                         .foregroundColor(.secondary)
                                 }
                                 Spacer()
-                                SwiftUI.Button("Switch") {
+                                SwiftUI.Button("切换") {
                                     showResignedInfoPlist.toggle()
                                 }
                                 .font(.caption)
@@ -265,7 +265,7 @@ struct AppInfoView: View {
                 
                 // App Extensions Section
                 if !installedApp.appExtensions.isEmpty {
-                    Section(header: Text("App Extensions")) {
+                    Section(header: Text("应用扩展")) {
                         ForEach(Array(installedApp.appExtensions), id: \.bundleIdentifier) { ext in
                             NavigationLink(destination: ExtensionInfoView(appExtension: ext, parentAppURL: appBundleURL, certificatesViewModel: certificatesViewModel)) {
                                 VStack(alignment: .leading, spacing: 4) {
@@ -281,9 +281,9 @@ struct AppInfoView: View {
                 }
 
                 // Resources Section
-                Section(header: Text("Resources")) {
-                    NavigationLink(destination: BundleResourceBrowserView(rootURL: appBundleURL, title: "Bundle Contents")) {
-                        Text("Browse Bundle Contents")
+                Section(header: Text("资源")) {
+                    NavigationLink(destination: BundleResourceBrowserView(rootURL: appBundleURL, title: "包内容")) {
+                        Text("浏览包内容")
                             .font(.subheadline)
                     }
                 }
@@ -293,8 +293,8 @@ struct AppInfoView: View {
             #else
             .listStyle(GroupedListStyle())
             #endif
-            .navigationTitle("App Details")
-            .navigationBarItems(trailing: SwiftUI.Button("Close") {
+            .navigationTitle("应用详情")
+            .navigationBarItems(trailing: SwiftUI.Button("关闭") {
                 presentationMode.wrappedValue.dismiss()
             })
             .overlay(
@@ -342,7 +342,7 @@ struct ProvisioningProfileDetailView: View {
     
     var body: some View {
         List {
-            Section(header: Text("Profile Metadata")) {
+            Section(header: Text("描述文件元数据")) {
                 ProfileInfoRow(label: "Name", value: profile.name)
                 ProfileInfoRow(label: "UUID", value: profile.uuid.uuidString)
                 if let identifier = profile.identifier {
@@ -357,13 +357,13 @@ struct ProvisioningProfileDetailView: View {
             }
             
             if !profile.certificates.isEmpty {
-                Section(header: Text("Developer Certificates (\(profile.certificates.count))")) {
+                Section(header: Text("开发者证书（\\(profile.certificates.count)）")) {
                     ForEach(profile.certificates, id: \.serialNumber) { cert in
                         NavigationLink(destination: CertificateDetailView(certificate: cert, viewModel: certificatesViewModel)) {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(cert.name)
                                     .font(.subheadline)
-                                Text("Serial: \(cert.serialNumber)")
+                                Text("序列号：\\(cert.serialNumber)")
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                             }
@@ -373,14 +373,14 @@ struct ProvisioningProfileDetailView: View {
             }
             
             if !profile.deviceIDs.isEmpty {
-                Section(header: Text("Provisioned Devices (\(profile.deviceIDs.count))")) {
+                Section(header: Text("已配置设备（\\(profile.deviceIDs.count)）")) {
                     NavigationLink(destination: DeviceIDsView(devices: profile.deviceIDs)) {
-                        Text("View Provisioned Devices")
+                        Text("查看已配置的设备")
                     }
                 }
             }
             
-            Section(header: Text("Entitlements (\(profile.entitlements.count))")) {
+            Section(header: Text("权限（\\(profile.entitlements.count)）")) {
                 let sortedEntitlements = profile.entitlements.sorted { $0.key < $1.key }
                 ForEach(sortedEntitlements, id: \.key) { entitlement, value in
                     EntitlementRow(key: entitlement, value: value)
@@ -406,7 +406,7 @@ struct ProvisioningProfileDetailView: View {
         #else
         .listStyle(GroupedListStyle())
         #endif
-        .navigationTitle("Profile Details")
+        .navigationTitle("描述文件详情")
         .interactiveDismissDisabled(true)
     }
     
@@ -566,7 +566,7 @@ struct DeviceIDsView: View {
                 #endif
             }
         }
-        .navigationTitle("Device IDs")
+        .navigationTitle("设备编号")
         .interactiveDismissDisabled(true)
     }
 }
@@ -661,7 +661,7 @@ struct ExtensionInfoView: View {
     var body: some View {
         List {
             // General Metadata — sourced from the actual bundle, not CoreData
-            Section(header: Text("Extension Metadata")) {
+            Section(header: Text("扩展元数据")) {
                 let plist = infoPlist
                 let profile = provisioningProfile
 
@@ -688,7 +688,7 @@ struct ExtensionInfoView: View {
                     if FileManager.default.fileExists(atPath: execURL.path) && MachOParser.isMachOBinary(at: execURL) {
                         NavigationLink(destination: MachOResourceViewer(url: execURL)) {
                             HStack {
-                                Text("Executable")
+                                Text("可执行文件")
                                     .font(.subheadline)
                                     .foregroundColor(.primary)
                                 Spacer()
@@ -728,10 +728,10 @@ struct ExtensionInfoView: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(profile.name)
                                     .font(.subheadline)
-                                Text("UUID: \(profile.uuid.uuidString)")
+                                Text("UUID：\\(profile.uuid.uuidString)")
                                     .font(.caption)
                                     .foregroundColor(.secondary)
-                                Text("Expires: \(formatDate(profile.expirationDate))")
+                                Text("过期时间：\\(formatDate(profile.expirationDate))")
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                             }
@@ -764,7 +764,7 @@ struct ExtensionInfoView: View {
                                     .foregroundColor(.secondary)
                             }
                             Spacer()
-                            SwiftUI.Button("Switch") {
+                            SwiftUI.Button("切换") {
                                 showResignedProfile.toggle()
                             }
                             .font(.caption)
@@ -789,7 +789,7 @@ struct ExtensionInfoView: View {
                 }) {
                     if let plist = infoPlist {
                         NavigationLink(destination: InfoPlistContainerView(plist: plist, title: showResignedInfoPlist ? "Info.plist (Resigned)" : "Info.plist (Bundle)", plistURL: activeInfoPlistURL)) {
-                            Text("View Info.plist (\(plist.count) keys)")
+                            Text("查看 Info.plist（\\(plist.count) 个键）")
                                 .font(.subheadline)
                         }
                         #if !os(tvOS)
@@ -820,7 +820,7 @@ struct ExtensionInfoView: View {
                                     .foregroundColor(.secondary)
                             }
                             Spacer()
-                            SwiftUI.Button("Switch") {
+                            SwiftUI.Button("切换") {
                                 showResignedInfoPlist.toggle()
                             }
                             .font(.caption)
@@ -831,7 +831,7 @@ struct ExtensionInfoView: View {
 
             // Nested Sub-Extensions (recursive)
             if !subExtensions.isEmpty {
-                Section(header: Text("Nested Extensions (\(subExtensions.count))")) {
+                Section(header: Text("嵌套扩展（\\(subExtensions.count)）")) {
                     ForEach(subExtensions, id: \.path) { subURL in
                         let subParser = try? InfoPlistParser(bundleURL: subURL)
                         let subName = subParser?.displayName
@@ -917,7 +917,7 @@ struct BundleInspectorView: View {
 
     var body: some View {
         List {
-            Section(header: Text("Bundle Metadata")) {
+            Section(header: Text("包元数据")) {
                 InfoRow(label: "Name", value: displayName)
                 InfoRow(label: "Bundle ID", value: bundleID)
                 InfoRow(label: "Version", value: version)
@@ -926,7 +926,7 @@ struct BundleInspectorView: View {
                     if FileManager.default.fileExists(atPath: execURL.path) && MachOParser.isMachOBinary(at: execURL) {
                         NavigationLink(destination: MachOResourceViewer(url: execURL)) {
                             HStack {
-                                Text("Executable")
+                                Text("可执行文件")
                                     .font(.subheadline)
                                     .foregroundColor(.primary)
                                 Spacer()
@@ -945,15 +945,15 @@ struct BundleInspectorView: View {
             }
 
             if let profile = provisioningProfile {
-                Section(header: Text("Provisioning Profile")) {
+                Section(header: Text("描述文件")) {
                     NavigationLink(destination: ProvisioningProfileDetailView(profile: profile, profileURL: bundleURL.appendingPathComponent("embedded.mobileprovision"), certificatesViewModel: certificatesViewModel)) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(profile.name)
                                 .font(.subheadline)
-                            Text("UUID: \(profile.uuid.uuidString)")
+                            Text("UUID：\\(profile.uuid.uuidString)")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
-                            Text("Expires: \(formatDate(profile.expirationDate))")
+                            Text("过期时间：\\(formatDate(profile.expirationDate))")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
@@ -964,14 +964,14 @@ struct BundleInspectorView: View {
             if let plist = infoPlist {
                 Section(header: Text("Info.plist")) {
                     NavigationLink(destination: InfoPlistContainerView(plist: plist, plistURL: InfoPlistParser.resolveInfoPlistURL(for: bundleURL))) {
-                        Text("View Info.plist (\(plist.count) keys)")
+                        Text("查看 Info.plist（\\(plist.count) 个键）")
                             .font(.subheadline)
                     }
                 }
             }
 
             if !subExtensions.isEmpty {
-                Section(header: Text("Nested Extensions (\(subExtensions.count))")) {
+                Section(header: Text("嵌套扩展（\\(subExtensions.count)）")) {
                     ForEach(subExtensions, id: \.path) { subURL in
                         let subParser = try? InfoPlistParser(bundleURL: subURL)
                         let subName = subParser?.displayName
@@ -992,9 +992,9 @@ struct BundleInspectorView: View {
             }
 
             // Resources
-            Section(header: Text("Resources")) {
-                NavigationLink(destination: BundleResourceBrowserView(rootURL: bundleURL, title: "Bundle Contents")) {
-                    Text("Browse Bundle Contents")
+            Section(header: Text("资源")) {
+                NavigationLink(destination: BundleResourceBrowserView(rootURL: bundleURL, title: "包内容")) {
+                    Text("浏览包内容")
                         .font(.subheadline)
                 }
             }

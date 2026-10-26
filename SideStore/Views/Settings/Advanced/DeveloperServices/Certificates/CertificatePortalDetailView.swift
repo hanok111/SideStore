@@ -23,7 +23,7 @@ struct CertificatePortalDetailView: View {
 
     var body: some View {
         List {
-            Section(header: Text("Certificate Details")) {
+            Section(header: Text("证书详情")) {
                 InfoRow(label: "Name", value: certificate.name)
                 InfoRow(label: "Serial Number", value: certificate.serialNumber)
                 if let identifier = certificate.identifier {
@@ -64,14 +64,14 @@ struct CertificatePortalDetailView: View {
                 InfoRow(label: "Status", value: isExpired ? "Expired" : "Active", valueColor: isExpired ? .red : .green)
             }
 
-            Section(footer: Text("Revoking a certificate permanently invalidates it on Apple's servers. Any provisioning profiles tied exclusively to this certificate may need to be re-generated.")) {
+            Section(footer: Text("吊销证书将永久使其在 Apple 服务器上失效。仅与此证书关联的描述文件可能需要重新生成。")) {
                 SwiftUI.Button(role: .destructive) {
                     showRevokeAlert = true
                 } label: {
                     HStack {
                         Spacer()
                         Image(systemName: "trash")
-                        Text("Revoke Certificate on Portal")
+                        Text("在门户上吊销证书")
                             .fontWeight(.semibold)
                         Spacer()
                     }
@@ -89,9 +89,9 @@ struct CertificatePortalDetailView: View {
         }
         .alert(isPresented: $showRevokeAlert) {
             Alert(
-                title: Text("Revoke Certificate?"),
-                message: Text("Are you sure you want to revoke '\(certificate.name)' on the Apple Developer Portal? This action cannot be undone."),
-                primaryButton: .destructive(Text("Revoke")) {
+                title: Text("吊销证书？"),
+                message: Text("确定要在 Apple 开发者门户上吊销“\\(certificate.name)”吗？此操作无法撤销。"),
+                primaryButton: .destructive(Text("吊销")) {
                     Task {
                         let success = await viewModel.revokeCertificate(certificate, presentingViewController: presentingViewController)
                         if success {

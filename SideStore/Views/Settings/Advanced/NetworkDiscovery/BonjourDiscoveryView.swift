@@ -40,7 +40,7 @@ struct BonjourDiscoveryView: View {
                 domainsList
             }
         }
-        .navigationTitle("Discovery")
+        .navigationTitle("发现")
         #if !os(tvOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
@@ -143,10 +143,10 @@ struct BonjourDiscoveryView: View {
             Image(systemName: "network")
                 .font(.system(size: 48))
                 .foregroundColor(.secondary)
-            Text("No Domains Found")
+            Text("未找到域名")
                 .font(.headline)
                 .foregroundColor(.secondary)
-            Text("Make sure you're connected to a local network.")
+            Text("请确保你已连接到本地网络。")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
@@ -161,12 +161,12 @@ struct BonjourDiscoveryView: View {
             .padding(.top, 4)
             
             VStack(spacing: 8) {
-                Text("Ensure **Local Network Access** is provided otherwise this function may not work as intended since it is based on L N A...")
+                Text("请确保已提供**本地网络访问**权限，否则此功能可能无法按预期工作，因为它基于本地网络访问。")
                     .font(.caption)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
                 
-                Text("**Settings -> apps -> SideStore -> LocalNetworkAccess = toggle on**")
+                Text("**设置 -> 应用 -> SideStore -> 本地网络访问 = 打开**")
                     .font(.caption.bold())
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
@@ -351,10 +351,10 @@ struct ServiceTypesView: View {
             Image(systemName: "magnifyingglass")
                 .font(.system(size: 48))
                 .foregroundColor(.secondary)
-            Text("No Services Found")
+            Text("未找到服务")
                 .font(.headline)
                 .foregroundColor(.secondary)
-            Text("No Bonjour services are currently advertised in this domain.")
+            Text("此域中目前没有广播的 Bonjour 服务。")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
@@ -369,12 +369,12 @@ struct ServiceTypesView: View {
             .padding(.top, 4)
             
             VStack(spacing: 8) {
-                Text("Ensure **Local Network Access** is provided otherwise this function may not work as intended since it is based on L N A...")
+                Text("请确保已提供**本地网络访问**权限，否则此功能可能无法按预期工作，因为它基于本地网络访问。")
                     .font(.caption)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
                 
-                Text("**Settings -> apps -> SideStore -> LocalNetworkAccess = toggle on**")
+                Text("**设置 -> 应用 -> SideStore -> 本地网络访问 = 打开**")
                     .font(.caption.bold())
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
@@ -444,7 +444,7 @@ struct ServiceTypesView: View {
             HStack(spacing: 8) {
                 ProgressView()
                     .scaleEffect(0.8)
-                Text("Searching…")
+                Text("正在搜索…")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -597,10 +597,10 @@ struct ServiceInstancesView: View {
             Image(systemName: "antenna.radiowaves.left.and.right.slash")
                 .font(.system(size: 48))
                 .foregroundColor(.secondary)
-            Text("No Instances Found")
+            Text("未找到实例")
                 .font(.headline)
                 .foregroundColor(.secondary)
-            Text("No devices are currently advertising this service.")
+            Text("目前没有设备广播此服务。")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
@@ -615,12 +615,12 @@ struct ServiceInstancesView: View {
             .padding(.top, 4)
             
             VStack(spacing: 8) {
-                Text("Ensure **Local Network Access** is provided otherwise this function may not work as intended since it is based on L N A...")
+                Text("请确保已提供**本地网络访问**权限，否则此功能可能无法按预期工作，因为它基于本地网络访问。")
                     .font(.caption)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
                 
-                Text("**Settings -> apps -> SideStore -> LocalNetworkAccess = toggle on**")
+                Text("**设置 -> 应用 -> SideStore -> 本地网络访问 = 打开**")
                     .font(.caption.bold())
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
@@ -673,7 +673,7 @@ struct ServiceInstancesView: View {
             HStack(spacing: 8) {
                 ProgressView()
                     .scaleEffect(0.8)
-                Text("Searching…")
+                Text("正在搜索…")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -719,7 +719,7 @@ struct ServiceDetailView: View {
                 loadingState
             }
         }
-        .navigationTitle("Service Details")
+        .navigationTitle("服务详情")
         #if !os(tvOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
@@ -809,7 +809,7 @@ struct ServiceDetailView: View {
         VStack(spacing: 16) {
             ProgressView()
                 .scaleEffect(1.2)
-            Text("Resolving service…")
+            Text("正在解析服务…")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
         }
@@ -820,7 +820,7 @@ struct ServiceDetailView: View {
             Image(systemName: "exclamationmark.triangle")
                 .font(.system(size: 48))
                 .foregroundColor(.orange)
-            Text("Resolution Failed")
+            Text("解析失败")
                 .font(.headline)
                 .foregroundColor(.secondary)
             Text(message)
@@ -900,7 +900,7 @@ struct ServiceDetailView: View {
             }
             
             // Connection Info (Hostname, Addresses, Port, Type, Domain)
-            Section(header: Text("Connection")) {
+            Section(header: Text("连接")) {
                 DetailRow(label: "Hostname", value: resolved.hostname, onCopy: copyWithFeedback)
                 
                 if !viewModel.resolvedAddressItems.isEmpty {
@@ -916,7 +916,7 @@ struct ServiceDetailView: View {
             
             // Interfaces
             if !service.interfaces.isEmpty {
-                Section(header: Text("Discovered Interfaces (\(service.interfaces.count))")) {
+                Section(header: Text("已发现接口（\\(service.interfaces.count)）")) {
                     ForEach(service.interfaces, id: \.index) { iface in
                         HStack {
                             Image(systemName: iconForInterfaceType(iface.type))
@@ -952,7 +952,7 @@ struct ServiceDetailView: View {
             let osRecord = resolved.txtRecords.first(where: { $0.key.lowercased() == "osvers" || $0.key.lowercased() == "os" })?.value
             
             if decodedModel != nil || osRecord != nil {
-                Section(header: Text("Device Info")) {
+                Section(header: Text("设备信息")) {
                     if let model = decodedModel {
                         DetailRow(label: "Model", value: "\(model) (\(modelRecord ?? ""))", onCopy: copyWithFeedback)
                     }
@@ -964,7 +964,7 @@ struct ServiceDetailView: View {
             
             // TXT Records
             if !resolved.txtRecords.isEmpty {
-                Section(header: Text("TXT Record (\(resolved.txtRecords.count))")) {
+                Section(header: Text("TXT 记录（\\(resolved.txtRecords.count)）")) {
                     ForEach(resolved.txtRecords, id: \.key) { record in
                         VStack(alignment: .leading, spacing: 4) {
                             Text(record.key)
@@ -996,7 +996,7 @@ struct ServiceDetailView: View {
             
             // DNS-SD Raw Records
             let dnsRecords = viewModel.dnsSDRawRecords(resolved: resolved)
-            Section(header: Text("DNS-SD Records")) {
+            Section(header: Text("DNS-SD 记录")) {
                 ForEach(dnsRecords, id: \.content) { rec in
                     VStack(alignment: .leading, spacing: 4) {
                         Text(rec.recordType)
@@ -1026,7 +1026,7 @@ struct ServiceDetailView: View {
             }
             
             // Quick Actions (Moved to Bottom)
-            Section(header: Text("Quick Actions")) {
+            Section(header: Text("快捷操作")) {
                 let isWeb = resolved.type.contains("_http") || resolved.type.contains("_https") || resolved.port == 80 || resolved.port == 443 || resolved.port == 8080
                 let isSSH = resolved.type.contains("_ssh") || resolved.port == 22
                 let endpointStr = "\(resolved.hostname):\(resolved.port)"
@@ -1094,7 +1094,7 @@ struct ServiceDetailView: View {
     }
     
     private var copiedBanner: some View {
-        Text("Copied to Clipboard")
+        Text("已复制到剪贴板")
             .font(.subheadline.weight(.medium))
             .foregroundColor(.white)
             .padding(.horizontal, 20)

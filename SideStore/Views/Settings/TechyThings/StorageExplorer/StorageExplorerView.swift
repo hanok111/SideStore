@@ -40,7 +40,7 @@ public struct StorageExplorerView: View {
     public var body: some View {
         List {
             Section(
-                header: Text("App Storage Containers"),
+                header: Text("应用存储容器"),
                 footer: StorageExplorerFooterView(
                     appStorageUsedString: appStorageUsedString.isEmpty ? "Calculating..." : appStorageUsedString,
                     freeHardwareSpaceString: freeHardwareSpaceString,
@@ -289,7 +289,7 @@ private struct StorageExplorerFooterView: View {
         VStack(alignment: .center, spacing: 5) {
             if !appStorageUsedString.isEmpty {
                 HStack(spacing: 4) {
-                    Text("App Storage Used:")
+                    Text("应用已用存储：")
                         .font(.footnote.weight(.semibold))
                         .foregroundColor(.secondary)
                     Text(appStorageUsedString)
@@ -299,7 +299,7 @@ private struct StorageExplorerFooterView: View {
             }
             if !freeHardwareSpaceString.isEmpty {
                 HStack(spacing: 4) {
-                    Text("Available Space:")
+                    Text("可用空间：")
                         .font(.footnote.weight(.semibold))
                         .foregroundColor(.secondary)
                     Text(freeHardwareSpaceString)
@@ -309,7 +309,7 @@ private struct StorageExplorerFooterView: View {
             }
             if !totalHardwareSpaceString.isEmpty {
                 HStack(spacing: 4) {
-                    Text("Total Space:")
+                    Text("总空间：")
                         .font(.footnote.weight(.semibold))
                         .foregroundColor(.secondary)
                     Text(totalHardwareSpaceString)

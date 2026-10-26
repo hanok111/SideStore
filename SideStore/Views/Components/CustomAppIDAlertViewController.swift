@@ -125,7 +125,7 @@ class AppendTeamIDCheckboxView: UIView, UITextFieldDelegate {
         ])
         checkboxButton.addTarget(self, action: #selector(toggleCheckbox), for: .touchUpInside)
         
-        label.text = NSLocalizedString("Append Team ID", comment: "")
+        label.text = NSLocalizedString("附加团队 ID", comment: "")
         label.font = .systemFont(ofSize: 14, weight: .regular)
         label.textColor = .label
         label.isUserInteractionEnabled = true

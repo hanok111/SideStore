@@ -836,7 +836,7 @@ extension AppManager: PipelineProgress, PipelineExecutionContext, PipelineErrorL
         switch operation
         {
             case .install:    localizedTitle = String(format: NSLocalizedString("安装 %@ 失败",        comment: ""), appName)
-            case .reinstall:  localizedTitle = String(format: NSLocalizedString("Failed to Reinstall %@",      comment: ""), appName)
+            case .reinstall:  localizedTitle = String(format: NSLocalizedString("重新安装 %@ 失败",      comment: ""), appName)
             case .refresh:    localizedTitle = String(format: NSLocalizedString("刷新 %@ 失败",        comment: ""), appName)
             case .update:     localizedTitle = String(format: NSLocalizedString("更新 %@ 失败",         comment: ""), appName)
             case .activate:   localizedTitle = String(format: NSLocalizedString("激活 %@ 失败",       comment: ""), appName)

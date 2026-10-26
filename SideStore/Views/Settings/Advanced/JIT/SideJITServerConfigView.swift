@@ -124,9 +124,9 @@ struct SideJITServerConfigView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                     
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Enable SideJITServer")
+                        Text("启用 SideJITServer")
                             .font(.body.weight(.semibold))
-                        Text("Required for JIT on iOS 17+")
+                        Text("iOS 17+ 上启用 JIT 必需")
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -145,9 +145,9 @@ struct SideJITServerConfigView: View {
     }
     
     private var statusSection: some View {
-        Section(header: Text("Connection Status")) {
+        Section(header: Text("连接状态")) {
             HStack {
-                Text("Status")
+                Text("状态")
                 Spacer()
                 HStack(spacing: 6) {
                     Circle()
@@ -160,7 +160,7 @@ struct SideJITServerConfigView: View {
             }
             
             HStack {
-                Text("Resolved Address")
+                Text("已解析的地址")
                     .layoutPriority(1)
                 Spacer()
                 Text(!isServerEnabled ? "Disabled" : (resolvedAddress.isEmpty ? "Resolving…" : resolvedAddress))
@@ -183,7 +183,7 @@ struct SideJITServerConfigView: View {
             }
             
             HStack {
-                Text("Resolution Mode")
+                Text("解析模式")
                 Spacer()
                 Text(customAddress.isEmpty ? "Auto (Bonjour mDNS)" : "Manual Override")
                     .font(.subheadline)
@@ -194,8 +194,8 @@ struct SideJITServerConfigView: View {
     
     private var configurationSection: some View {
         Section(
-            header: Text("Server Address"),
-            footer: Text("Leave empty to automatically discover SideJITServer on your local network via Bonjour.")
+            header: Text("服务器地址"),
+            footer: Text("留空可通过 Bonjour 自动发现本地网络上的 SideJITServer。")
         ) {
             HStack {
                 TextField(AppConstants.SideJIT.defaultServerURL, text: $customAddress)
@@ -227,7 +227,7 @@ struct SideJITServerConfigView: View {
     }
     
     private var diagnosticActionsSection: some View {
-        Section(header: Text("Diagnostics & Tools")) {
+        Section(header: Text("诊断与工具")) {
             SwiftUI.Button {
                 testHealthCheck()
             } label: {
@@ -282,7 +282,7 @@ struct SideJITServerConfigView: View {
     }
     
     private func responseInspectorSection(log: SideJITResponseLog) -> some View {
-        Section(header: Text("Latest Server Response")) {
+        Section(header: Text("最新服务器响应")) {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Text(log.httpMethod)
@@ -299,11 +299,11 @@ struct SideJITServerConfigView: View {
                     
                     Spacer()
                     
-                    Text("\(log.statusCode)")
+                    Text("\\(log.statusCode)")
                         .font(.system(.caption, design: .monospaced).bold())
                         .foregroundColor(log.isSuccess ? .green : .red)
                     
-                    Text("\(log.latencyMs)ms")
+                    Text("\\(log.latencyMs) 毫秒")
                         .font(.caption2)
                         .foregroundColor(.secondary)
                 }
@@ -346,13 +346,13 @@ struct SideJITServerConfigView: View {
     }
     
     private var aboutSection: some View {
-        Section(header: Text("About")) {
+        Section(header: Text("关于")) {
             VStack(alignment: .leading, spacing: 6) {
-                Text("SideJITServer attaches Apple's debugserver service on macOS to running apps on iOS 17+ over local Wi-Fi or USB.")
+                Text("SideJITServer 通过本地 Wi-Fi 或 USB，将 macOS 上的 Apple debugserver 服务附加到 iOS 17+ 上正在运行的应用。")
                     .font(.caption)
                     .foregroundColor(.secondary)
                 
-                Text("When SideStore triggers JIT, SideJITServer sends the debug attach signal and enables Just-In-Time execution instantly.")
+                Text("当 SideStore 触发 JIT 时，SideJITServer 会发送调试附加信号并立即启用即时编译执行。")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -361,7 +361,7 @@ struct SideJITServerConfigView: View {
     }
     
     private var copiedToastView: some View {
-        Text("Copied to Clipboard")
+        Text("已复制到剪贴板")
             .font(.subheadline.weight(.medium))
             .foregroundColor(.white)
             .padding(.horizontal, 20)

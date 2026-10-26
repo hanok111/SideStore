@@ -22,11 +22,11 @@ struct CertificatesListView: View {
     
     var body: some View {
         if viewModel.certificates.isEmpty {
-            Section(header: Text("All Certificates")) {
+            Section(header: Text("全部证书")) {
                 if viewModel.isLoading {
-                    Text("Fetching certificates...").foregroundColor(.secondary)
+                    Text("正在获取证书…").foregroundColor(.secondary)
                 } else {
-                    Text("No local certificates found.").foregroundColor(.secondary)
+                    Text("未找到本地证书。").foregroundColor(.secondary)
                 }
             }
         } else {
@@ -87,7 +87,7 @@ struct CertificatesListView: View {
                     CertGroupHeaderView(group: group, viewModel: viewModel)
                 } footer: {
                     if group.id == viewModel.groupedCertificatesList.last?.id {
-                        Text("Suffix (R) indicates the certificate is registered remotely on Apple's developer portal.")
+                        Text("后缀（R）表示该证书已在 Apple 开发者门户上远程注册。")
                     }
                 }
             }

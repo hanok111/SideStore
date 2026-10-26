@@ -136,7 +136,7 @@ public final class PairingFileManagementViewModel: ObservableObject {
     ) {
         guard let topVC = UIApplication.shared.topViewController() else { return }
 
-        let title = NSLocalizedString("Protocol Mismatch", comment: "")
+        let title = NSLocalizedString("协议不匹配", comment: "")
         let message = String(
             format: NSLocalizedString(
                 "Your saved preference is **%@**, but the provided pairing file is **%@**.\n\nDo you want to switch and accept **%@** as your preferred protocol, or load it without changing your preference?",
@@ -151,21 +151,21 @@ public final class PairingFileManagementViewModel: ObservableObject {
         alert.setMarkdownMessage(message)
 
         alert.addAction(UIAlertAction(
-            title: String(format: NSLocalizedString("Switch to %@", comment: ""), provided.rawValue),
+            title: String(format: NSLocalizedString("切换到 %@", comment: ""), provided.rawValue),
             style: .default
         ) { [weak self] _ in
             self?.confirmProtocolMismatch(url: url, newProtocol: provided)
         })
 
         alert.addAction(UIAlertAction(
-            title: NSLocalizedString("Load Only", comment: ""),
+            title: NSLocalizedString("仅加载", comment: ""),
             style: .default
         ) { [weak self] _ in
             self?.importOnly(url: url, mode: provided)
         })
 
         alert.addAction(UIAlertAction(
-            title: NSLocalizedString("Cancel", comment: ""),
+            title: NSLocalizedString("取消", comment: ""),
             style: .cancel
         ) { [weak self] _ in
             self?.targetImportMode = nil

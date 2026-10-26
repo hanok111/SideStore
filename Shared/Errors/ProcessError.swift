@@ -55,18 +55,18 @@ struct ProcessError: ALTLocalizedError
         switch self.code
         {
         case .failed:
-            guard let exitCode else { return String(format: NSLocalizedString("%@ failed.", comment: ""), self.processName) }
+            guard let exitCode else { return String(format: NSLocalizedString("%@ 失败。", comment: ""), self.processName) }
             
-            let baseMessage = String(format: NSLocalizedString("%@ failed with code %@.", comment: ""), self.processName, NSNumber(value: exitCode))
+            let baseMessage = String(format: NSLocalizedString("%@ 失败，错误代码 %@。", comment: ""), self.processName, NSNumber(value: exitCode))
             guard let lastLine = self.lastOutputLine else { return baseMessage }
             
             let failureReason = baseMessage + " " + lastLine
             return failureReason
             
-        case .timedOut: return String(format: NSLocalizedString("%@ timed out.", comment: ""), self.processName)
-        case .terminated: return String(format: NSLocalizedString("%@ unexpectedly quit.", comment: ""), self.processName)
+        case .timedOut: return String(format: NSLocalizedString("%@ 超时。", comment: ""), self.processName)
+        case .terminated: return String(format: NSLocalizedString("%@ 意外退出。", comment: ""), self.processName)
         case .unexpectedOutput:
-            let baseMessage = String(format: NSLocalizedString("%@ returned unexpected output.", comment: ""), self.processName)
+            let baseMessage = String(format: NSLocalizedString("%@ 返回了意外输出。", comment: ""), self.processName)
             guard let lastLine = self.lastOutputLine else { return baseMessage }
             
             let failureReason = baseMessage + " " + lastLine

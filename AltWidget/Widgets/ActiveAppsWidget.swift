@@ -157,11 +157,11 @@ private struct ActiveAppsWidgetView: View
                                 
                                 let text = if entry.date > app.expirationDate
                                 {
-                                    Text("Expired")
+                                    Text("已过期")
                                 }
                                 else
                                 {
-                                    Text("Expires in \(daysRemaining) ") + (daysRemaining == 1 ? Text("day") : Text("days"))
+                                    Text("Expires in \(daysRemaining) ") + (daysRemaining == 1 ? Text("天") : Text("天"))
                                 }
                                 
                                 text
@@ -227,11 +227,11 @@ private struct ActiveAppsWidgetView: View
     
     private var placeholder: some View {
         VStack(spacing: 4) {
-            Text("Open SideStore")
+            Text("打开 SideStore")
                 .font(.system(.body, design: .rounded))
                 .fontWeight(.semibold)
                 .foregroundColor(Color.white.opacity(0.8))
-            Text("Launch app to update widget")
+            Text("启动应用以更新小组件")
                 .font(.system(.caption, design: .rounded))
                 .foregroundColor(Color.white.opacity(0.5))
                 .multilineTextAlignment(.center)

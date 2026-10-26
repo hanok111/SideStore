@@ -34,7 +34,7 @@ struct AppIDsListView: View {
 
     var body: some View {
         List {
-            Section(header: Text("Registered App IDs (\(viewModel.appIDs.count))")) {
+            Section(header: Text("已注册 App ID（\\(viewModel.appIDs.count)）")) {
                 if filteredAppIDs.isEmpty {
                     if viewModel.isLoading {
                         HStack {
@@ -57,7 +57,7 @@ struct AppIDsListView: View {
                                         .font(.headline)
                                     Spacer()
                                     if !appID.features.isEmpty {
-                                        Text("\(appID.features.count) features")
+                                        Text("\\(appID.features.count) 项功能")
                                             .font(.caption2)
                                             .padding(.horizontal, 6)
                                             .padding(.vertical, 2)
@@ -70,12 +70,12 @@ struct AppIDsListView: View {
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                                 HStack {
-                                    Text("ID: \(appID.identifier)")
+                                    Text("编号：\\(appID.identifier)")
                                         .font(.caption)
                                         .foregroundColor(.secondary)
                                     Spacer()
                                     if let expiration = appID.expirationDate {
-                                        Text("Expires: \(formatDate(expiration))")
+                                        Text("过期时间：\\(formatDate(expiration))")
                                             .font(.caption)
                                             .foregroundColor(expiration < Date() ? .red : .secondary)
                                     }
@@ -111,7 +111,7 @@ struct AppIDsListView: View {
         #else
         .listStyle(GroupedListStyle())
         #endif
-        .navigationTitle("App IDs")
+        .navigationTitle("App ID")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 SwiftUI.Button {
@@ -127,21 +127,21 @@ struct AppIDsListView: View {
         .sheet(isPresented: $showRegisterSheet) {
             NavigationView {
                 Form {
-                    Section(header: Text("App ID Information"), footer: Text("Bundle ID must match reverse-DNS format (e.g. com.example.myapp).")) {
+                    Section(header: Text("App ID 信息"), footer: Text("Bundle ID 须符合反向域名格式（例如 com.example.myapp）。")) {
                         TextField("Name (e.g. My App)", text: $newAppIDName)
                         TextField("Bundle Identifier", text: $newAppIDBundleID)
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
                     }
                 }
-                .navigationTitle("Register App ID")
+                .navigationTitle("注册 App ID")
                 .navigationBarItems(
-                    leading: SwiftUI.Button("Cancel") {
+                    leading: SwiftUI.Button("取消") {
                         newAppIDName = ""
                         newAppIDBundleID = ""
                         showRegisterSheet = false
                     },
-                    trailing: SwiftUI.Button("Register") {
+                    trailing: SwiftUI.Button("注册") {
                         let name = newAppIDName.trimmingCharacters(in: .whitespacesAndNewlines)
                         let bundleID = newAppIDBundleID.trimmingCharacters(in: .whitespacesAndNewlines)
                         guard !name.isEmpty, !bundleID.isEmpty else { return }
@@ -164,7 +164,7 @@ struct AppIDsListView: View {
             Alert(
                 title: Text(viewModel.isPaidAccount ? "Delete App ID?" : "Warning: Delete App ID?"),
                 message: Text(deleteAlertMessage),
-                primaryButton: .destructive(Text("Delete")) {
+                primaryButton: .destructive(Text("删除")) {
                     if let target = appIDToDelete {
                         Task {
                             _ = await viewModel.deleteAppID(target, presentingViewController: presentingViewController)

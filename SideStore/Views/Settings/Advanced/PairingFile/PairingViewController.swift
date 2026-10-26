@@ -21,14 +21,14 @@ final class PairingViewController: NSObject {
             completion?(url)
             self.completion = nil
         }
-        let title = isRetry ? NSLocalizedString("Invalid Pairing File", comment: "") : NSLocalizedString("Pairing File", comment: "")
+        let title = isRetry ? NSLocalizedString("无效的配对文件", comment: "") : NSLocalizedString("配对文件", comment: "")
         let message = isRetry
-            ? NSLocalizedString("The selected pairing file is invalid or not usable. Please select a valid pairing file.", comment: "")
-            : NSLocalizedString("Select the pairing file or select \"Help\" for help.", comment: "")
+            ? NSLocalizedString("所选配对文件无效或不可用，请选择有效的配对文件。", comment: "")
+            : NSLocalizedString("选择配对文件，或选择“帮助”获取帮助。", comment: "")
         
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         alert.setMarkdownMessage(message)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Help", comment: ""), style: .default) { _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("帮助", comment: ""), style: .default) { _ in
             UIApplication.shared.open(AppConstants.URLs.pairingDocumentation)
             if completion == nil {
                 sleep(2); exit(0)
@@ -37,7 +37,7 @@ final class PairingViewController: NSObject {
             }
         })
         #if !os(tvOS)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Select File", comment: ""), style: .default) { _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("选择文件", comment: ""), style: .default) { _ in
             let picker = UIDocumentPickerViewController(forOpeningContentTypes: PairingFileManager.supportedContentTypes)
             picker.delegate = self
             picker.shouldShowFileExtensions = true
@@ -46,7 +46,7 @@ final class PairingViewController: NSObject {
         })
         #endif
         
-        let cancelTitle = isRetry ? NSLocalizedString("Skip", comment: "") : NSLocalizedString("Cancel", comment: "")
+        let cancelTitle = isRetry ? NSLocalizedString("跳过", comment: "") : NSLocalizedString("取消", comment: "")
         alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel) { _ in
             if completion == nil {
                 self.showPairingWarningAndProceed(on: vc)
@@ -59,13 +59,13 @@ final class PairingViewController: NSObject {
 
     func showPairingWarningAndProceed(on vc: UIViewController) {
         let warningAlert = UIAlertController(
-            title: "⚠️ " + NSLocalizedString("Pairing Required", comment: ""),
+            title: "⚠️ " + NSLocalizedString("需要配对", comment: ""),
             message: nil,
             preferredStyle: .alert
         )
-        let warningMessage = NSLocalizedString("Without a valid pairing file, operations that require a pairing file (such as **installing**, **refreshing**, or **resigning** apps) will *not* function.", comment: "")
+        let warningMessage = NSLocalizedString("没有有效的配对文件，需要配对文件的操作（如**安装**、**刷新**或**重签**应用）将*无法*运行。", comment: "")
         warningAlert.setMarkdownMessage(warningMessage)
-        warningAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
+        warningAlert.addAction(UIAlertAction(title: NSLocalizedString("好", comment: ""), style: .default))
         vc.present(warningAlert, animated: true)
     }
 
@@ -78,9 +78,9 @@ final class PairingViewController: NSObject {
         onChooseOther: @escaping () -> Void,
         onCancel: @escaping () -> Void
     ) {
-        let title = NSLocalizedString("Protocol Mismatch", comment: "")
+        let title = NSLocalizedString("协议不匹配", comment: "")
         let message = String(
-            format: NSLocalizedString("Your saved preference is **%@**, but the provided pairing file is **%@**.\n\nDo you want to switch and accept **%@** as your current protocol?", comment: ""),
+            format: NSLocalizedString("你保存的首选项是 **%@**，但提供的配对文件是 **%@**。\\n\\n是否切换并接受 **%@** 作为当前协议？", comment: ""),
             savedPreference.rawValue,
             providedProtocol.rawValue,
             providedProtocol.rawValue
@@ -88,13 +88,13 @@ final class PairingViewController: NSObject {
         
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         alert.setMarkdownMessage(message)
-        alert.addAction(UIAlertAction(title: String(format: NSLocalizedString("Switch to %@", comment: ""), providedProtocol.rawValue), style: .default) { _ in
+        alert.addAction(UIAlertAction(title: String(format: NSLocalizedString("切换到 %@", comment: ""), providedProtocol.rawValue), style: .default) { _ in
             onSwitch()
         })
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Choose Another File", comment: ""), style: .default) { _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("选择其他文件", comment: ""), style: .default) { _ in
             onChooseOther()
         })
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel) { _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("取消", comment: ""), style: .cancel) { _ in
             onCancel()
         })
         vc.present(alert, animated: true)
@@ -206,7 +206,7 @@ extension PairingViewController {
             self.completion = nil
         }
 
-        let title = isRetry ? NSLocalizedString("Invalid Pairing File", comment: "") : NSLocalizedString("Pairing File Required", comment: "")
+        let title = isRetry ? NSLocalizedString("无效的配对文件", comment: "") : NSLocalizedString("需要配对文件", comment: "")
         TVWebFileTransferManager.shared.startImport(
             acceptedExtensions: AppConstants.Pairing.supportedExtensions,
             title: title,

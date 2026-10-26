@@ -24,7 +24,7 @@ struct ActiveCertSectionView: View {
                     
                     VStack(alignment: .leading) {
                         HStack(spacing: 6) {
-                            Text("Active Signing Certificate").font(.headline)
+                            Text("当前签名证书").font(.headline)
                             
                             #if !os(tvOS)
                             SwiftUI.Button {
@@ -43,7 +43,7 @@ struct ActiveCertSectionView: View {
                         
                         let displaySerial = viewModel.displayActiveSerial(activeSerial)
                         (
-                            Text("SN: ").font(.footnote)
+                            Text("序列号：").font(.footnote)
                             + Text(displaySerial).font(.system(size: 13, design: .monospaced))
                         )
                         .foregroundColor(.secondary)
@@ -60,7 +60,7 @@ struct ActiveCertSectionView: View {
                                 Image(systemName: "exclamationmark.triangle.fill")
                                     .foregroundColor(.orange)
                                     .font(.footnote)
-                                Text("Custom third-party certificate (different team)")
+                                Text("自定义第三方证书（不同团队）")
                                     .font(.caption)
                                     .foregroundColor(.orange)
                             }
@@ -90,7 +90,7 @@ struct ActiveCertSectionView: View {
                 HStack {
                     Image(systemName: "checkmark.seal.fill").font(.title2).opacity(0)
                     SwiftUI.Button(role: .destructive) { onDeactivate() } label: {
-                        Text("Deactivate Locally").fontWeight(.medium)
+                        Text("本地停用").fontWeight(.medium)
                     }
                 }
             } else {

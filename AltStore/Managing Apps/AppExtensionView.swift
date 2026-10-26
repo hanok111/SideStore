@@ -31,7 +31,7 @@ struct AppExtensionView: View {
                     }
                 }
             }
-            .navigationTitle("App Extensions")
+            .navigationTitle("应用扩展")
             .onDisappear {
                 completion(selection)
             }

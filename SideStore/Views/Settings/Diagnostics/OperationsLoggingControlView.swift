@@ -59,7 +59,7 @@ struct OperationsLoggingControlView: View {
             VStack(alignment: .leading, spacing: 24) {
                 // Standalone Steps
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("STANDALONE STEPS")
+                    Text("独立步骤")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(Color.white.opacity(0.6))
                         .padding(.horizontal, 16)
@@ -78,7 +78,7 @@ struct OperationsLoggingControlView: View {
                 
                 // Pipeline Steps
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("PIPELINE STEPS")
+                    Text("流水线步骤")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(Color.white.opacity(0.6))
                         .padding(.horizontal, 16)

@@ -235,8 +235,8 @@ class AppState: ObservableObject {
 
     private func backup(skipNonCopyable: Bool = false) async {
         if let error = self.bootCheckError ?? ConsoleLog.bootCheckError {
-            let appName = Bundle.main.appName ?? NSLocalizedString("App", comment: "")
-            let title = String(format: NSLocalizedString("%@ could not be backed up.", comment: ""), appName)
+            let appName = Bundle.main.appName ?? NSLocalizedString("应用", comment: "")
+            let title = String(format: NSLocalizedString("%@ 无法备份。", comment: ""), appName)
             self.process(.failure(error), errorTitle: title)
             return
         }
@@ -244,7 +244,7 @@ class AppState: ObservableObject {
         self.progressFraction = 0.0
         self.progressText = "Calculating size…"
         
-        let appName = Bundle.main.appName ?? NSLocalizedString("App", comment: "")
+        let appName = Bundle.main.appName ?? NSLocalizedString("应用", comment: "")
         
         do {
             try await BackupEngine.shared.performBackup(skipNonCopyable: skipNonCopyable) { [weak self] copied, total in
@@ -254,15 +254,15 @@ class AppState: ObservableObject {
             }
             self.process(.success(()), errorTitle: "")
         } catch {
-            let title = String(format: NSLocalizedString("%@ could not be backed up.", comment: ""), appName)
+            let title = String(format: NSLocalizedString("%@ 无法备份。", comment: ""), appName)
             self.process(.failure(error), errorTitle: title)
         }
     }
     
     private func restore(skipNonCopyable: Bool = false) async {
         if let error = self.bootCheckError ?? ConsoleLog.bootCheckError {
-            let appName = Bundle.main.appName ?? NSLocalizedString("App", comment: "")
-            let title = String(format: NSLocalizedString("%@ could not be restored.", comment: ""), appName)
+            let appName = Bundle.main.appName ?? NSLocalizedString("应用", comment: "")
+            let title = String(format: NSLocalizedString("%@ 无法恢复。", comment: ""), appName)
             self.process(.failure(error), errorTitle: title)
             return
         }
@@ -270,7 +270,7 @@ class AppState: ObservableObject {
         self.progressFraction = 0.0
         self.progressText = "Calculating size…"
         
-        let appName = Bundle.main.appName ?? NSLocalizedString("App", comment: "")
+        let appName = Bundle.main.appName ?? NSLocalizedString("应用", comment: "")
         
         do {
             try await BackupEngine.shared.restoreBackup(skipNonCopyable: skipNonCopyable) { [weak self] copied, total in
@@ -280,7 +280,7 @@ class AppState: ObservableObject {
             }
             self.process(.success(()), errorTitle: "")
         } catch {
-            let title = String(format: NSLocalizedString("%@ could not be restored.", comment: ""), appName)
+            let title = String(format: NSLocalizedString("%@ 无法恢复。", comment: ""), appName)
             self.process(.failure(error), errorTitle: title)
         }
     }

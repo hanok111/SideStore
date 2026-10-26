@@ -1322,7 +1322,7 @@ extension SettingsViewController
                 let discoveryView = BonjourDiscoveryView()
                 let vc = UIHostingController(rootView: discoveryView)
                 vc.view.backgroundColor = .settingsBackground
-                vc.title = NSLocalizedString("Network Discovery", comment: "")
+                vc.title = NSLocalizedString("网络发现", comment: "")
                 self.prepare(for: UIStoryboardSegue(identifier: "diagnostics", source: self, destination: vc), sender: nil)
 
             case .developerServices:

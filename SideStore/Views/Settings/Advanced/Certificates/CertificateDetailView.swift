@@ -61,70 +61,70 @@ struct CertificateDetailView: View {
             Section {
                 Section {
                     if let identifier = portalMetadata?.identifier ?? certificate.identifier {
-                        detailRowWithCopy(title: "Certificate ID", value: identifier, isCopied: $copiedIdentifier)
+                        detailRowWithCopy(title: "证书编号", value: identifier, isCopied: $copiedIdentifier)
                     }
                     if let certType = portalMetadata?.certificateType ?? certificate.certificateType {
-                        detailRow(title: "Certificate Type", value: certType)
+                        detailRow(title: "证书类型", value: certType)
                     }
                     if let typeName = portalMetadata?.certificateTypeName ?? certificate.certificateTypeName {
-                        detailRow(title: "Type Name", value: typeName)
+                        detailRow(title: "类型名称", value: typeName)
                     }
                     if let managed = portalMetadata?.isManaged ?? certificate.isManaged {
-                        detailRow(title: "Managed", value: managed ? "Yes (Xcode Cloud)" : "No")
+                        detailRow(title: "托管", value: managed ? "Yes (Xcode Cloud)" : "No")
                     }
                     if let status = portalMetadata?.status ?? certificate.status {
-                        detailRow(title: "Status", value: status)
+                        detailRow(title: "状态", value: status)
                     }
                     if let platform = portalMetadata?.platform ?? certificate.platform {
-                        detailRow(title: "Platform", value: platform)
+                        detailRow(title: "平台", value: platform)
                     }
                     if let platformName = portalMetadata?.platformName ?? certificate.platformName {
-                        detailRow(title: "Platform Name", value: platformName)
+                        detailRow(title: "平台名称", value: platformName)
                     }
                     if let machineID = portalMetadata?.machineIdentifier ?? certificate.machineIdentifier {
-                        detailRow(title: "Machine ID", value: machineID)
+                        detailRow(title: "机器 ID", value: machineID)
                     }
                     if let createdBy = portalMetadata?.requesterFirstName ?? certificate.requesterFirstName {
-                        detailRow(title: "Created By", value: redactableValue(createdBy))
+                        detailRow(title: "创建者", value: redactableValue(createdBy))
                     }
                     if let email = portalMetadata?.requesterEmail ?? certificate.requesterEmail {
-                        detailRow(title: "Requester Email", value: redactableValue(email))
+                        detailRow(title: "请求者邮箱", value: redactableValue(email))
                     }
                     if let ownerName = portalMetadata?.ownerName ?? certificate.ownerName {
-                        detailRow(title: "Owner Name", value: redactableValue(ownerName))
+                        detailRow(title: "所有者姓名", value: redactableValue(ownerName))
                     }
                     if let ownerId = portalMetadata?.ownerId ?? certificate.ownerId {
-                        detailRow(title: "Owner ID", value: redactableValue(ownerId))
+                        detailRow(title: "所有者编号", value: redactableValue(ownerId))
                     }
                     if let autoRotation = portalMetadata?.autoRotationEnabled ?? certificate.autoRotationEnabled {
-                        detailRow(title: "Auto-Rotation", value: autoRotation ? "Enabled" : "Disabled")
+                        detailRow(title: "自动轮换", value: autoRotation ? "Enabled" : "Disabled")
                     }
                 } header: {
-                    Text("Developer Portal Info")
+                    Text("开发者门户信息")
                 }
             }
             
             if let certData = certificate.data {
                 let details = parseCertificate(derData: certData)
                 Section {
-                    detailRow(title: "Version", value: details.version)
-                    detailRow(title: "Subject", value: redactableValue(details.subject))
-                    detailRow(title: "Issuer", value: details.issuer)
-                    detailRow(title: "Serial Number (hex)", value: details.serialHex)
-                    detailRow(title: "Serial Number (dec)", value: details.serialDec)
+                    detailRow(title: "版本", value: details.version)
+                    detailRow(title: "主题", value: redactableValue(details.subject))
+                    detailRow(title: "签发者", value: details.issuer)
+                    detailRow(title: "序列号（十六进制）", value: details.serialHex)
+                    detailRow(title: "序列号（十进制）", value: details.serialDec)
                 } header: {
-                    Text("X.509 Fields")
+                    Text("X.509 字段")
                 }
                 
                 if let from = details.validFrom, let until = details.validUntil {
                     let stats = computeValidityStats(from: from, until: until)
                     Section {
-                        detailRow(title: "Valid From", value: formatDate(from))
-                        detailRow(title: "Valid Until", value: formatDate(until))
+                        detailRow(title: "有效期自", value: formatDate(from))
+                        detailRow(title: "有效期至", value: formatDate(until))
                         
                         VStack(alignment: .leading, spacing: 6) {
                             HStack {
-                                Text("Validity Progress")
+                                Text("有效期进度")
                                 Spacer()
                                 Text(String(format: "%.0f%%", stats.progress * 100))
                                     .foregroundColor(.secondary)
@@ -133,19 +133,19 @@ struct CertificateDetailView: View {
                                 .tint(.accentColor)
                         }
                         
-                        detailRow(title: "Validity Days", value: "Total: \(stats.totalDays), Elapsed: \(stats.elapsedDays), Remaining: \(stats.remainingDays)")
+                        detailRow(title: "有效天数", value: "Total: \(stats.totalDays), Elapsed: \(stats.elapsedDays), Remaining: \(stats.remainingDays)")
                     } header: {
-                        Text("Validity Period")
+                        Text("有效期")
                     }
                 }
                 
                 Section {
-                    detailRow(title: "Public Key", value: details.publicKeyType)
-                    detailRow(title: "Signature Algorithm", value: details.signatureAlgorithm)
+                    detailRow(title: "公钥", value: details.publicKeyType)
+                    detailRow(title: "签名算法", value: details.signatureAlgorithm)
                     
                     VStack(alignment: .leading, spacing: 4) {
                         HStack {
-                            Text("SHA-1 Fingerprint")
+                            Text("SHA-1 指纹")
                                 .font(.subheadline)
                                 .foregroundColor(.primary)
                             Spacer()
@@ -178,7 +178,7 @@ struct CertificateDetailView: View {
                     
                     VStack(alignment: .leading, spacing: 4) {
                         HStack {
-                            Text("SHA-256 Fingerprint")
+                            Text("SHA-256 指纹")
                                 .font(.subheadline)
                                 .foregroundColor(.primary)
                             Spacer()
@@ -209,17 +209,17 @@ struct CertificateDetailView: View {
                     }
                     .padding(.vertical, 4)
                 } header: {
-                    Text("Signature & Public Key Details")
+                    Text("签名与公钥详情")
                 }
             }
             
             Section {
-                detailRow(title: "Has Private Key", value: signableCert != nil ? "Yes" : "No")
+                detailRow(title: "有私钥", value: signableCert != nil ? "Yes" : "No")
                 
                 if let privateKey = signableCert?.privateKey {
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text("Private Key Data")
+                            Text("私钥数据")
                                 .font(.subheadline)
                                 .foregroundColor(.primary)
                             Spacer()
@@ -269,7 +269,7 @@ struct CertificateDetailView: View {
                 if let certData = certificate.data {
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text("Certificate PEM Data")
+                            Text("证书 PEM 数据")
                                 .font(.subheadline)
                                 .foregroundColor(.primary)
                             Spacer()
@@ -303,10 +303,10 @@ struct CertificateDetailView: View {
                     .padding(.vertical, 4)
                 }
             } header: {
-                Text("Cryptographic Keys")
+                Text("加密密钥")
             }
         }
-        .navigationTitle("Certificate Details")
+        .navigationTitle("证书详情")
         #if !os(tvOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif

@@ -79,7 +79,7 @@ enum CertificateExporter {
         }
         rootVC.present(activityVC, animated: true)
         #else
-        TVWebFileTransferManager.shared.startExport(fileURL: tempURL, title: "Export Certificate / Key", presentingVC: rootVC)
+        TVWebFileTransferManager.shared.startExport(fileURL: tempURL, title: "导出证书 / 密钥", presentingVC: rootVC)
         #endif
     }
 }

@@ -46,7 +46,7 @@ class ExportAccountAlertViewController: UIViewController {
         super.viewDidLoad()
         
         passwordTextField.isSecureTextEntry = true
-        passwordTextField.placeholder = NSLocalizedString("File Password", comment: "")
+        passwordTextField.placeholder = NSLocalizedString("文件密码", comment: "")
         passwordTextField.borderStyle = .none
         #if !os(tvOS)
         passwordTextField.backgroundColor = .tertiarySystemFill
@@ -76,7 +76,7 @@ class ExportAccountAlertViewController: UIViewController {
         updateButtonImage()
         
         let label = UILabel()
-        label.text = NSLocalizedString("Include Account Password", comment: "")
+        label.text = NSLocalizedString("包含账号密码", comment: "")
         label.font = .systemFont(ofSize: 15)
         label.textColor = .label
         label.isUserInteractionEnabled = true

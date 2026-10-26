@@ -28,7 +28,7 @@ struct BatchError: ALTLocalizedError {
     }
     
     var errorFailureReason: String {
-        guard !self.underlyingErrors.isEmpty else { return NSLocalizedString("An unknown error occured.", comment: "") }
+        guard !self.underlyingErrors.isEmpty else { return NSLocalizedString("发生了一个未知错误。", comment: "") }
         
         let errorMessages = self.underlyingErrors.map { $0.localizedDescription }
         

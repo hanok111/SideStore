@@ -589,7 +589,7 @@ struct InfoPlistSemanticView: View {
         List {
             // General Info — only show if app metadata is actually present in plist
             if hasAppMetadata {
-                Section(header: Text("General Info")) {
+                Section(header: Text("通用信息")) {
                     SemanticValueRow(label: "App Name", value: appName)
                     SemanticValueRow(label: "Bundle Identifier", value: bundleID)
                     SemanticValueRow(label: "Version", value: version)
@@ -599,7 +599,7 @@ struct InfoPlistSemanticView: View {
             
             // Privacy Permissions Card
             if !privacyPermissions.isEmpty {
-                Section(header: Text("Privacy Permissions (\(privacyPermissions.count))")) {
+                Section(header: Text("隐私权限（\\(privacyPermissions.count)）")) {
                     ForEach(privacyPermissions.keys.sorted(), id: \.self) { key in
                         LocalCopyableDescriptionRow(key: key, value: privacyPermissions[key] ?? "")
                     }
@@ -608,7 +608,7 @@ struct InfoPlistSemanticView: View {
             
             // Custom URL Schemes Card
             if !customURLSchemes.isEmpty {
-                Section(header: Text("Custom URL Schemes")) {
+                Section(header: Text("自定义 URL Scheme")) {
                     ForEach(customURLSchemes, id: \.self) { scheme in
                         LocalCopyableValueOnlyRow(value: scheme)
                     }
@@ -617,7 +617,7 @@ struct InfoPlistSemanticView: View {
             
             // Background Modes Card
             if !backgroundModes.isEmpty {
-                Section(header: Text("Background Modes")) {
+                Section(header: Text("后台模式")) {
                     ForEach(backgroundModes, id: \.self) { mode in
                         HStack {
                             Image(systemName: getBackgroundModeIcon(mode))
@@ -633,7 +633,7 @@ struct InfoPlistSemanticView: View {
             
             // Queried URL Schemes Card
             if !queriedSchemes.isEmpty {
-                Section(header: Text("Queries Schemes")) {
+                Section(header: Text("查询 Scheme")) {
                     ForEach(queriedSchemes, id: \.self) { scheme in
                         HStack {
                             Text(scheme)
@@ -645,7 +645,7 @@ struct InfoPlistSemanticView: View {
             }
             
             // Other Custom/Advanced Keys
-            Section(header: Text("Advanced / Custom Keys")) {
+            Section(header: Text("高级 / 自定义键")) {
                 SearchBarView(text: $searchQuery)
                     .listRowInsets(EdgeInsets())
                     .padding(.horizontal)

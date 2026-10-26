@@ -181,8 +181,8 @@ struct SideSignConfigurationView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 Picker("View Mode", selection: $viewModel.viewMode) {
-                    Text("Interactive").tag(0)
-                    Text("Raw JSON").tag(1)
+                    Text("交互式").tag(0)
+                    Text("原始 JSON").tag(1)
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal, 16)
@@ -431,14 +431,14 @@ struct SideSignConfigurationView: View {
                             .frame(height: 50)
                         }
                         .alert("Reset to Defaults?", isPresented: $showingResetAlert) {
-                            SwiftUI.Button("Reset", role: .destructive) {
+                            SwiftUI.Button("重置", role: .destructive) {
                                 Task {
                                     await viewModel.reset()
                                 }
                             }
-                            SwiftUI.Button("Cancel", role: .cancel) {}
+                            SwiftUI.Button("取消", role: .cancel) {}
                         } message: {
-                            Text("This will restore the SideSign headers to their default recommended values.")
+                            Text("这将把 SideSign 请求头恢复为默认推荐值。")
                         }
                     }
                     .background(Color.settingsRowBackground)

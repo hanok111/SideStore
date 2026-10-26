@@ -370,7 +370,7 @@ struct IPAContentsView: View {
                 VStack(spacing: 16) {
                     ProgressView()
                         .scaleEffect(1.5)
-                    Text("Extracting \(ipaURL.lastPathComponent)...")
+                    Text("正在解压 \\(ipaURL.lastPathComponent)…")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -384,7 +384,7 @@ struct IPAContentsView: View {
                     Image(systemName: "exclamationmark.triangle")
                         .font(.system(size: 44))
                         .foregroundColor(.orange)
-                    Text("Extraction Failed")
+                    Text("解压失败")
                         .font(.headline)
                     Text(error)
                         .font(.subheadline)
@@ -454,7 +454,7 @@ struct FullAppBundleView: View {
             }
 
             // General Info — all from Info.plist
-            Section(header: Text("General Info")) {
+            Section(header: Text("通用信息")) {
                 let plist = infoPlist
                 let bundleID = plist?["CFBundleIdentifier"] as? String ?? "N/A"
                 let short = plist?["CFBundleShortVersionString"] as? String
@@ -474,7 +474,7 @@ struct FullAppBundleView: View {
                     if FileManager.default.fileExists(atPath: execURL.path) && CodeSignKit.MachOParser.isMachOBinary(at: execURL) {
                         NavigationLink(destination: MachOResourceViewer(url: execURL)) {
                             HStack {
-                                Text("Executable")
+                                Text("可执行文件")
                                     .font(.subheadline)
                                     .foregroundColor(.primary)
                                 Spacer()
@@ -491,15 +491,15 @@ struct FullAppBundleView: View {
 
             // Provisioning Profile — from embedded.mobileprovision
             if let profile = provisioningProfile {
-                Section(header: Text("Provisioning Profile")) {
+                Section(header: Text("描述文件")) {
                     NavigationLink(destination: ProvisioningProfileDetailView(profile: profile, certificatesViewModel: certificatesViewModel)) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(profile.name)
                                 .font(.subheadline)
-                            Text("UUID: \(profile.uuid.uuidString)")
+                            Text("UUID：\\(profile.uuid.uuidString)")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
-                            Text("Expires: \(formatDate(profile.expirationDate))")
+                            Text("过期时间：\\(formatDate(profile.expirationDate))")
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                         }
@@ -511,7 +511,7 @@ struct FullAppBundleView: View {
             if let plist = infoPlist {
                 Section(header: Text("Info.plist")) {
                     NavigationLink(destination: InfoPlistContainerView(plist: plist)) {
-                        Text("View Info.plist (\(plist.count) keys)")
+                        Text("查看 Info.plist（\\(plist.count) 个键）")
                             .font(.subheadline)
                     }
                 }
@@ -519,7 +519,7 @@ struct FullAppBundleView: View {
 
             // App Extensions
             if !appExtensions.isEmpty {
-                Section(header: Text("App Extensions (\(appExtensions.count))")) {
+                Section(header: Text("应用扩展（\\(appExtensions.count)）")) {
                     ForEach(appExtensions, id: \.path) { extURL in
                         let extParser = try? InfoPlistParser(bundleURL: extURL)
                         let extName = extParser?.displayName
@@ -540,9 +540,9 @@ struct FullAppBundleView: View {
             }
 
             // Resources — recursive browser
-            Section(header: Text("Resources")) {
-                NavigationLink(destination: BundleResourceBrowserView(rootURL: bundleURL, title: "Bundle Contents")) {
-                    Text("Browse Bundle Contents")
+            Section(header: Text("资源")) {
+                NavigationLink(destination: BundleResourceBrowserView(rootURL: bundleURL, title: "包内容")) {
+                    Text("浏览包内容")
                         .font(.subheadline)
                 }
             }
@@ -624,7 +624,7 @@ struct ResourceImageViewer: View {
                     Image(systemName: "photo.slash")
                         .font(.system(size: 44))
                         .foregroundColor(.secondary)
-                    Text("Could not load image")
+                    Text("无法加载图片")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -730,9 +730,9 @@ struct ProvisioningProfileResourceViewer: View {
                     Image(systemName: "exclamationmark.triangle")
                         .font(.system(size: 44))
                         .foregroundColor(.orange)
-                    Text("Invalid Provisioning Profile")
+                    Text("无效的描述文件")
                         .font(.headline)
-                    Text("Could not decode provisioning profile from \(url.lastPathComponent).")
+                    Text("无法从 \\(url.lastPathComponent) 解码描述文件。")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)

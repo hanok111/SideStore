@@ -52,7 +52,7 @@ struct DeveloperOptionsView: View {
             VStack(alignment: .leading, spacing: 24) {
                 // Section 1: Logging & Diagnostics
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("LOGGING & DIAGNOSTICS")
+                    Text("日志与诊断")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(Color.white.opacity(0.6))
                         .padding(.horizontal, 16)
@@ -142,7 +142,7 @@ struct DeveloperOptionsView: View {
                         
                         NavigationLink(destination: OperationsLoggingControlView()) {
                             HStack {
-                                Text("Operations Logging Control")
+                                Text("操作日志控制")
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(.white)
                                 Spacer()
@@ -219,7 +219,7 @@ struct DeveloperOptionsView: View {
                 
                 // Section 2: Database Options
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("DATABASE OPTIONS")
+                    Text("数据库选项")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(Color.white.opacity(0.6))
                         .padding(.horizontal, 16)
@@ -230,7 +230,7 @@ struct DeveloperOptionsView: View {
                                 Image(systemName: "square.and.arrow.up")
                                     .font(.system(size: 18, weight: .semibold))
                                     .foregroundColor(.white)
-                                Text("Export Database")
+                                Text("导出数据库")
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(.white)
                                 Spacer()
@@ -251,7 +251,7 @@ struct DeveloperOptionsView: View {
                                 Image(systemName: "clock.arrow.circlepath")
                                     .font(.system(size: 18, weight: .semibold))
                                     .foregroundColor(Color(red: 1.0, green: 0.27, blue: 0.27))
-                                Text("Clear Refresh Attempts")
+                                Text("清除刷新尝试记录")
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(Color(red: 1.0, green: 0.27, blue: 0.27))
                                 Spacer()
@@ -267,7 +267,7 @@ struct DeveloperOptionsView: View {
                                 Image(systemName: "trash")
                                     .font(.system(size: 18, weight: .semibold))
                                     .foregroundColor(Color(red: 1.0, green: 0.27, blue: 0.27))
-                                Text("Delete Database")
+                                Text("删除数据库")
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(Color(red: 1.0, green: 0.27, blue: 0.27))
                                 Spacer()
@@ -283,7 +283,7 @@ struct DeveloperOptionsView: View {
                                 Image(systemName: "key")
                                     .font(.system(size: 18, weight: .semibold))
                                     .foregroundColor(Color(red: 1.0, green: 0.27, blue: 0.27))
-                                Text("Clear Keychain Items")
+                                Text("清除钥匙串项目")
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(Color(red: 1.0, green: 0.27, blue: 0.27))
                                 Spacer()
@@ -308,7 +308,7 @@ struct DeveloperOptionsView: View {
                 
                 // Section 3: WireGuard Configuration
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("WIREGUARD CONFIGURATION")
+                    Text("WireGuard 配置")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(Color.white.opacity(0.6))
                         .padding(.horizontal, 16)
@@ -319,7 +319,7 @@ struct DeveloperOptionsView: View {
                                 Image(systemName: "play.circle")
                                     .font(.system(size: 18, weight: .semibold))
                                     .foregroundColor(.white)
-                                Text("Start EMProxy")
+                                Text("启动 EMProxy")
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(.white)
                                 Spacer()
@@ -335,7 +335,7 @@ struct DeveloperOptionsView: View {
                                 Image(systemName: "stop.circle")
                                     .font(.system(size: 18, weight: .semibold))
                                     .foregroundColor(.white)
-                                Text("Stop EMProxy")
+                                Text("停止 EMProxy")
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(.white)
                                 Spacer()
@@ -359,7 +359,7 @@ struct DeveloperOptionsView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("BACKGROUND SERVICE")
+                    Text("后台服务")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(Color.white.opacity(0.6))
                         .padding(.horizontal, 16)
@@ -370,7 +370,7 @@ struct DeveloperOptionsView: View {
                                 Image(systemName: "play.circle")
                                     .font(.system(size: 18, weight: .semibold))
                                     .foregroundColor(.white)
-                                Text("Start Background Service")
+                                Text("启动后台服务")
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(.white)
                                 Spacer()
@@ -386,7 +386,7 @@ struct DeveloperOptionsView: View {
                                 Image(systemName: "stop.circle")
                                     .font(.system(size: 18, weight: .semibold))
                                     .foregroundColor(.white)
-                                Text("Stop Background Service")
+                                Text("停止后台服务")
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(.white)
                                 Spacer()
@@ -401,7 +401,7 @@ struct DeveloperOptionsView: View {
                 
                 // Section: Device (TCP) Probe Timeout
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("DEVICE (TCP) PROBE TIMEOUT")
+                    Text("设备（TCP）探测超时")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(Color.white.opacity(0.6))
                         .padding(.horizontal, 16)
@@ -459,7 +459,7 @@ struct DeveloperOptionsView: View {
                 
                 // Section: Connection Config
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("CONNECTION CONFIG")
+                    Text("连接配置")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(Color.white.opacity(0.6))
                         .padding(.horizontal, 16)
@@ -490,7 +490,7 @@ struct DeveloperOptionsView: View {
                 #if DEBUG
                 // Section 3: Account Management
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("ACCOUNT MANAGEMENT")
+                    Text("账号管理")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(Color.white.opacity(0.6))
                         .padding(.horizontal, 16)
@@ -501,7 +501,7 @@ struct DeveloperOptionsView: View {
                                 Image(systemName: "square.and.arrow.down")
                                     .font(.system(size: 18, weight: .semibold))
                                     .foregroundColor(.white)
-                                Text("Import Account JSON")
+                                Text("导入账号 JSON")
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(.white)
                                 Spacer()
@@ -517,7 +517,7 @@ struct DeveloperOptionsView: View {
                                AuthManager.shared.password == nil ||
                                CertificateManager.shared.activeCertificate == nil {
                                 if let top = UIApplication.shared.topViewController() {
-                                    let toastView = ToastView(text: NSLocalizedString("Failed to export account!", comment: ""), detailText: "Account not found or missing credentials.")
+                                    let toastView = ToastView(text: NSLocalizedString("导出账号失败！", comment: ""), detailText: "Account not found or missing credentials.")
                                     toastView.show(in: top)
                                 }
                             } else {
@@ -529,7 +529,7 @@ struct DeveloperOptionsView: View {
                                 Image(systemName: "square.and.arrow.up")
                                     .font(.system(size: 18, weight: .semibold))
                                     .foregroundColor(.white)
-                                Text("Export Account JSON")
+                                Text("导出账号 JSON")
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(.white)
                                 Spacer()
@@ -544,7 +544,7 @@ struct DeveloperOptionsView: View {
                 #endif
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("PROVISIONING PROFILES")
+                    Text("描述文件")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(Color.white.opacity(0.6))
                         .padding(.horizontal, 16)
@@ -559,7 +559,7 @@ struct DeveloperOptionsView: View {
                                 Image(systemName: "arrow.down.doc")
                                     .font(.system(size: 18, weight: .semibold))
                                     .foregroundColor(.white)
-                                Text("Dump Provisioning Profiles")
+                                Text("导出描述文件")
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(.white)
                                 Spacer()
@@ -578,7 +578,7 @@ struct DeveloperOptionsView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("ONBOARDING")
+                    Text("新手引导")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(Color.white.opacity(0.6))
                         .padding(.horizontal, 16)
@@ -589,7 +589,7 @@ struct DeveloperOptionsView: View {
                                 Image(systemName: "sparkles")
                                     .font(.system(size: 18, weight: .semibold))
                                     .foregroundColor(.white)
-                                Text("Replay Onboarding")
+                                Text("重播新手引导")
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(.white)
                                 Spacer()
@@ -612,7 +612,7 @@ struct DeveloperOptionsView: View {
                             UserDefaults.standard.hasCompletedOnboarding = false
                             UserDefaults.standard.synchronize()
                             if let top = UIApplication.shared.topViewController() {
-                                let toastView = ToastView(text: NSLocalizedString("Onboarding reset for next launch", comment: ""), detailText: nil)
+                                let toastView = ToastView(text: NSLocalizedString("下次启动时重置新手引导", comment: ""), detailText: nil)
                                 toastView.show(in: top)
                             }
                         }) {
@@ -620,7 +620,7 @@ struct DeveloperOptionsView: View {
                                 Image(systemName: "arrow.counterclockwise")
                                     .font(.system(size: 18, weight: .semibold))
                                     .foregroundColor(.white)
-                                Text("Reset Onboarding State")
+                                Text("重置新手引导状态")
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(.white)
                                 Spacer()
@@ -647,39 +647,39 @@ struct DeveloperOptionsView: View {
                 _ = DatabaseManager.deleteDatabase()
                 exit(0)
             }
-            SwiftUI.Button("Cancel", role: .cancel) {}
+            SwiftUI.Button("取消", role: .cancel) {}
         } message: {
-            Text("Deleting the database will remove all app entries and sources from SideStore.")
+            Text("删除数据库将移除 SideStore 中的所有应用条目和来源。")
         }
         .alert("Clear Refresh Attempts", isPresented: $showClearRefreshAttemptsConfirmation) {
-            SwiftUI.Button("Clear", role: .destructive) {
+            SwiftUI.Button("清除", role: .destructive) {
                 clearRefreshAttempts()
             }
-            SwiftUI.Button("Cancel", role: .cancel) {}
+            SwiftUI.Button("取消", role: .cancel) {}
         } message: {
-            Text("Are you sure you want to clear all existing refresh attempt entries?")
+            Text("确定要清除所有现有的刷新尝试记录吗？")
         }
         #if DEBUG
         .alert("Export Account", isPresented: $showExportPasswordPrompt) {
             SecureField("Certificate Password", text: $exportCertPassword)
-            SwiftUI.Button("Export") {
+            SwiftUI.Button("导出") {
                 exportAccountJSON(password: exportCertPassword)
             }
-            SwiftUI.Button("Cancel", role: .cancel) {}
+            SwiftUI.Button("取消", role: .cancel) {}
         } message: {
-            Text("Please enter a password for the certificate.")
+            Text("请输入证书密码。")
         }
         #endif
         .alert("Clear Keychain Items", isPresented: $showClearKeychainConfirmation) {
             SwiftUI.Button("Clear All", role: .destructive) {
                 Keychain.shared.clearAll()
             }
-            SwiftUI.Button("Cancel", role: .cancel) {}
+            SwiftUI.Button("取消", role: .cancel) {}
         } message: {
-            Text("Do you want to clear all keychain items related to this SideStore instance?")
+            Text("要清除与此 SideStore 实例相关的所有钥匙串项目吗？")
         }
         .alert("Dump Profiles", isPresented: $showDumpProfilesAlert) {
-            SwiftUI.Button("OK", role: .cancel) {}
+            SwiftUI.Button("好", role: .cancel) {}
         } message: {
             Text(dumpProfilesAlertMessage)
         }
@@ -714,10 +714,10 @@ struct DeveloperOptionsView: View {
                 do {
                     try await ImportExport.importAccountJSON(from: url)
                     let email = AuthManager.shared.currentAppleID ?? ""
-                    let toastView = ToastView(text: NSLocalizedString("Successfully imported '\(email)'!", comment: ""), detailText: "SideStore should be fully operational!")
+                    let toastView = ToastView(text: NSLocalizedString("已成功导入“\\(email)”！", comment: ""), detailText: "SideStore should be fully operational!")
                     toastView.show(in: top)
                 } catch {
-                    let toastView = ToastView(text: NSLocalizedString("Failed to import account JSON!", comment: ""), detailText: error.localizedDescription)
+                    let toastView = ToastView(text: NSLocalizedString("导入账号 JSON 失败！", comment: ""), detailText: error.localizedDescription)
                     toastView.show(in: top)
                 }
             }
@@ -727,7 +727,7 @@ struct DeveloperOptionsView: View {
         #else
         TVWebFileTransferManager.shared.startImport(
             acceptedExtensions: ["sideconf", "json"],
-            title: "Import Account",
+            title: "导入账号",
             presentingVC: top
         ) { selectedURL in
             guard let url = selectedURL else { return }
@@ -735,10 +735,10 @@ struct DeveloperOptionsView: View {
                 do {
                     try await ImportExport.importAccountJSON(from: url)
                     let email = AuthManager.shared.currentAppleID ?? ""
-                    let toastView = ToastView(text: NSLocalizedString("Successfully imported '\(email)'!", comment: ""), detailText: "SideStore should be fully operational!")
+                    let toastView = ToastView(text: NSLocalizedString("已成功导入“\\(email)”！", comment: ""), detailText: "SideStore should be fully operational!")
                     toastView.show(in: top)
                 } catch {
-                    let toastView = ToastView(text: NSLocalizedString("Failed to import account JSON!", comment: ""), detailText: error.localizedDescription)
+                    let toastView = ToastView(text: NSLocalizedString("导入账号 JSON 失败！", comment: ""), detailText: error.localizedDescription)
                     toastView.show(in: top)
                 }
             }
@@ -749,13 +749,13 @@ struct DeveloperOptionsView: View {
     private func exportAccountJSON(password: String) {
         guard let top = UIApplication.shared.topViewController() else { return }
         guard let account = ImportExport.exportAccountJSON(password: password) else {
-            let toastView = ToastView(text: NSLocalizedString("Failed to export account!", comment: ""), detailText: "Account not found or missing credentials.")
+            let toastView = ToastView(text: NSLocalizedString("导出账号失败！", comment: ""), detailText: "Account not found or missing credentials.")
             toastView.show(in: top)
             return
         }
         
         guard let accountData = try? Foundation.JSONEncoder().encode(account) else {
-            let toastView = ToastView(text: NSLocalizedString("Failed to export account data!", comment: ""), detailText: "Account malformed.")
+            let toastView = ToastView(text: NSLocalizedString("导出账号数据失败！", comment: ""), detailText: "Account malformed.")
             toastView.show(in: top)
             return
         }
@@ -767,10 +767,10 @@ struct DeveloperOptionsView: View {
             let exportVC = UIDocumentPickerViewController(forExporting: [tmpPath], asCopy: false)
             top.present(exportVC, animated: true)
             #else
-            TVWebFileTransferManager.shared.startExport(fileURL: tmpPath, title: "Export Account", presentingVC: top)
+            TVWebFileTransferManager.shared.startExport(fileURL: tmpPath, title: "导出账号", presentingVC: top)
             #endif
         } catch {
-            let toastView = ToastView(text: NSLocalizedString("Failed to export account!", comment: ""), detailText: error.localizedDescription)
+            let toastView = ToastView(text: NSLocalizedString("导出账号失败！", comment: ""), detailText: error.localizedDescription)
             toastView.show(in: top)
         }
     }
@@ -836,12 +836,12 @@ struct DeveloperOptionsView: View {
             do {
                 try await startEMProxy()
                 await MainActor.run {
-                    let toastView = ToastView(text: NSLocalizedString("Started EMProxy", comment: ""), detailText: "EMProxy loopback server is running.")
+                    let toastView = ToastView(text: NSLocalizedString("EMProxy 已启动", comment: ""), detailText: "EMProxy loopback server is running.")
                     toastView.show(in: top)
                 }
             } catch {
                 await MainActor.run {
-                    let toastView = ToastView(text: NSLocalizedString("Failed to start EMProxy!", comment: ""), detailText: error.localizedDescription)
+                    let toastView = ToastView(text: NSLocalizedString("启动 EMProxy 失败！", comment: ""), detailText: error.localizedDescription)
                     toastView.show(in: top)
                 }
             }
@@ -854,12 +854,12 @@ struct DeveloperOptionsView: View {
             do {
                 try await stopEMProxy()
                 await MainActor.run {
-                    let toastView = ToastView(text: NSLocalizedString("Stopped EMProxy", comment: ""), detailText: "EMProxy loopback server stopped.")
+                    let toastView = ToastView(text: NSLocalizedString("EMProxy 已停止", comment: ""), detailText: "EMProxy loopback server stopped.")
                     toastView.show(in: top)
                 }
             } catch {
                 await MainActor.run {
-                    let toastView = ToastView(text: NSLocalizedString("Failed to stop EMProxy!", comment: ""), detailText: error.localizedDescription)
+                    let toastView = ToastView(text: NSLocalizedString("停止 EMProxy 失败！", comment: ""), detailText: error.localizedDescription)
                     toastView.show(in: top)
                 }
             }
@@ -871,10 +871,10 @@ struct DeveloperOptionsView: View {
         let started = BackgroundServiceManager.ensureBackgroundServicesStarted()
         let modeName = UserDefaults.standard.backgroundServiceMode.displayName
         if started {
-            let toastView = ToastView(text: NSLocalizedString("Started Background Service", comment: ""), detailText: "\(modeName) keepalive is running.")
+            let toastView = ToastView(text: NSLocalizedString("后台服务已启动", comment: ""), detailText: "\(modeName) keepalive is running.")
             toastView.show(in: top)
         } else {
-            let toastView = ToastView(text: NSLocalizedString("Background Service Disabled", comment: ""), detailText: "Enable background service in User Customizations.")
+            let toastView = ToastView(text: NSLocalizedString("后台服务已停用", comment: ""), detailText: "Enable background service in User Customizations.")
             toastView.show(in: top)
         }
     }
@@ -882,18 +882,18 @@ struct DeveloperOptionsView: View {
     private func triggerStopBackgroundService() {
         guard let top = UIApplication.shared.topViewController() else { return }
         BackgroundServiceManager.stop()
-        let toastView = ToastView(text: NSLocalizedString("Stopped Background Service", comment: ""), detailText: "Background keepalive service stopped.")
+        let toastView = ToastView(text: NSLocalizedString("后台服务已停止", comment: ""), detailText: "Background keepalive service stopped.")
         toastView.show(in: top)
     }
     
     private func triggerReloadAllWidgets() {
         #if !os(tvOS)
         WidgetCenter.shared.reloadAllTimelines()
-        let title = NSLocalizedString("Reloaded All Widgets", comment: "")
+        let title = NSLocalizedString("已重新加载全部小组件", comment: "")
         let detail = "Triggered timeline refresh for all widgets."
         #else
         NotificationCenter.default.post(name: .TVTopShelfItemsDidChange, object: nil)
-        let title = NSLocalizedString("Reloaded Top Shelf", comment: "")
+        let title = NSLocalizedString("已重新加载 Top Shelf", comment: "")
         let detail = "Triggered Top Shelf refresh."
         #endif
         if let top = UIApplication.shared.topViewController() {
@@ -918,7 +918,7 @@ struct DeveloperOptionsView: View {
                 toastView.show(in: top)
             }
         } catch {
-            let toastView = ToastView(text: NSLocalizedString("Failed to Rotate Log", comment: ""), detailText: error.localizedDescription)
+            let toastView = ToastView(text: NSLocalizedString("轮换日志失败", comment: ""), detailText: error.localizedDescription)
             toastView.show(in: top)
         }
     }

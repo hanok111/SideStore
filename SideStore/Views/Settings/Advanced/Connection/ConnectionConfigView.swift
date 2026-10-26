@@ -77,7 +77,7 @@ struct ConnectionConfigView: View {
                 }
 
                 if draftUseLocalVPN {
-                    Section(header: Text("Auto Discovered from network")) {
+                    Section(header: Text("从网络自动发现")) {
                         Group {
                             networkConfigRow(label: "Tunnel IP", text: Binding<String?>(get: { config.formattedTunnelIface }, set: { _ in }), editable: false)
                             networkConfigRow(label: "Device IP", text: Binding<String?>(get: { config.formattedTunnelPeer }, set: { _ in }), editable: false)
@@ -119,11 +119,11 @@ struct ConnectionConfigView: View {
                             )
                         }
                     } header: {
-                        Text("User Configuration")
+                        Text("用户配置")
                     } footer: {
                         HStack(alignment: .top, spacing: 0) {
-                            Text("Note: ")
-                            Text("'Device IP' and 'RemotePair Port' are optional and if specified should match exactly as in the target VPN's config or Leave empty to prefer auto-discovery/default port \(String(AppConstants.Minimuxer.remotePairingPort)).")
+                            Text("注意：")
+                            Text("“设备 IP”和“RemotePair 端口”为可选项，如填写须与目标 VPN 配置中完全一致，或留空以优先自动发现/默认端口 \\(String(AppConstants.Minimuxer.remotePairingPort))。")
                         }
                     }
                 } else {
@@ -148,11 +148,11 @@ struct ConnectionConfigView: View {
                             textColor: config.remoteActive == .yes ? .green : .red
                         )
                     } header: {
-                        Text("Remote Endpoint")
+                        Text("远程端点")
                     } footer: {
                         HStack(alignment: .top, spacing: 0) {
-                            Text("Note: ")
-                            Text("'Device IP' is mandatory. 'RemotePair Port' is optional (prefers auto-discovery or default \(String(AppConstants.Minimuxer.remotePairingPort)).")
+                            Text("注意：")
+                            Text("“设备 IP”为必填项，“RemotePair 端口”为可选项（优先自动发现或默认端口 \\(String(AppConstants.Minimuxer.remotePairingPort))）。")
                         }
                     }
                 }
@@ -171,9 +171,9 @@ struct ConnectionConfigView: View {
                             isPort: true
                         )
                     } header: {
-                        Text("WireGuard Server Parameters")
+                        Text("WireGuard 服务器参数")
                     } footer: {
-                        Text("Configures the local UDP loopback host and port bound by EMProxy.")
+                        Text("配置 EMProxy 绑定的本地 UDP 回环主机和端口。")
                     }
                 }
             }
@@ -198,7 +198,7 @@ struct ConnectionConfigView: View {
                 acceptIPv6ConnectionConfig = UserDefaults.standard.acceptIPv6ConnectionConfig
             }
             .alert("Invalid Configuration", isPresented: $showValidationErrorAlert) {
-                SwiftUI.Button("OK", role: .cancel) {}
+                SwiftUI.Button("好", role: .cancel) {}
             } message: {
                 Text(validationError ?? "Please check your configuration settings.")
             }
@@ -216,14 +216,14 @@ struct ConnectionConfigView: View {
                     AnimatedCheckmarkView()
                         .padding(.top, 10)
                     
-                    Text("Changes saved")
+                    Text("更改已保存")
                         .font(.system(size: 20, weight: .medium))
                         .foregroundColor(.white)
                     
                     SwiftUI.Button(action: {
                         showConfirmDialog = false
                     }) {
-                        Text("OK")
+                        Text("好")
                             .font(.system(size: 17, weight: .semibold))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)

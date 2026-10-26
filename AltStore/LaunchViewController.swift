@@ -132,7 +132,7 @@ final class LaunchViewController: UIViewController {
         if let dbError = error as? DatabaseError {
             switch dbError {
             case .databaseDowngradeDetected(let reason):
-                let resetAction = UIAlertAction(title: NSLocalizedString("Reset Database", comment: ""), style: .destructive) { [weak self] _ in
+                let resetAction = UIAlertAction(title: NSLocalizedString("重置数据库", comment: ""), style: .destructive) { [weak self] _ in
                     DatabaseManager.recreateDatabase()
                     Task {
                         await MainActor.run { self?.retries = 0 }
@@ -140,13 +140,13 @@ final class LaunchViewController: UIViewController {
                     }
                 }
                 return (
-                    title: dbError.errorDescription ?? NSLocalizedString("Database Downgrade Detected", comment: ""),
+                    title: dbError.errorDescription ?? NSLocalizedString("检测到数据库降级", comment: ""),
                     message: reason,
                     extraActions: [resetAction]
                 )
             case .missingAppGroup(let reason), .migrationFailed(let reason):
                 return (
-                    title: dbError.errorDescription ?? NSLocalizedString("Database Error", comment: ""),
+                    title: dbError.errorDescription ?? NSLocalizedString("数据库错误", comment: ""),
                     message: reason,
                     extraActions: []
                 )

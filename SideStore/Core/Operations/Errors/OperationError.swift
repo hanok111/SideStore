@@ -129,11 +129,11 @@ public enum OperationError: LocalizedError, CustomNSError, Sendable, Equatable {
     public var recoverySuggestion: String? {
         switch self {
         case .invalidPairingFile:
-            return NSLocalizedString("Import a valid mobiledevicepairing file.", comment: "")
+            return NSLocalizedString("导入有效的 mobiledevicepairing 文件。", comment: "")
         case .invalidVPN, .noVPN:
-            return NSLocalizedString("Make sure LocalDevVPN is connected and running!", comment: "")
+            return NSLocalizedString("请确保 LocalDevVPN 已连接并正在运行！", comment: "")
         case .noConnection:
-            return NSLocalizedString("Connect to a Wi-Fi network, Bridge or a Wired network connection!", comment: "")
+            return NSLocalizedString("请连接到 Wi-Fi 网络、网桥或有线网络连接！", comment: "")
         default:
             return nil
         }

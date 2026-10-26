@@ -250,7 +250,7 @@ class ImportExport {
         #else
         TVWebFileTransferManager.shared.startImport(
             acceptedExtensions: ["zip", "backup"],
-            title: "Import App Backup",
+            title: "导入应用备份",
             presentingVC: presentingViewController
         ) { selectedURL in
             handleSelectedURL(selectedURL)

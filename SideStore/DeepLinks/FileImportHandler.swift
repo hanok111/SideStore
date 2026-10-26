@@ -87,14 +87,14 @@ public final class FileImportHandler {
             try PairingFileManager.shared.importPairingFile(from: fileURL)
             debugLog("[FileImportHandler] Successfully saved imported pairing file")
             if let topVC = UIApplication.shared.topViewController() {
-                let toast = ToastView(text: NSLocalizedString("Pairing File Imported Successfully!", comment: ""), detailText: nil)
+                let toast = ToastView(text: NSLocalizedString("配对文件导入成功！", comment: ""), detailText: nil)
                 toast.show(in: topVC)
             }
             return true
         } catch {
             debugLog("[FileImportHandler] Failed to save imported pairing file: \(error)")
             if let topVC = UIApplication.shared.topViewController() {
-                let toast = ToastView(text: NSLocalizedString("Failed to save Pairing File", comment: ""), detailText: nil)
+                let toast = ToastView(text: NSLocalizedString("保存配对文件失败", comment: ""), detailText: nil)
                 toast.show(in: topVC)
             }
             return false

@@ -54,7 +54,7 @@ struct SelectAppIntent: WidgetConfigurationIntent
     static var title: LocalizedStringResource = "Select App"
     static var description = IntentDescription("Choose which app to display.")
 
-    @Parameter(title: "App")
+    @Parameter(title: "应用")
     var app: InstalledAppEntity?
 
     // WidgetConfigurationIntent requires perform() — no-op for configuration intents.

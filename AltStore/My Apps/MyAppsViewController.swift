@@ -1707,7 +1707,7 @@ private extension MyAppsViewController
         #else
         TVWebFileTransferManager.shared.startImport(
             acceptedExtensions: ["png", "jpg", "jpeg"],
-            title: "Upload Custom App Icon",
+            title: "上传自定义应用图标",
             presentingVC: self
         ) { [weak self] fileURL in
             guard let self = self, let fileURL = fileURL else { return }
@@ -2080,19 +2080,19 @@ extension MyAppsViewController
             self.resign(installedApp)
         }
         
-        let reinstallFromCacheAction = UIAction(title: NSLocalizedString("From Cache", comment: ""), image: UIImage(systemName: "signature")) { (action) in
+        let reinstallFromCacheAction = UIAction(title: NSLocalizedString("来自缓存", comment: ""), image: UIImage(systemName: "signature")) { (action) in
             self.reinstallFromCache(installedApp)
         }
         
         var reinstallSubmenuActions: [UIMenuElement] = [reinstallFromCacheAction]
         if let storeApp = installedApp.storeApp
         {
-            let reinstallFromSourceAction = UIAction(title: NSLocalizedString("From Source", comment: ""), image: UIImage(systemName: "icloud.and.arrow.down")) { [weak self] (action) in
+            let reinstallFromSourceAction = UIAction(title: NSLocalizedString("来自来源", comment: ""), image: UIImage(systemName: "icloud.and.arrow.down")) { [weak self] (action) in
                 self?.reinstallFromSource(storeApp)
             }
             reinstallSubmenuActions.append(reinstallFromSourceAction)
         }
-        let reinstallMenu = UIMenu(title: NSLocalizedString("Reinstall", comment: ""), image: UIImage(systemName: "arrow.triangle.2.circlepath"), children: reinstallSubmenuActions)
+        let reinstallMenu = UIMenu(title: NSLocalizedString("重新安装", comment: ""), image: UIImage(systemName: "arrow.triangle.2.circlepath"), children: reinstallSubmenuActions)
         
         let activateAction = UIAction(title: NSLocalizedString("激活", comment: ""), image: UIImage(systemName: "checkmark.circle")) { (action) in
             self.activate(installedApp)
@@ -2118,21 +2118,21 @@ extension MyAppsViewController
             self.backup(installedApp)
         }
         
-        let exportRawBackupAction = UIAction(title: NSLocalizedString("Export (Raw)", comment: ""), image: UIImage(systemName: "folder")) { (action) in
+        let exportRawBackupAction = UIAction(title: NSLocalizedString("导出（原始）", comment: ""), image: UIImage(systemName: "folder")) { (action) in
             self.exportBackup(for: installedApp, asZip: false)
         }
         
-        let exportZipBackupAction = UIAction(title: NSLocalizedString("Export (ZIP)", comment: ""), image: UIImage(systemName: "doc.zipper") ?? UIImage(systemName: "archivebox")) { (action) in
+        let exportZipBackupAction = UIAction(title: NSLocalizedString("导出（ZIP）", comment: ""), image: UIImage(systemName: "doc.zipper") ?? UIImage(systemName: "archivebox")) { (action) in
             self.exportBackup(for: installedApp, asZip: true)
         }
         
         let exportBackupMenu = UIMenu(title: NSLocalizedString("导出备份", comment: ""), image: UIImage(systemName: "arrow.up.doc"), children: [exportRawBackupAction, exportZipBackupAction])
         
-        let importRawBackupAction = UIAction(title: NSLocalizedString("Import (Raw)", comment: ""), image: UIImage(systemName: "folder")) { (action) in
+        let importRawBackupAction = UIAction(title: NSLocalizedString("导入（原始）", comment: ""), image: UIImage(systemName: "folder")) { (action) in
             self.importBackup(for: installedApp, isZip: false)
         }
         
-        let importZipBackupAction = UIAction(title: NSLocalizedString("Import (ZIP)", comment: ""), image: UIImage(systemName: "doc.zipper") ?? UIImage(systemName: "archivebox")) { (action) in
+        let importZipBackupAction = UIAction(title: NSLocalizedString("导入（ZIP）", comment: ""), image: UIImage(systemName: "doc.zipper") ?? UIImage(systemName: "archivebox")) { (action) in
             self.importBackup(for: installedApp, isZip: true)
         }
         
@@ -2229,11 +2229,11 @@ extension MyAppsViewController
         
         let backupMenu = UIMenu(title: NSLocalizedString("备份", comment: ""), image: UIImage(systemName: "archivebox"), children: backupSubmenuActions)
         
-        let setProfileAction = UIAction(title: NSLocalizedString("Change Provisioning Profile", comment: ""), image: UIImage(systemName: "doc.badge.gearshape")) { [weak self] _ in
+        let setProfileAction = UIAction(title: NSLocalizedString("更换描述文件", comment: ""), image: UIImage(systemName: "doc.badge.gearshape")) { [weak self] _ in
             self?.presentSetProfileAlert(for: installedApp)
         }
         
-        let resetProfileAction = UIAction(title: NSLocalizedString("Reset Provisioning Profile", comment: ""), image: UIImage(systemName: "arrow.counterclockwise")) { [weak self] _ in
+        let resetProfileAction = UIAction(title: NSLocalizedString("重置描述文件", comment: ""), image: UIImage(systemName: "arrow.counterclockwise")) { [weak self] _ in
             self?.resetProfile(for: installedApp)
         }
         
@@ -2241,7 +2241,7 @@ extension MyAppsViewController
         if ProfileManager.shared.getAssignedProfile(for: installedApp.bundleIdentifier) != nil || installedApp.certificateSerialNumber != nil {
             profileSubmenuActions.append(resetProfileAction)
         }
-        let profileMenu = UIMenu(title: NSLocalizedString("Provisioning Profile", comment: ""), image: UIImage(systemName: "doc.plaintext"), children: profileSubmenuActions)
+        let profileMenu = UIMenu(title: NSLocalizedString("描述文件", comment: ""), image: UIImage(systemName: "doc.plaintext"), children: profileSubmenuActions)
         
         if installedApp.resignedBundleIdentifier.isAltStoreAppID
         {

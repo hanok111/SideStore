@@ -71,7 +71,7 @@ struct CodeResourcesViewer: View {
     var body: some View {
         List {
             if isLoaded && parseError == nil {
-                Section(header: Text("Code Signature Seal")) {
+                Section(header: Text("代码签名印章")) {
                     InfoRow(label: "File", value: url.lastPathComponent)
                     InfoRow(label: "Total Sealed Files", value: "\(entries.count)")
                     InfoRow(label: "Signing Rules", value: "\(rules.count)")
@@ -89,9 +89,9 @@ struct CodeResourcesViewer: View {
                 }
 
                 if filterMode == .rules {
-                    Section(header: Text("Signing Rules (\(filteredRules.count))")) {
+                    Section(header: Text("签名规则（\\(filteredRules.count)）")) {
                         if filteredRules.isEmpty {
-                            Text("No rules matching '\(searchQuery)'")
+                            Text("没有匹配“\\(searchQuery)”的规则")
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
                         } else {
@@ -103,7 +103,7 @@ struct CodeResourcesViewer: View {
                                             .foregroundColor(.primary)
                                         Spacer()
                                         if rule.isOmitted {
-                                            Text("Omit")
+                                            Text("省略")
                                                 .font(.caption)
                                                 .foregroundColor(.red)
                                                 .padding(.horizontal, 6)
@@ -111,7 +111,7 @@ struct CodeResourcesViewer: View {
                                                 .background(Color.red.opacity(0.1))
                                                 .cornerRadius(6)
                                         } else {
-                                            Text("Seal")
+                                            Text("封存")
                                                 .font(.caption)
                                                 .foregroundColor(.green)
                                                 .padding(.horizontal, 6)
@@ -131,7 +131,7 @@ struct CodeResourcesViewer: View {
                         }
                     }
                 } else {
-                    Section(header: Text("Sealed Files (\(filteredEntries.count))")) {
+                    Section(header: Text("已封存文件（\\(filteredEntries.count)）")) {
                         if filteredEntries.isEmpty {
                             Text(entries.isEmpty ? "No sealed files found" : "No files matching '\(searchQuery)'")
                                 .font(.subheadline)
@@ -154,7 +154,7 @@ struct CodeResourcesViewer: View {
                                                     .foregroundColor(.primary)
                                                 Spacer()
                                                 if entry.isOptional {
-                                                    Text("Optional")
+                                                    Text("可选")
                                                         .font(.caption2)
                                                         .foregroundColor(.orange)
                                                         .padding(.horizontal, 5)
@@ -164,13 +164,13 @@ struct CodeResourcesViewer: View {
                                                 }
                                             }
                                             if let h2 = entry.hash2Hex {
-                                                Text("SHA-256: \(h2)")
+                                                Text("SHA-256：\\(h2)")
                                                     .font(.system(size: 10, design: .monospaced))
                                                     .foregroundColor(.secondary)
                                                     .lineLimit(1)
                                                     .truncationMode(.middle)
                                             } else if let h1 = entry.hashHex {
-                                                Text("SHA-1: \(h1)")
+                                                Text("SHA-1：\\(h1)")
                                                     .font(.system(size: 10, design: .monospaced))
                                                     .foregroundColor(.secondary)
                                                     .lineLimit(1)
@@ -186,12 +186,12 @@ struct CodeResourcesViewer: View {
                 }
 
                 if let plist = rawPlist {
-                    Section(header: Text("Raw Inspection")) {
+                    Section(header: Text("原始检查")) {
                         NavigationLink(destination: InfoPlistContainerView(plist: plist, title: "CodeResources")) {
                             HStack {
                                 Image(systemName: "list.bullet.rectangle")
                                     .foregroundColor(.green)
-                                Text("Explore Structure (\(plist.count) keys)")
+                                Text("浏览结构（\\(plist.count) 个键）")
                                     .font(.subheadline)
                             }
                         }
@@ -201,7 +201,7 @@ struct CodeResourcesViewer: View {
                                 HStack {
                                     Image(systemName: "doc.plaintext")
                                         .foregroundColor(.blue)
-                                    Text("View Raw XML")
+                                    Text("查看原始 XML")
                                         .font(.subheadline)
                                 }
                             }
@@ -213,7 +213,7 @@ struct CodeResourcesViewer: View {
                     Image(systemName: "exclamationmark.triangle")
                         .font(.system(size: 44))
                         .foregroundColor(.orange)
-                    Text("Parse Error")
+                    Text("解析错误")
                         .font(.headline)
                     Text(err)
                         .font(.subheadline)

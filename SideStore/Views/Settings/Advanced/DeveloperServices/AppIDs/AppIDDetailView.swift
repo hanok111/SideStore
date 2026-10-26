@@ -30,7 +30,7 @@ struct AppIDDetailView: View {
 
     var body: some View {
         List {
-            Section(header: Text("App ID Metadata")) {
+            Section(header: Text("App ID 元数据")) {
                 InfoRow(label: "Name", value: currentAppID.name)
                 InfoRow(label: "Bundle Identifier", value: currentAppID.bundleIdentifier)
                 InfoRow(label: "App ID (Identifier)", value: currentAppID.identifier)
@@ -39,9 +39,9 @@ struct AppIDDetailView: View {
                 }
             }
 
-            Section(header: Text("Capabilities & Features (\(currentAppID.features.count))")) {
+            Section(header: Text("功能与特性（\\(currentAppID.features.count)）")) {
                 if currentAppID.features.isEmpty {
-                    Text("No special features enabled for this App ID.")
+                    Text("此 App ID 未启用特殊功能。")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 } else {
@@ -64,9 +64,9 @@ struct AppIDDetailView: View {
                 }
             }
 
-            Section(header: Text("Associated App Groups"), footer: Text("Select the App Groups to associate with this App ID, then tap Save.")) {
+            Section(header: Text("关联的应用组"), footer: Text("选择要与此 App ID 关联的应用组，然后点按“保存”。")) {
                 if viewModel.appGroups.isEmpty {
-                    Text("No App Groups available on this team. Create an App Group first.")
+                    Text("此团队暂无应用组，请先创建一个应用组。")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 } else {
@@ -120,7 +120,7 @@ struct AppIDDetailView: View {
                                     ProgressView()
                                         .padding(.trailing, 8)
                                 }
-                                Text("Save Group Associations")
+                                Text("保存组关联")
                                     .fontWeight(.semibold)
                                 Spacer()
                             }
@@ -130,7 +130,7 @@ struct AppIDDetailView: View {
                 }
             }
 
-            Section(header: Text("Actions")) {
+            Section(header: Text("操作")) {
                 SwiftUI.Button {
                     Task {
                         _ = await viewModel.downloadProfile(for: currentAppID, presentingViewController: presentingViewController)
@@ -138,7 +138,7 @@ struct AppIDDetailView: View {
                 } label: {
                     HStack {
                         Image(systemName: "arrow.down.doc")
-                        Text("Download Provisioning Profile")
+                        Text("下载描述文件")
                     }
                 }
             }

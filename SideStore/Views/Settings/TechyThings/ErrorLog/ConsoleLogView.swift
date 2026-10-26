@@ -303,7 +303,7 @@ public struct ConsoleLogView: View {
                         viewModel.setSource(.console)
                     }) {
                         HStack {
-                            Text("Console Log")
+                            Text("控制台日志")
                             if viewModel.activeSource == .console {
                                 Image(systemName: "checkmark")
                             }
@@ -314,7 +314,7 @@ public struct ConsoleLogView: View {
                         viewModel.setSource(.widget)
                     }) {
                         HStack {
-                            Text("Widget Log")
+                            Text("小组件日志")
                             if viewModel.activeSource == .widget {
                                 Image(systemName: "checkmark")
                             }
@@ -501,8 +501,8 @@ public struct ConsoleLogView: View {
         }
         #else
         .confirmationDialog("Logs Menu", isPresented: $showTvMenu) {
-            SwiftUI.Button("Console Log") { viewModel.setSource(.console) }
-            SwiftUI.Button("Widget Log") { viewModel.setSource(.widget) }
+            SwiftUI.Button("控制台日志") { viewModel.setSource(.console) }
+            SwiftUI.Button("小组件日志") { viewModel.setSource(.widget) }
             if let importedURL = viewModel.importedURL {
                 SwiftUI.Button("Imported Log (\(importedURL.lastPathComponent))") { viewModel.setSource(.imported(url: importedURL)) }
             }
@@ -524,7 +524,7 @@ public struct ConsoleLogView: View {
         .overlay(
             Group {
                 if showCopiedBanner {
-                    Text("Copied Visible Logs to Clipboard")
+                    Text("已将可见日志复制到剪贴板")
                         .font(.caption)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 8)
